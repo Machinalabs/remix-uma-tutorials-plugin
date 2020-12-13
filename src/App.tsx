@@ -1,10 +1,16 @@
-import React from 'react';
-import './App.css';
+import React from "react"
 
-function App() {
+import { Routes } from "./routes"
+import { RemixProvider } from "./hooks"
+
+import "./App.css"
+
+const App = () => {
   return (
-    <div><h1>Hello World</h1></div>
-  );
+    <RemixProvider>
+      <Routes />
+    </RemixProvider>
+  )
 }
 
-export default App;
+export default App
