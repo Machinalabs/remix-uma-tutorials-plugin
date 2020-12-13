@@ -41,7 +41,7 @@ jobs:
           command: yarn tslint
       - run:
           name: Check formatting (Prettier)
-          command: yarn check-formatting
+          command: yarn prettier:check
   
   unit-tests:
     <<: *defaults
