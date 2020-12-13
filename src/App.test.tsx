@@ -1,11 +1,11 @@
-import { render } from '@testing-library/react'
+import { render } from "@testing-library/react"
 
-import App from './App'
+import App from "./App"
 
 describe("App tests", () => {
-    test("snapshot", () => {
-        const { container } = render(<App />)
+  test("snapshot", () => {
+    const { container } = render(<App />)
 
-        expect(container).toMatchSnapshot()
-    })
+    expect(container).toMatchSnapshot()
+  })
 })
