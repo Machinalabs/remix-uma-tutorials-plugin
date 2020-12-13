@@ -18,7 +18,5 @@ export const HomeView: React.FC = () => {
     }
   }, [clientInstance])
 
-  return (
-    <div>Home View</div>
-  )
+  return <div>Home View</div>
 }
