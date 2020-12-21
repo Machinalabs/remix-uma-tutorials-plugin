@@ -12,7 +12,7 @@ export const TwoPanelLayout: React.FC<PropsWithChildren<Props>> = ({
 }) => {
     return (
         <Container fluid={true}>
-            <Row>
+            <Row className="full-height">
                 <Col style={{ padding: "3em" }} xs={9}>
                     {children}
                 </Col>
