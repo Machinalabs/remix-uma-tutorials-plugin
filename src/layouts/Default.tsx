@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from "react"
+import { Col, Row, Container } from "react-bootstrap"
 
 interface Props {
   from: string
@@ -7,5 +8,12 @@ interface Props {
 export const DefaultLayout: React.FC<PropsWithChildren<Props>> = ({
   children,
 }) => {
-  return <div>{children}</div>
+  return (
+    <Container fluid={true}>
+      <Row>
+        <Col style={{ padding: "3em", lineHeight: "3" }}>
+          {children}
+        </Col>
+      </Row>
+    </Container>)
 }

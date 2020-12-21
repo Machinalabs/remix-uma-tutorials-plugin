@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react"
-import {
-  CompilationResult,
-  RemixTxEvent,
-  HighlightPosition,
-} from "@remixproject/plugin-api"
 
 import { useRemix } from "../hooks"
+import { TutorialView } from "./TutorialView"
 import { WelcomeView } from "./WelcomeView"
 
 export const HomeView: React.FC = () => {
   const { clientInstance } = useRemix()
-  const [hasTutorialStarted, setHasTutorialStarted] = useState(true)
+  const [hasTutorialStarted, setHasTutorialStarted] = useState(false)
 
   useEffect(() => {
     if (clientInstance) {
@@ -18,5 +14,9 @@ export const HomeView: React.FC = () => {
     }
   }, [clientInstance])
 
-  return <div>Home View</div>
+  if (!hasTutorialStarted) {
+    return (<WelcomeView onStartCallback={() => setHasTutorialStarted(true)} />)
+  }
+
+  return <TutorialView />
 }
