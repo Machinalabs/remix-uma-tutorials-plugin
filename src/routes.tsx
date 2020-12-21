@@ -45,7 +45,7 @@ export const Routes = () => (
   <Router>
     <Switch>
       <RouteWithDefaultLayout exact={true} path="/" component={HomeView} from="/" />
-      <RouteWithTwoPanelsLayout exact={true} path="/tutorial" component={TutorialView} from="/tutorial" />
+      <RouteWithTwoPanelsLayout path="/tutorial" component={TutorialView} from="/tutorial" />
       <Route exact={true} path="/error">
         <ErrorView />
       </Route>
