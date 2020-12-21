@@ -1,16 +1,14 @@
 import React from "react"
-import { Col, Row, Container, Button } from "react-bootstrap"
+import { Button } from "react-bootstrap"
+import { Link } from 'react-router-dom'
 
-import { useRemix } from "../hooks"
 import { TITLE } from "../text"
 
 interface Props {
-  onStartCallback: () => void
+
 }
 
-export const WelcomeView: React.FC<Props> = ({ onStartCallback }) => {
-  const { themeType } = useRemix()
-
+export const WelcomeView: React.FC<Props> = ({ }) => {
   const deployUMAContracts = async () => {
     // TODO
   }
@@ -18,18 +16,19 @@ export const WelcomeView: React.FC<Props> = ({ onStartCallback }) => {
   const handleOnClick = () => {
     console.log("Clicked start")
     deployUMAContracts()
-    onStartCallback()
   }
 
-  return (<React.Fragment>
+  return (<div style={{ lineHeight: "3" }}>
     <h2>{TITLE}</h2>
     <h3>In this tutorial you will learn:</h3>
     <ul>
       <li>How to create synthetic tokens using UMA's synthetic token template</li>
       <li>How to create and manage a token sponsor position</li>
     </ul>
-    {/* <button onClick={handleOnClick}>Start</button> */}
-    <Button onClick={handleOnClick} style={{ paddingLeft: "1.5em", paddingRight: "1.5em" }} variant="primary">Start Tutorial</Button>
-  </React.Fragment>
+    <Link to="/tutorial">
+      <Button onClick={handleOnClick} style={{ paddingLeft: "1.5em", paddingRight: "1.5em" }} variant="primary">Start Tutorial</Button>
+    </Link>
+  </div>
   )
 }
+
