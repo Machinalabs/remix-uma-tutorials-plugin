@@ -18,6 +18,7 @@
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "styled-components": "^5.2.1",
     "typescript": "^4.0.3",
     "web-vitals": "^0.2.4"
   },
@@ -54,6 +55,7 @@
   "devDependencies": {
     "@types/react-router-dom": "^5.1.6",
     "@types/rebass": "^4.0.7",
+    "@types/styled-components": "^5.1.7",
     "coveralls": "^3.1.0",
     "husky": "^4.3.6",
     "prettier": "^2.2.1",
@@ -67,5 +69,8 @@
     "hooks": {
       "pre-push": "yarn tslint && yarn prettier:check && yarn test:ci && yarn build"
     }
+  },
+  "resolutions": {
+    "styled-components": "^5"
   }
 }
