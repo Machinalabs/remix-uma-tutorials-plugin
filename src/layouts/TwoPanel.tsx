@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from "react"
 import { Col, Row, Container } from "react-bootstrap"
+import { StyledCol } from "../components"
 
 interface Props {
     // from: string
@@ -13,12 +14,12 @@ export const TwoPanelLayout: React.FC<PropsWithChildren<Props>> = ({
     return (
         <Container fluid={true}>
             <Row className="full-height">
-                <Col style={{ padding: "3em" }} xs={9}>
+                <StyledCol xs={9}>
                     {children}
-                </Col>
-                <Col style={{ paddingTop: "3em", paddingRight: "3em", border: "1px solid black" }}>
+                </StyledCol>
+                <StyledCol style={{ border: "1px solid black" }}>
                     {rightPanel}
-                </Col>
+                </StyledCol>
             </Row>
         </Container>)
 }

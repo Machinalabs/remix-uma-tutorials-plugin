@@ -1,5 +1,6 @@
 import React from "react"
 import { Link } from 'react-router-dom'
+import styled from "styled-components"
 
 import { StyledButton } from "../components"
 import { TITLE } from "../text"
@@ -18,16 +19,24 @@ export const WelcomeView: React.FC<Props> = ({ }) => {
     deployUMAContracts()
   }
 
-  return (<div style={{ lineHeight: "3" }}>
+  return (<Wrapper>
     <h2>{TITLE}</h2>
     <h4>In this tutorial you will learn:</h4>
-    <ul style={{ marginBottom: "0.5em" }}>
+    <StyledUL>
       <li>How to create synthetic tokens using UMA's synthetic token template</li>
       <li>How to create and manage a token sponsor position</li>
-    </ul>
+    </StyledUL>
     <Link to="/tutorial/deploy_collateral_token">
-      <StyledButton onClick={handleOnClick} style={{ paddingLeft: "1.5em", paddingRight: "1.5em" }} variant="primary">Start Tutorial</StyledButton>
+      <StyledButton onClick={handleOnClick} variant="primary">Start Tutorial</StyledButton>
     </Link>
-  </div>
+  </Wrapper>
   )
 }
+
+const Wrapper = styled.div`
+    line-height: 3;
+`
+
+const StyledUL = styled.ul`
+  margin-bottom: 0.5em;
+`

@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from "react"
-import { Col, Row, Container } from "react-bootstrap"
+import { Row, Container } from "react-bootstrap"
+import { StyledCol } from "../components"
 
 interface Props {
   from: string
@@ -11,9 +12,9 @@ export const DefaultLayout: React.FC<PropsWithChildren<Props>> = ({
   return (
     <Container fluid={true}>
       <Row className="full-height">
-        <Col style={{ padding: "3em" }}>
+        <StyledCol>
           {children}
-        </Col>
+        </StyledCol>
       </Row>
     </Container>)
 }
