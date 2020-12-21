@@ -11,7 +11,7 @@ export const DefaultLayout: React.FC<PropsWithChildren<Props>> = ({
   return (
     <Container fluid={true}>
       <Row>
-        <Col style={{ padding: "3em", lineHeight: "3" }}>
+        <Col style={{ padding: "3em" }}>
           {children}
         </Col>
       </Row>
