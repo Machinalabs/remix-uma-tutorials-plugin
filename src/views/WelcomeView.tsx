@@ -21,7 +21,7 @@ export const WelcomeView: React.FC<Props> = ({ }) => {
 
   return (<Wrapper>
     <h2>{TITLE}</h2>
-    <h4>In this tutorial you will learn:</h4>
+    <h4 style={{ marginTop: "1em" }}>In this tutorial you will learn:</h4>
     <StyledUL>
       <li>How to create synthetic tokens using UMA's synthetic token template</li>
       <li>How to create and manage a token sponsor position</li>
