@@ -6,23 +6,29 @@ import { TITLE } from "../../text"
 import { StepProvider } from "./hooks"
 import { Stepmanager } from "./steps"
 import { NavigationBar, NavMenu } from "./sections"
+import { RightPanel } from "../../components"
 
 export const TutorialView: React.FC = () => {
     return (
         <React.Fragment>
             <StepProvider>
                 <h2>{TITLE}</h2>
-                <Container fluid={true} style={{ marginTop: "2em", height: "100%" }}>
+                <Container fluid={true} style={{ paddingTop: "2em" }}>
                     <Row style={{ height: "90%" }}>
-                        <Col xs="auto" style={{ border: "1px solid red", paddingLeft: "0" }}>
+                        <Col xs={2}>
                             <NavMenu />
                         </Col>
-                        <Col style={{ border: "1px solid blue" }}>
+                        <Col xs={6}>
                             <Stepmanager />
+                        </Col>
+                        <Col xs={2}>
+                            <RightPanel />
                         </Col>
                     </Row>
                     <Row>
-                        <NavigationBar />
+                        <Col xs={10}>
+                            <NavigationBar />
+                        </Col>
                     </Row>
                 </Container>
             </StepProvider>
