@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from "react"
-import { Col, Row, Container } from "react-bootstrap"
+import { Row, Container } from "react-bootstrap"
 import { StyledCol } from "../components"
 
 interface Props {
