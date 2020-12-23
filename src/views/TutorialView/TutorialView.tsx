@@ -5,8 +5,7 @@ import { TITLE } from "../../text"
 
 import { StepProvider } from "./hooks"
 import { Stepmanager } from "./steps"
-import { NavigationBar, NavMenu } from "./sections"
-import { RightPanel } from "../../components"
+import { NavigationBar, NavMenu, RightPanel } from "./sections"
 
 export const TutorialView: React.FC = () => {
     return (

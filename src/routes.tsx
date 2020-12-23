@@ -8,7 +8,6 @@ import {
 
 import { ErrorView, HomeView, TutorialView } from "./views"
 import { DefaultLayout, TwoPanelLayout } from "./layouts"
-import { RightPanel } from "./components"
 
 interface Props extends RouteProps {
   component: any // TODO: new (props: any) => React.Component
@@ -28,24 +27,11 @@ const RouteWithDefaultLayout = ({ component: Component, ...rest }: Props) => {
   )
 }
 
-const RouteWithTwoPanelsLayout = ({ component: Component, ...rest }: Props) => {
-  return (
-    <Route
-      {...rest}
-      render={(matchProps) => (
-        <TwoPanelLayout {...rest} rightPanel={<RightPanel />}>
-          <Component {...matchProps} />
-        </TwoPanelLayout>
-      )}
-    />
-  )
-}
-
 export const Routes = () => (
   <Router>
     <Switch>
       <RouteWithDefaultLayout exact={true} path="/" component={HomeView} from="/" />
-      <RouteWithTwoPanelsLayout path="/tutorial" component={TutorialView} from="/tutorial" />
+      <RouteWithDefaultLayout path="/tutorial" component={TutorialView} from="/tutorial" />
       <Route exact={true} path="/error">
         <ErrorView />
       </Route>
