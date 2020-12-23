@@ -1,56 +1,153 @@
 import React, { PropsWithChildren, useContext, useEffect, useState } from "react"
 
-interface Step {
-    [key: string]: string
+export interface StepDefinition {
+    route: string
+    order: number
+    name: string
+    key: string
 }
 
-const DEFAULT_STEP = "deploy_collateral_token";
+type Step = StepDefinition[]
 
-export const STEPS: Step = {
-    "deploy_collateral_token": "Deploy collateral token",
-    "deploy_price_identifier": "Deploy price identifier",
-    "create_expiring_multiparty": "Create expiring multiparty",
-    "create_position": "Create position",
-    "redeem_tokens": "Redeem tokens",
-    "deposit": "Deposit",
-    "withdraw": "Withdraw"
-}
+export const DEFAULT_STEP = 0;
+
+const STEPS: Step = [
+    {
+        key: "deploy_collateral_token",
+        route: "deploy_collateral_token",
+        order: 1,
+        name: "Deploy collateral token"
+    },
+    {
+        key: "deploy_price_identifier",
+        order: 2,
+        route: "deploy_price_identifier",
+        name: "Deploy price identifier"
+    },
+    {
+        key: "create_expiring_multiparty",
+        order: 3,
+        route: "create_expiring_multiparty",
+        name: "Create expiring multiparty",
+    },
+    {
+        key: "create_position",
+        order: 4,
+        route: "create_position",
+        name: "Create position",
+    },
+    {
+        key: "redeem_tokens",
+        order: 5,
+        route: "redeem_tokens",
+        name: "Redeem tokens"
+    },
+    {
+        key: "deposit",
+        order: 6,
+        route: "deposit",
+        name: "Deposit"
+    },
+    {
+        key: "withdraw",
+        order: 7,
+        route: "withdraw",
+        name: "Withdraw"
+    }
+]
 
 interface IStepProvider {
     getAllSteps: () => Step,
-    // getNextStep: () => string,
-    // getCurrentStep: () => string,
-    currentStep: string
-    // getStepBefore: () => string
-    // goNextStep: () => void
-    // goStepBefore: () => void
+    getNextStep: () => StepDefinition,
+    currentStep: StepDefinition
+    getStepBefore: () => StepDefinition,
+    isLastStep: () => boolean
+    goNextStep: () => void
+    goStepBefore: () => void
 }
 
 /* tslint:disable */
 // Default values
 const StepContext = React.createContext<IStepProvider>({
     getAllSteps: () => STEPS,
-    // getNextStep: () => STEPS["deploy_collateral_token"],
-    // getCurrentStep: () => STEPS["deploy_collateral_token"],
+    getNextStep: () => STEPS[DEFAULT_STEP],
     currentStep: STEPS[DEFAULT_STEP],
+    getStepBefore: () => STEPS[DEFAULT_STEP],
+    isLastStep: () => false,
+    goNextStep: () => { },
+    goStepBefore: () => { }
 })
 /* tslint:enable */
 
 export const StepProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
-    // const [allSteps, setAllSteps] = useState({})
     const [currentStep, setCurrentStep] = useState(STEPS[DEFAULT_STEP])
 
-    // useEffect(() => {
-
-    // }, [])
+    const getNextStep = () => {
+        const result = getNextStepInternal()
+        if (!result) {
+            throw new Error("Invalid state, it shouldn't be called if there is not a next step")
+        }
+        return result
+    }
 
     const getAllSteps = () => STEPS
+
+    const isLastStep = () => {
+        const result = getNextStepInternal()
+        if (!result) {
+            return true
+        }
+        return false
+    }
+
+    const getStepBefore = () => {
+        const allSteps = getAllSteps()
+        const currentOrder = currentStep.order
+        const stepBeforeOrder = currentOrder - 1
+
+        const result = allSteps.find((s) => s.order === stepBeforeOrder)
+
+        if (!result) {
+            throw new Error("Invalid state, it shouldn't be called if there is not a step before")
+        }
+        return result
+    }
+
+    const goNextStep = () => {
+        const nextStep = getNextStepInternal()
+        if (!nextStep) {
+            throw new Error("There is not next step")
+        }
+        setCurrentStep(nextStep)
+    }
+
+
+    const goStepBefore = () => {
+        const stepBefore = getStepBefore()
+        if (!stepBefore) {
+            throw new Error("There is not step before")
+        }
+        setCurrentStep(stepBefore)
+    }
+
+    const getNextStepInternal = () => {
+        const allSteps = getAllSteps()
+        const currentOrder = currentStep.order
+        const nextStepOrder = currentOrder + 1
+
+        return allSteps.find((s) => s.order === nextStepOrder)
+    }
 
     return (
         <StepContext.Provider
             value={{
                 getAllSteps,
-                currentStep
+                currentStep,
+                getNextStep,
+                getStepBefore,
+                isLastStep,
+                goNextStep,
+                goStepBefore
             }}>
             {children}
         </StepContext.Provider>

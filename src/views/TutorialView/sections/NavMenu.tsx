@@ -2,7 +2,7 @@ import React from "react"
 import { Nav } from "react-bootstrap"
 import { NavLink } from "react-router-dom"
 import styled from "styled-components"
-import { useStep } from "../hooks"
+import { useStep, DEFAULT_STEP, StepDefinition } from "../hooks"
 
 export const NavMenu: React.FC = () => {
     const { getAllSteps } = useStep()
@@ -14,14 +14,14 @@ export const NavMenu: React.FC = () => {
     }
 
     return (
-        <Nav defaultActiveKey={allSteps["collateral_token"]} className="flex-column">
-            {Object.keys(allSteps).map((item: string, index: number) => {
-                const text = `${index + 1}) ${allSteps[item]}`
-                return <StyledNavLink onClick={handleOnNavClick} key={index} to={`/tutorial/${item}`} activeStyle={{
+        <Nav defaultActiveKey={allSteps[DEFAULT_STEP]} className="flex-column">
+            {allSteps.map((currentStepDefinition: StepDefinition, index: number) => {
+                const text = `${index + 1}) ${currentStepDefinition.name}`
+                return <StyledNavLink onClick={handleOnNavClick} key={index} to={`/tutorial/${currentStepDefinition.route}`} activeStyle={{
                     opacity: 1,
                     fontWeight: 500
                 }}>
-                    <Nav.Link as={StyledDiv} key={item} href={item} disabled={true}>
+                    <Nav.Link as={StyledDiv} key={currentStepDefinition.key} href={currentStepDefinition.route} disabled={true}>
                         {text}
                     </Nav.Link>
                 </StyledNavLink>
