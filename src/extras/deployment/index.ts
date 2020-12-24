@@ -55,7 +55,6 @@ enum RegistryRoles {
     CONTRACT_CREATOR = "1",
 }
 
-// map -> name => contractAddress 
 const defaultTransactionValues: RemixTx = {
     gasLimit: toHex(4712388),
     value: '0x00',
@@ -83,8 +82,11 @@ const assert = (value: any) => {
     }
 }
 
+export type UMAContractName = 'Timer' | 'VotingToken' | 'IdentifierWhitelist' | 'Finder' | 'Voting' | 'Registry' | 'FinancialContractAdmin' | 'Store' | 'Governor' | 'DesignatedVotingFactory'
+
 export class UMADeployer implements IDeployer {
     async deploy(options: Options) {
+        const addresses = new Map<UMAContractName, EthereumAddress>();
         const result: Result = {
             success: true,
             error: undefined,
@@ -103,6 +105,7 @@ export class UMADeployer implements IDeployer {
         assert(FinderInstanceAddres).isDefined()
         assert(FinderInstanceAddres).isString()
         debug('Finder deployed', FinderInstanceAddres)
+        addresses.set('Finder', FinderInstanceAddres as string)
 
         // 2) Deploy timer
         const timerInstance = new TimerInstanceCreator().getDeployTransaction();
@@ -114,6 +117,7 @@ export class UMADeployer implements IDeployer {
         assert(TimerInstanceAddress).isDefined()
         assert(TimerInstanceAddress).isString()
         debug('Timer deployed', TimerInstanceAddress)
+        addresses.set('Timer', TimerInstanceAddress as string)
 
         // 3) Deploy voting token
         const votingTokenInstanceCreator = new VotingTokenInstanceCreator().getDeployTransaction();
@@ -125,6 +129,7 @@ export class UMADeployer implements IDeployer {
         assert(VotingTokenInstanceAddress).isDefined()
         assert(VotingTokenInstanceAddress).isString()
         debug('Voting token deployed', VotingTokenInstanceAddress)
+        addresses.set('VotingToken', VotingTokenInstanceAddress as string)
 
         const minterRoleEnumValue = 1;
 
@@ -166,6 +171,7 @@ export class UMADeployer implements IDeployer {
         assert(IdentifierWhiteListAddress).isDefined()
         assert(IdentifierWhiteListAddress).isString()
         debug('Price identifier whitelist deployed', IdentifierWhiteListAddress)
+        addresses.set('IdentifierWhitelist', IdentifierWhiteListAddress as string)
 
         // // Set the GAT percentage to 5%
         const gatPercentage = { rawValue: toWei("0.05", "ether") };
@@ -194,6 +200,7 @@ export class UMADeployer implements IDeployer {
         assert(VotingInstanceAddress).isDefined()
         assert(VotingInstanceAddress).isString()
         debug("Voting instance deployed", VotingInstanceAddress);
+        addresses.set('Voting', VotingInstanceAddress as string)
 
         // 6) Deploy registry
         const registryInstanceCreator = new RegistryInstanceCreator().getDeployTransaction();
@@ -205,6 +212,7 @@ export class UMADeployer implements IDeployer {
         assert(RegistryInstanceAddress).isDefined()
         assert(RegistryInstanceAddress).isString()
         debug("Registry instance deployed", RegistryInstanceAddress);
+        addresses.set('Registry', RegistryInstanceAddress as string)
 
         // update implementation on the Finder
         const finderInstanceInterface = new FinderInstanceCreator().interface
@@ -226,6 +234,7 @@ export class UMADeployer implements IDeployer {
         assert(FinancialContractsAdminAddress).isDefined()
         assert(FinancialContractsAdminAddress).isString()
         debug("FinancialContractAdmin deployed", FinancialContractsAdminAddress);
+        addresses.set('FinancialContractAdmin', FinancialContractsAdminAddress as string)
 
         // update implementation on the Finder
         const changeImplementationAddressEncodedDataForFinancialContract = finderInstanceInterface.encodeFunctionData('changeImplementationAddress', [utils.formatBytes32String(InterfaceName.FinancialContractsAdmin), FinancialContractsAdminAddress])
@@ -248,6 +257,7 @@ export class UMADeployer implements IDeployer {
         assert(StoreAddress).isDefined()
         assert(StoreAddress).isString()
         debug("Store deployed", StoreAddress);
+        addresses.set('Store', StoreAddress as string)
 
         // update implementation on the Finder
         const changeImplementationAddressEncodedDataForStore = finderInstanceInterface.encodeFunctionData('changeImplementationAddress', [utils.formatBytes32String(InterfaceName.Store), StoreAddress])
@@ -269,6 +279,7 @@ export class UMADeployer implements IDeployer {
         assert(StoreAddress).isDefined()
         assert(StoreAddress).isString()
         debug("Governor deployed", GovernorAddress);
+        addresses.set('Governor', GovernorAddress as string)
 
         // Add governor to registry so it can send price requests.
         const registryInstanceInterface = new RegistryInstanceCreator().interface
@@ -306,7 +317,7 @@ export class UMADeployer implements IDeployer {
         assert(DesignatedVotingFactoryAddress).isDefined()
         assert(DesignatedVotingFactoryAddress).isString()
         debug("DesignatedVotingFactory deployed", DesignatedVotingFactoryAddress);
-
+        addresses.set('DesignatedVotingFactory', DesignatedVotingFactoryAddress as string)
         // 10) Deploy supported identifier
         // const identifiers = {
         //     "BTC/USD": {},

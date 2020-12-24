@@ -1,22 +1,44 @@
-import React from "react"
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from "react"
+import { useHistory } from 'react-router-dom'
 import styled from "styled-components"
+import Spinner from 'react-bootstrap/Spinner'
 
 import { StyledButton } from "../components"
+import { UMADeployer } from "../extras/deployment"
+import { useRemix } from "../hooks"
 import { TITLE } from "../text"
+import { debug } from "../utils"
 
-interface Props {
+const TUTORIAL_ROUTE = '/tutorial/deploy_collateral_token'
 
-}
+export const WelcomeView: React.FC = () => {
+  const { clientInstance } = useRemix()
+  const [isStarting, setIsStarting] = useState(false)
+  let history = useHistory();
 
-export const WelcomeView: React.FC<Props> = ({ }) => {
-  const deployUMAContracts = async () => {
-    // TODO
-  }
+  useEffect(() => {
+    if (isStarting && clientInstance) {
+      const deployUMAContracts = async () => {
+        const accounts = await clientInstance.udapp.getAccounts()
+        debug("Accounts", accounts)
+
+        const umaDeployer = new UMADeployer()
+        const addresses = await umaDeployer.deploy({
+          clientInstance,
+          from: accounts[0]
+        })
+
+        debug("Addresses", addresses)
+
+        history.push(TUTORIAL_ROUTE)
+      }
+
+      deployUMAContracts()
+    }
+  }, [isStarting, clientInstance, history])
 
   const handleOnClick = () => {
-    console.log("Clicked start")
-    deployUMAContracts()
+    setIsStarting(true)
   }
 
   return (<Wrapper>
@@ -26,9 +48,20 @@ export const WelcomeView: React.FC<Props> = ({ }) => {
       <li>How to create synthetic tokens using UMA's synthetic token template</li>
       <li>How to create and manage a token sponsor position</li>
     </StyledUL>
-    <Link to="/tutorial/deploy_collateral_token">
-      <StyledButton onClick={handleOnClick} variant="primary">Start Tutorial</StyledButton>
-    </Link>
+    <StyledButton onClick={handleOnClick} variant="primary">
+      {isStarting && <React.Fragment>
+        <Spinner
+          style={{ marginRight: "5px" }}
+          as="span"
+          animation="border"
+          size="sm"
+          role="status"
+          aria-hidden="true"
+        />
+        <span>Starting...</span>
+      </React.Fragment>
+      }
+      {!isStarting && <span>Start Tutorial</span>}</StyledButton>
   </Wrapper>
   )
 }
@@ -40,3 +73,4 @@ const Wrapper = styled.div`
 const StyledUL = styled.ul`
   margin-bottom: 0.5em;
 `
+
