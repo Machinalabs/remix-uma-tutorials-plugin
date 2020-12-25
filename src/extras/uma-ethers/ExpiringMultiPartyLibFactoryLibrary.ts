@@ -1,5 +1,5 @@
 import { Signer } from "ethers";
-import { Provider, TransactionRequest } from "@ethersproject/providers";
+import { TransactionRequest } from "@ethersproject/providers";
 import { Contract, ContractFactory } from "@ethersproject/contracts";
 import { ExpiringMultiPartyLibLibraryInterface } from "./ExpiringMultiPartyLibLibraryInterface";
 

@@ -7,7 +7,7 @@ import {
 } from "react-router-dom"
 
 import { ErrorView, HomeView, TutorialView } from "./views"
-import { DefaultLayout, TwoPanelLayout } from "./layouts"
+import { DefaultLayout } from "./layouts"
 
 interface Props extends RouteProps {
   component: any // TODO: new (props: any) => React.Component
