@@ -74,13 +74,13 @@ interface IStepProvider {
 /* tslint:disable */
 // Default values
 const StepContext = React.createContext<IStepProvider>({
-    getAllSteps: () => STEPS,
-    getNextStep: () => STEPS[DEFAULT_STEP],
-    currentStep: STEPS[DEFAULT_STEP],
-    getStepBefore: () => STEPS[DEFAULT_STEP],
-    isLastStep: () => false,
-    goNextStep: () => { },
-    goStepBefore: () => { }
+  getAllSteps: () => STEPS,
+  getNextStep: () => STEPS[DEFAULT_STEP],
+  currentStep: STEPS[DEFAULT_STEP],
+  getStepBefore: () => STEPS[DEFAULT_STEP],
+  isLastStep: () => false,
+  goNextStep: () => {},
+  goStepBefore: () => {},
 })
 /* tslint:enable */
 

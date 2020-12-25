@@ -25,8 +25,8 @@ interface IEventEmitterProvider {
 
 /* tslint:disable */
 const EventContext = React.createContext<IEventEmitterProvider>({
-  subscribe: (topic: EventsType, callback: CallbackFunctionType) => { },
-  emit: (topic: EventsType, data: EventData) => { }
+  subscribe: (topic: EventsType, callback: CallbackFunctionType) => {},
+  emit: (topic: EventsType, data: EventData) => {},
 })
 /* tslint:enable */
 
