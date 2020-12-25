@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
-import { useHistory } from 'react-router-dom'
+import { useHistory } from "react-router-dom"
 import styled from "styled-components"
-import Spinner from 'react-bootstrap/Spinner'
+import Spinner from "react-bootstrap/Spinner"
 
 import { StyledButton } from "../components"
 import { UMADeployer } from "../extras/deployment"
@@ -9,12 +9,12 @@ import { useRemix } from "../hooks"
 import { TITLE } from "../text"
 import { debug } from "../utils"
 
-const TUTORIAL_ROUTE = '/tutorial/deploy_collateral_token'
+const TUTORIAL_ROUTE = "/tutorial/deploy_collateral_token"
 
 export const WelcomeView: React.FC = () => {
   const { clientInstance } = useRemix()
   const [isStarting, setIsStarting] = useState(false)
-  let history = useHistory();
+  const history = useHistory()
 
   useEffect(() => {
     if (isStarting && clientInstance) {
@@ -25,7 +25,7 @@ export const WelcomeView: React.FC = () => {
         const umaDeployer = new UMADeployer()
         const addresses = await umaDeployer.deploy({
           clientInstance,
-          from: accounts[0]
+          from: accounts[0],
         })
 
         debug("Addresses", addresses)
@@ -41,36 +41,40 @@ export const WelcomeView: React.FC = () => {
     setIsStarting(true)
   }
 
-  return (<Wrapper>
-    <h2>{TITLE}</h2>
-    <h4 style={{ marginTop: "1em" }}>In this tutorial you will learn:</h4>
-    <StyledUL>
-      <li>How to create synthetic tokens using UMA's synthetic token template</li>
-      <li>How to create and manage a token sponsor position</li>
-    </StyledUL>
-    <StyledButton onClick={handleOnClick} variant="primary">
-      {isStarting && <React.Fragment>
-        <Spinner
-          style={{ marginRight: "5px" }}
-          as="span"
-          animation="border"
-          size="sm"
-          role="status"
-          aria-hidden="true"
-        />
-        <span>Starting...</span>
-      </React.Fragment>
-      }
-      {!isStarting && <span>Start Tutorial</span>}</StyledButton>
-  </Wrapper>
+  return (
+    <Wrapper>
+      <h2>{TITLE}</h2>
+      <h4 style={{ marginTop: "1em" }}>In this tutorial you will learn:</h4>
+      <StyledUL>
+        <li>
+          How to create synthetic tokens using UMA's synthetic token template
+        </li>
+        <li>How to create and manage a token sponsor position</li>
+      </StyledUL>
+      <StyledButton onClick={handleOnClick} variant="primary">
+        {isStarting && (
+          <React.Fragment>
+            <Spinner
+              style={{ marginRight: "5px" }}
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+            <span>Starting...</span>
+          </React.Fragment>
+        )}
+        {!isStarting && <span>Start Tutorial</span>}
+      </StyledButton>
+    </Wrapper>
   )
 }
 
 const Wrapper = styled.div`
-    line-height: 3;
+  line-height: 3;
 `
 
 const StyledUL = styled.ul`
   margin-bottom: 0.5em;
 `
-

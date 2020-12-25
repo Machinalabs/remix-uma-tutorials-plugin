@@ -3,20 +3,19 @@ import { Row, Container } from "react-bootstrap"
 import { StyledCol } from "../components"
 
 interface Props {
-    // from: string
-    rightPanel: React.ReactNode
+  // from: string
+  rightPanel: React.ReactNode
 }
 
 export const TwoPanelLayout: React.FC<PropsWithChildren<Props>> = ({
-    children,
-    rightPanel
+  children,
+  rightPanel,
 }) => {
-    return (
-        <Container fluid={true}>
-            <Row className="full-height">
-                <StyledCol xs={12}>
-                    {children}
-                </StyledCol>
-            </Row>
-        </Container>)
+  return (
+    <Container fluid={true}>
+      <Row className="full-height">
+        <StyledCol xs={12}>{children}</StyledCol>
+      </Row>
+    </Container>
+  )
 }

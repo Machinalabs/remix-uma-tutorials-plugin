@@ -1,2 +1,2 @@
 export { DefaultLayout } from "./Default"
-export { TwoPanelLayout } from './TwoPanel'
+export { TwoPanelLayout } from "./TwoPanel"

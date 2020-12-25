@@ -30,8 +30,17 @@ const RouteWithDefaultLayout = ({ component: Component, ...rest }: Props) => {
 export const Routes = () => (
   <Router>
     <Switch>
-      <RouteWithDefaultLayout exact={true} path="/" component={HomeView} from="/" />
-      <RouteWithDefaultLayout path="/tutorial" component={TutorialView} from="/tutorial" />
+      <RouteWithDefaultLayout
+        exact={true}
+        path="/"
+        component={HomeView}
+        from="/"
+      />
+      <RouteWithDefaultLayout
+        path="/tutorial"
+        component={TutorialView}
+        from="/tutorial"
+      />
       <Route exact={true} path="/error">
         <ErrorView />
       </Route>

@@ -1,119 +1,117 @@
-import { renderHook, act } from '@testing-library/react-hooks'
-import { useStep, StepProvider } from './useStep'
+import { renderHook, act } from "@testing-library/react-hooks"
+import { useStep, StepProvider } from "./useStep"
 
-describe('useStep tests', () => {
-
-    const render = () => {
-        const wrapper = ({ children }: any) => <StepProvider>{children}</StepProvider>
-        const { result } = renderHook(() => useStep(), { wrapper })
-        return {
-            result
-        }
+describe("useStep tests", () => {
+  const render = () => {
+    const wrapper = ({ children }: any) => (
+      <StepProvider>{children}</StepProvider>
+    )
+    const { result } = renderHook(() => useStep(), { wrapper })
+    return {
+      result,
     }
+  }
 
-    test('getAllSteps', () => {
-        const { result } = render()
+  test("getAllSteps", () => {
+    const { result } = render()
 
-        const allSteps = result.current.getAllSteps()
-        const stepsNumber = Object.keys(allSteps).length
+    const allSteps = result.current.getAllSteps()
+    const stepsNumber = Object.keys(allSteps).length
 
-        expect(allSteps).toBeDefined()
-        expect(stepsNumber).toEqual(7)
+    expect(allSteps).toBeDefined()
+    expect(stepsNumber).toEqual(7)
+  })
+
+  test("currentStep", () => {
+    const { result } = render()
+
+    const currentStep = result.current.currentStep
+    const allSteps = result.current.getAllSteps()
+
+    expect(currentStep).toBeDefined()
+    expect(currentStep).toEqual(allSteps[0])
+  })
+
+  // aqui voy..
+  test("getNextStep", () => {
+    const { result } = render()
+
+    const allSteps = result.current.getAllSteps()
+    const nextStep = result.current.getNextStep()
+
+    expect(allSteps).toBeDefined()
+    expect(nextStep).toEqual(allSteps[1])
+  })
+
+  test("goNextStep", () => {
+    const { result } = render()
+
+    const allSteps = result.current.getAllSteps()
+    const currentStateBefore = result.current.currentStep
+
+    expect(currentStateBefore).toEqual(allSteps[0])
+
+    act(() => {
+      result.current.goNextStep()
     })
 
-    test('currentStep', () => {
-        const { result } = render()
+    const currentStateAfter = result.current.currentStep
 
-        const currentStep = result.current.currentStep;
-        const allSteps = result.current.getAllSteps()
+    expect(currentStateAfter).toEqual(allSteps[1])
+  })
 
-        expect(currentStep).toBeDefined()
-        expect(currentStep).toEqual(allSteps[0])
+  test("getStepBefore", () => {
+    const { result } = render()
+
+    const allSteps = result.current.getAllSteps()
+    const currentStateBefore = result.current.currentStep
+
+    expect(currentStateBefore).toEqual(allSteps[0])
+
+    act(() => {
+      result.current.goNextStep()
     })
 
-    // aqui voy..
-    test('getNextStep', () => {
-        const { result } = render()
+    const currentStateAfter = result.current.currentStep
 
-        const allSteps = result.current.getAllSteps()
-        const nextStep = result.current.getNextStep()
+    expect(currentStateAfter).toEqual(allSteps[1])
 
-        expect(allSteps).toBeDefined()
-        expect(nextStep).toEqual(allSteps[1])
+    act(() => {
+      result.current.goStepBefore()
     })
 
-    test('goNextStep', () => {
-        const { result } = render()
+    expect(result.current.currentStep).toEqual(allSteps[0])
+  })
 
-        const allSteps = result.current.getAllSteps()
-        const currentStateBefore = result.current.currentStep
+  test("isLastStep", () => {
+    const { result } = render()
 
-        expect(currentStateBefore).toEqual(allSteps[0])
+    const allSteps = result.current.getAllSteps()
 
-
-        act(() => {
-            result.current.goNextStep()
-        })
-
-        const currentStateAfter = result.current.currentStep
-
-        expect(currentStateAfter).toEqual(allSteps[1])
+    act(() => {
+      result.current.goNextStep()
     })
 
-    test('getStepBefore', () => {
-        const { result } = render()
-
-        const allSteps = result.current.getAllSteps()
-        const currentStateBefore = result.current.currentStep
-
-        expect(currentStateBefore).toEqual(allSteps[0])
-
-        act(() => {
-            result.current.goNextStep()
-        })
-
-        const currentStateAfter = result.current.currentStep
-
-        expect(currentStateAfter).toEqual(allSteps[1])
-
-        act(() => {
-            result.current.goStepBefore()
-        })
-
-        expect(result.current.currentStep).toEqual(allSteps[0])
-
+    act(() => {
+      result.current.goNextStep()
     })
 
-    test('isLastStep', () => {
-        const { result } = render()
-
-        const allSteps = result.current.getAllSteps()
-
-        act(() => {
-            result.current.goNextStep()
-        })
-
-        act(() => {
-            result.current.goNextStep()
-        })
-
-        act(() => {
-            result.current.goNextStep()
-        })
-
-        act(() => {
-            result.current.goNextStep()
-        })
-
-        act(() => {
-            result.current.goNextStep()
-        })
-
-        act(() => {
-            result.current.goNextStep()
-        })
-
-        expect(result.current.currentStep).toEqual(allSteps[6])
-
+    act(() => {
+      result.current.goNextStep()
     })
+
+    act(() => {
+      result.current.goNextStep()
+    })
+
+    act(() => {
+      result.current.goNextStep()
+    })
+
+    act(() => {
+      result.current.goNextStep()
+    })
+
+    expect(result.current.currentStep).toEqual(allSteps[6])
+  })
 })

@@ -1,3 +1,3 @@
 export { HomeView } from "./HomeView"
 export { ErrorView } from "./ErrorView"
-export { TutorialView } from './TutorialView'
+export { TutorialView } from "./TutorialView"

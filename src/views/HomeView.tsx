@@ -11,5 +11,5 @@ export const HomeView: React.FC = () => {
     }
   }, [clientInstance])
 
-  return (<WelcomeView />)
+  return <WelcomeView />
 }

@@ -12,9 +12,8 @@ export const DefaultLayout: React.FC<PropsWithChildren<Props>> = ({
   return (
     <Container fluid={true}>
       <Row className="full-height">
-        <StyledCol>
-          {children}
-        </StyledCol>
+        <StyledCol>{children}</StyledCol>
       </Row>
-    </Container>)
+    </Container>
+  )
 }

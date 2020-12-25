@@ -7,30 +7,33 @@ import { StyledButton } from "../../../components"
 import { useStep } from "../hooks"
 
 export const NavigationBar: React.FC = () => {
-    const { isLastStep, getNextStep, goNextStep } = useStep()
-    let history = useHistory();
+  const { isLastStep, getNextStep, goNextStep } = useStep()
+  const history = useHistory()
 
-    const handleOnNextClick = () => {
-        const nextStep = getNextStep()
-        if (nextStep) {
-            goNextStep()
-            history.push(nextStep.route)
-        }
+  const handleOnNextClick = () => {
+    const nextStep = getNextStep()
+    if (nextStep) {
+      goNextStep()
+      history.push(nextStep.route)
     }
+  }
 
-    return (
-        <Wrapper>
-            <Link to="/">
-                <StyledButton variant="danger" >End</StyledButton>
-            </Link>
-            {!isLastStep() &&
-                <StyledButton variant="primary" onClick={handleOnNextClick}>Next</StyledButton>}
-        </Wrapper>
-    )
+  return (
+    <Wrapper>
+      <Link to="/">
+        <StyledButton variant="danger">End</StyledButton>
+      </Link>
+      {!isLastStep() && (
+        <StyledButton variant="primary" onClick={handleOnNextClick}>
+          Next
+        </StyledButton>
+      )}
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 `
