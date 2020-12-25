@@ -1,8 +1,4 @@
-import React, {
-  PropsWithChildren,
-  useContext,
-  useState,
-} from "react"
+import React, { PropsWithChildren, useContext, useState } from "react"
 
 export interface StepDefinition {
   route: string
@@ -78,8 +74,8 @@ const StepContext = React.createContext<IStepProvider>({
   currentStep: STEPS[DEFAULT_STEP],
   getStepBefore: () => STEPS[DEFAULT_STEP],
   isLastStep: () => false,
-  goNextStep: () => { },
-  goStepBefore: () => { },
+  goNextStep: () => {},
+  goStepBefore: () => {},
 })
 /* tslint:enable */
 
