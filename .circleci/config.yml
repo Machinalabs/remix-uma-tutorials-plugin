@@ -1,7 +1,7 @@
 defaults: &defaults
   working_directory: ~/remix-uma-tutorials
   docker:
-    - image: circleci/node:12.16
+    - image: circleci/node:12.18.3
 
 aliases:
   - &restore_cache
