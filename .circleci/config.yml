@@ -73,9 +73,9 @@ jobs:
 
   deploy: 
     <<: *defaults
-    attach_workspace:
-      at: ./
     steps:
+      attach_workspace:
+        at: ./
       - run:
           name: Deploy
           command: ls
