@@ -73,6 +73,8 @@ jobs:
 
   deploy: 
     <<: *defaults
+    attach_workspace:
+      at: ./
     steps:
       - run:
           name: Deploy
