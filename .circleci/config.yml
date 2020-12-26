@@ -74,8 +74,6 @@ jobs:
   deploy: 
     <<: *defaults
     steps:
-      - checkout
-      - *restore_cache
       - run:
           name: Deploy
           command: ls

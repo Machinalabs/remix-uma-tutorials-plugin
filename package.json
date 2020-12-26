@@ -36,7 +36,7 @@
     "tslint:fix": "tslint --fix -p . -c tslint.json",
     "prettier:check": "prettier --write --list-different './src/**/*.tsx'",
     "prettier": "prettier --write \"src/**/*.{ts,,tsx,js,json}\"",
-    "deploy": "yarn build && surge --project ./build --domain machinalabs-remix-uma-tutorials-plugin.surge.sh"
+    "deploy": "surge --project ./build --domain machinalabs-remix-uma-tutorials-plugin.surge.sh"
   },
   "eslintConfig": {
     "extends": [
