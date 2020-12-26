@@ -28,7 +28,7 @@
   },
   "scripts": {
     "start": "PORT=8080 react-scripts start",
-    "build": "react-scripts build",
+    "build": "NODE_OPTIONS=--max_old_space_size=8192 react-scripts build",
     "test": "react-scripts test --env=jsdom --verbose=false --silent=false",
     "eject": "react-scripts eject",
     "test:ci": "CI=true react-scripts test",
