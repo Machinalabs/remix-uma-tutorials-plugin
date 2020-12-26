@@ -78,7 +78,7 @@ jobs:
           at: ./
       - run:
           name: Deploy
-          command: ls
+          command: yarn deploy
 
 workflows:
   version: 2
