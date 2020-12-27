@@ -16,8 +16,8 @@ import {
   StoreInstanceCreator,
   GovernorInstanceCreator,
   DesignatedVotingFactoryInstanceCreator,
+  TokenFactoryInstanceCreator,
   // TestnetErc20InstanceCreator,
-  // TokenFactoryInstanceCreator,
   // Weth9InstanceCreator,
   // ExpiringMultiPartyCreatorInstanceCreator,
   // AddressWhitelistInstanceCreator,
@@ -93,6 +93,7 @@ export type UMAContractName =
   | "Store"
   | "Governor"
   | "DesignatedVotingFactory"
+  | "TokenFactory"
 
 export class UMADeployer implements IDeployer {
   async deploy(options: Options) {
@@ -397,86 +398,17 @@ export class UMADeployer implements IDeployer {
       "DesignatedVotingFactory",
       DesignatedVotingFactoryAddress as string
     )
-    // 10) Deploy supported identifier
-    // const identifiers = {
-    //     "BTC/USD": {},
-    //     "USD/BTC": {},
-    //     "ETH/USD": {},
-    //     "CMC Total Market Cap": {},
-    //     "S&P 500": {},
-    //     TSLA: {},
-    //     "Gold (Rolling Future)": {},
-    //     "Crude Oil (Rolling Future)": {},
-    //     "CNY/USD": {},
-    //     "EUR/USD": {},
-    //     "Telegram SAFT": {},
-    //     "USD/ETH": {},
-    //     "Custom Index (1)": {},
-    //     "Custom Index (100)": {},
-    //     "ETH/BTC": {},
-    // };
 
-    // for (const identifier of Object.keys(identifiers)) {
-    //     const identifierBytes = utils.formatBytes32String(identifier);
-    //     await identifierWhiteListInstance.addSupportedIdentifier(identifierBytes);
-    // }
-
-    // // 11) Deploy testnet token
-    // const testnetTokenInstance = await new TestnetErc20InstanceCreator(
-    //     signer
-    // ).deploy("Dai Stable Coin", "DAI", 18);
-    // debug("testnetTokenInstance", testnetTokenInstance.address);
-
-    // // 12) Deploy token factory
-    // const tokenFactoryInstance = await new TokenFactoryInstanceCreator(
-    //     signer
-    // ).deploy();
-    // debug("tokenFactoryInstance", tokenFactoryInstance.address);
-
-    // // 13) Deploy expiring multi pary creator
-    // // Deploy whitelists.
-    // const collateralCurrencyWhitelistInstance = await new AddressWhitelistInstanceCreator(
-    //     signer
-    // ).deploy();
-    // await collateralCurrencyWhitelistInstance.addToWhitelist(
-    //     testnetTokenInstance.address
-    // );
-
-    // const multiPartyLibrary = await new ExpiringMultiPartyLibFactoryLibrary(
-    //     signer
-    // ).deployLibrary();
-    // debug("multiPartyLibrary", multiPartyLibrary.ExpiringMultiPartyLib);
-
-    // const expiringMultiPartyCreatorInstance = await new ExpiringMultiPartyCreatorInstanceCreator(
-    //     multiPartyLibrary,
-    //     signer
-    // ).deploy(
-    //     finderInstance.address,
-    //     collateralCurrencyWhitelistInstance.address,
-    //     tokenFactoryInstance.address,
-    //     timerInstance.address
-    // );
-    // debug(
-    //     "expiringMultiPartyCreatorInstance",
-    //     expiringMultiPartyCreatorInstance.address
-    // );
-
-    // await registryInstance.addMember(
-    //     RegistryRoles.CONTRACT_CREATOR,
-    //     expiringMultiPartyCreatorInstance.address
-    // );
-
-    // // 13) Deploy local WETH
-    // const wethInstance = await new Weth9InstanceCreator(signer).deploy();
-    // debug("wethInstance", wethInstance.address);
-
-    // // Add wethTokenAddress to the margin currency whitelist
-    // const collateralWhitelistAddress = await expiringMultiPartyCreatorInstance.collateralTokenWhitelist();
-    // const collateralWhitelist = await new AddressWhitelistInstanceCreator(
-    //     signer
-    // ).attach(collateralWhitelistAddress);
-    // await collateralWhitelist.addToWhitelist(wethInstance.address);
-
+    const tokenFactoryInstanceCreator = new TokenFactoryInstanceCreator().getDeployTransaction()
+    const { createdAddress: TokenFactoryAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: tokenFactoryInstanceCreator.data as string,
+    })
+    assert(TokenFactoryAddress).isDefined()
+    assert(TokenFactoryAddress).isString()
+    debug("TokenFactory deployed", TokenFactoryAddress)
+    addresses.set("TokenFactory", TokenFactoryAddress as string)
     return result
   }
 }

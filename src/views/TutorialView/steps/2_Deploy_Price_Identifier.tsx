@@ -11,3 +11,9 @@ export const DeployPriceIdentifier: React.FC = () => {
     </React.Fragment>
   )
 }
+/**
+ * "BTC/USD"
+ * const identifierBytes = utils.formatBytes32String(identifier);
+ * await identifierWhiteListInstance.addSupportedIdentifier(identifierBytes);
+ *
+ */
