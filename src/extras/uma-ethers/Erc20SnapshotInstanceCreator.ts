@@ -1,31 +1,28 @@
-import { Signer } from "ethers";
-import { Provider, TransactionRequest } from "@ethersproject/providers";
-import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
+import { Signer } from "ethers"
+import { Provider, TransactionRequest } from "@ethersproject/providers"
+import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts"
 
-import { Erc20Snapshot } from "./Erc20SnapshotContractInterface";
+import { Erc20Snapshot } from "./Erc20SnapshotContractInterface"
 
 export class Erc20SnapshotInstanceCreator extends ContractFactory {
   constructor(signer?: Signer) {
-    super(_abi, _bytecode, signer);
+    super(_abi, _bytecode, signer)
   }
 
   deploy(overrides?: Overrides): Promise<Erc20Snapshot> {
-    return super.deploy(overrides || {}) as Promise<Erc20Snapshot>;
+    return super.deploy(overrides || {}) as Promise<Erc20Snapshot>
   }
   getDeployTransaction(overrides?: Overrides): TransactionRequest {
-    return super.getDeployTransaction(overrides || {});
+    return super.getDeployTransaction(overrides || {})
   }
   attach(address: string): Erc20Snapshot {
-    return super.attach(address) as Erc20Snapshot;
+    return super.attach(address) as Erc20Snapshot
   }
   connect(signer: Signer): Erc20SnapshotInstanceCreator {
-    return super.connect(signer) as Erc20SnapshotInstanceCreator;
+    return super.connect(signer) as Erc20SnapshotInstanceCreator
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): Erc20Snapshot {
-    return new Contract(address, _abi, signerOrProvider) as Erc20Snapshot;
+  static connect(address: string, signerOrProvider: Signer | Provider): Erc20Snapshot {
+    return new Contract(address, _abi, signerOrProvider) as Erc20Snapshot
   }
 }
 
@@ -356,6 +353,6 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+]
 
-const _bytecode = "";
+const _bytecode = ""

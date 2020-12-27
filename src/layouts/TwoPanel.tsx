@@ -7,10 +7,7 @@ interface Props {
   rightPanel: React.ReactNode
 }
 
-export const TwoPanelLayout: React.FC<PropsWithChildren<Props>> = ({
-  children,
-  rightPanel,
-}) => {
+export const TwoPanelLayout: React.FC<PropsWithChildren<Props>> = ({ children, rightPanel }) => {
   return (
     <Container fluid={true}>
       <Row className="full-height">

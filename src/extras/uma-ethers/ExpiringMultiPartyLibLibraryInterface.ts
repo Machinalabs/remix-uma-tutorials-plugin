@@ -1,3 +1,3 @@
 export interface ExpiringMultiPartyLibLibraryInterface {
-  ["ExpiringMultiPartyLib"]: string;
+  ["ExpiringMultiPartyLib"]: string
 }

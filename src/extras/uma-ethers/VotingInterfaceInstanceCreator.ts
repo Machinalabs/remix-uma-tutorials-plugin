@@ -1,31 +1,28 @@
-import { Signer } from "ethers";
-import { Provider, TransactionRequest } from "@ethersproject/providers";
-import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
+import { Signer } from "ethers"
+import { Provider, TransactionRequest } from "@ethersproject/providers"
+import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts"
 
-import { VotingInterface } from "./VotingInterfaceContractInterface";
+import { VotingInterface } from "./VotingInterfaceContractInterface"
 
 export class VotingInterfaceInstanceCreator extends ContractFactory {
   constructor(signer?: Signer) {
-    super(_abi, _bytecode, signer);
+    super(_abi, _bytecode, signer)
   }
 
   deploy(overrides?: Overrides): Promise<VotingInterface> {
-    return super.deploy(overrides || {}) as Promise<VotingInterface>;
+    return super.deploy(overrides || {}) as Promise<VotingInterface>
   }
   getDeployTransaction(overrides?: Overrides): TransactionRequest {
-    return super.getDeployTransaction(overrides || {});
+    return super.getDeployTransaction(overrides || {})
   }
   attach(address: string): VotingInterface {
-    return super.attach(address) as VotingInterface;
+    return super.attach(address) as VotingInterface
   }
   connect(signer: Signer): VotingInterfaceInstanceCreator {
-    return super.connect(signer) as VotingInterfaceInstanceCreator;
+    return super.connect(signer) as VotingInterfaceInstanceCreator
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): VotingInterface {
-    return new Contract(address, _abi, signerOrProvider) as VotingInterface;
+  static connect(address: string, signerOrProvider: Signer | Provider): VotingInterface {
+    return new Contract(address, _abi, signerOrProvider) as VotingInterface
   }
 }
 
@@ -257,6 +254,6 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+]
 
-const _bytecode = "";
+const _bytecode = ""

@@ -32,19 +32,13 @@ const EventContext = React.createContext<IEventEmitterProvider>({
 
 export type Subscription = (val: EventData) => void
 
-export const EventProvider: React.FC<PropsWithChildren<{}>> = ({
-  children,
-}) => {
-  const [subscriptionsMap, setSubscriptionMap] = useState(
-    new Map<EventsType, Set<Subscription>>()
-  )
+export const EventProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+  const [subscriptionsMap, setSubscriptionMap] = useState(new Map<EventsType, Set<Subscription>>())
 
   const subscribe = (topic: EventsType, callback: Subscription) => {
     const subscriptionSet = subscriptionsMap.get(topic)
     if (subscriptionSet) {
-      setSubscriptionMap(
-        new Map(subscriptionsMap.set(topic, subscriptionSet.add(callback)))
-      )
+      setSubscriptionMap(new Map(subscriptionsMap.set(topic, subscriptionSet.add(callback))))
     } else {
       const newSet = new Set<Subscription>().add(callback)
       setSubscriptionMap(new Map(subscriptionsMap.set(topic, newSet)))

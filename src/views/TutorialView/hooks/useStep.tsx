@@ -85,9 +85,7 @@ export const StepProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const getNextStep = () => {
     const result = getNextStepInternal()
     if (!result) {
-      throw new Error(
-        "Invalid state, it shouldn't be called if there is not a next step"
-      )
+      throw new Error("Invalid state, it shouldn't be called if there is not a next step")
     }
     return result
   }
@@ -110,9 +108,7 @@ export const StepProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     const result = allSteps.find((s) => s.order === stepBeforeOrder)
 
     if (!result) {
-      throw new Error(
-        "Invalid state, it shouldn't be called if there is not a step before"
-      )
+      throw new Error("Invalid state, it shouldn't be called if there is not a step before")
     }
     return result
   }

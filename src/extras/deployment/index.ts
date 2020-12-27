@@ -108,9 +108,7 @@ export class UMADeployer implements IDeployer {
 
     // 1) Deploy finder
     const finderInstanceCreator = new FinderInstanceCreator().getDeployTransaction()
-    const {
-      createdAddress: FinderInstanceAddres,
-    } = await clientInstance.udapp.sendTransaction({
+    const { createdAddress: FinderInstanceAddres } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       from: fromAddress,
       data: finderInstanceCreator.data as string,
@@ -122,9 +120,7 @@ export class UMADeployer implements IDeployer {
 
     // 2) Deploy timer
     const timerInstance = new TimerInstanceCreator().getDeployTransaction()
-    const {
-      createdAddress: TimerInstanceAddress,
-    } = await clientInstance.udapp.sendTransaction({
+    const { createdAddress: TimerInstanceAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       from: fromAddress,
       data: timerInstance.data as string,
@@ -155,10 +151,10 @@ export class UMADeployer implements IDeployer {
     const votingTokenInterface = new VotingTokenInstanceCreator().interface
 
     // add Member
-    const addMemberEncodedData = votingTokenInterface.encodeFunctionData(
-      "addMember",
-      [minterRoleEnumValue, signerAddress]
-    )
+    const addMemberEncodedData = votingTokenInterface.encodeFunctionData("addMember", [
+      minterRoleEnumValue,
+      signerAddress,
+    ])
     await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       data: addMemberEncodedData,
@@ -177,10 +173,10 @@ export class UMADeployer implements IDeployer {
     })
 
     // remove member
-    const removeMemberEncodedData = votingTokenInterface.encodeFunctionData(
-      "removeMember",
-      [minterRoleEnumValue, signerAddress]
-    )
+    const removeMemberEncodedData = votingTokenInterface.encodeFunctionData("removeMember", [
+      minterRoleEnumValue,
+      signerAddress,
+    ])
     await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       data: removeMemberEncodedData,
@@ -220,9 +216,7 @@ export class UMADeployer implements IDeployer {
       FinderInstanceAddres as string,
       TimerInstanceAddress as string
     )
-    const {
-      createdAddress: VotingInstanceAddress,
-    } = await clientInstance.udapp.sendTransaction({
+    const { createdAddress: VotingInstanceAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       from: fromAddress,
       data: votingInstanceCreator.data as string,
@@ -234,9 +228,7 @@ export class UMADeployer implements IDeployer {
 
     // 6) Deploy registry
     const registryInstanceCreator = new RegistryInstanceCreator().getDeployTransaction()
-    const {
-      createdAddress: RegistryInstanceAddress,
-    } = await clientInstance.udapp.sendTransaction({
+    const { createdAddress: RegistryInstanceAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       from: fromAddress,
       data: registryInstanceCreator.data as string,
@@ -250,10 +242,7 @@ export class UMADeployer implements IDeployer {
     const finderInstanceInterface = new FinderInstanceCreator().interface
     const changeImplementationAddressEncodedData = finderInstanceInterface.encodeFunctionData(
       "changeImplementationAddress",
-      [
-        utils.formatBytes32String(InterfaceName.Registry),
-        RegistryInstanceAddress,
-      ]
+      [utils.formatBytes32String(InterfaceName.Registry), RegistryInstanceAddress]
     )
     await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
@@ -274,10 +263,7 @@ export class UMADeployer implements IDeployer {
     assert(FinancialContractsAdminAddress).isDefined()
     assert(FinancialContractsAdminAddress).isString()
     debug("FinancialContractAdmin deployed", FinancialContractsAdminAddress)
-    addresses.set(
-      "FinancialContractAdmin",
-      FinancialContractsAdminAddress as string
-    )
+    addresses.set("FinancialContractAdmin", FinancialContractsAdminAddress as string)
 
     // update implementation on the Finder
     const changeImplementationAddressEncodedDataForFinancialContract = finderInstanceInterface.encodeFunctionData(
@@ -302,9 +288,7 @@ export class UMADeployer implements IDeployer {
       initialWeeklyDelayFeePerSecondPerPfc,
       TimerInstanceAddress as string
     )
-    const {
-      createdAddress: StoreAddress,
-    } = await clientInstance.udapp.sendTransaction({
+    const { createdAddress: StoreAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       from: fromAddress,
       data: storeInstanceCreator.data as string,
@@ -333,9 +317,7 @@ export class UMADeployer implements IDeployer {
       startingId,
       TimerInstanceAddress as string
     )
-    const {
-      createdAddress: GovernorAddress,
-    } = await clientInstance.udapp.sendTransaction({
+    const { createdAddress: GovernorAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       from: fromAddress,
       data: governorInstanceCreator.data as string,
@@ -347,10 +329,10 @@ export class UMADeployer implements IDeployer {
 
     // Add governor to registry so it can send price requests.
     const registryInstanceInterface = new RegistryInstanceCreator().interface
-    const registryAddMemberEncodedData = registryInstanceInterface.encodeFunctionData(
-      "addMember",
-      [RegistryRoles.CONTRACT_CREATOR, signerAddress]
-    )
+    const registryAddMemberEncodedData = registryInstanceInterface.encodeFunctionData("addMember", [
+      RegistryRoles.CONTRACT_CREATOR,
+      signerAddress,
+    ])
     await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       data: registryAddMemberEncodedData,
@@ -394,10 +376,7 @@ export class UMADeployer implements IDeployer {
     assert(DesignatedVotingFactoryAddress).isDefined()
     assert(DesignatedVotingFactoryAddress).isString()
     debug("DesignatedVotingFactory deployed", DesignatedVotingFactoryAddress)
-    addresses.set(
-      "DesignatedVotingFactory",
-      DesignatedVotingFactoryAddress as string
-    )
+    addresses.set("DesignatedVotingFactory", DesignatedVotingFactoryAddress as string)
 
     const tokenFactoryInstanceCreator = new TokenFactoryInstanceCreator().getDeployTransaction()
     const { createdAddress: TokenFactoryAddress } = await clientInstance.udapp.sendTransaction({

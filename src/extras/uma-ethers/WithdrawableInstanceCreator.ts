@@ -1,31 +1,28 @@
-import { Signer } from "ethers";
-import { Provider, TransactionRequest } from "@ethersproject/providers";
-import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
+import { Signer } from "ethers"
+import { Provider, TransactionRequest } from "@ethersproject/providers"
+import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts"
 
-import { Withdrawable } from "./WithdrawableContractInterface";
+import { Withdrawable } from "./WithdrawableContractInterface"
 
 export class WithdrawableInstanceCreator extends ContractFactory {
   constructor(signer?: Signer) {
-    super(_abi, _bytecode, signer);
+    super(_abi, _bytecode, signer)
   }
 
   deploy(overrides?: Overrides): Promise<Withdrawable> {
-    return super.deploy(overrides || {}) as Promise<Withdrawable>;
+    return super.deploy(overrides || {}) as Promise<Withdrawable>
   }
   getDeployTransaction(overrides?: Overrides): TransactionRequest {
-    return super.getDeployTransaction(overrides || {});
+    return super.getDeployTransaction(overrides || {})
   }
   attach(address: string): Withdrawable {
-    return super.attach(address) as Withdrawable;
+    return super.attach(address) as Withdrawable
   }
   connect(signer: Signer): WithdrawableInstanceCreator {
-    return super.connect(signer) as WithdrawableInstanceCreator;
+    return super.connect(signer) as WithdrawableInstanceCreator
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): Withdrawable {
-    return new Contract(address, _abi, signerOrProvider) as Withdrawable;
+  static connect(address: string, signerOrProvider: Signer | Provider): Withdrawable {
+    return new Contract(address, _abi, signerOrProvider) as Withdrawable
   }
 }
 
@@ -246,6 +243,6 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+]
 
-const _bytecode = "";
+const _bytecode = ""

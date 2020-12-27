@@ -1,31 +1,28 @@
-import { Signer } from "ethers";
-import { Provider, TransactionRequest } from "@ethersproject/providers";
-import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
+import { Signer } from "ethers"
+import { Provider, TransactionRequest } from "@ethersproject/providers"
+import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts"
 
-import { StoreInterface } from "./StoreInterfaceContractInterface";
+import { StoreInterface } from "./StoreInterfaceContractInterface"
 
 export class StoreInterfaceInstanceCreator extends ContractFactory {
   constructor(signer?: Signer) {
-    super(_abi, _bytecode, signer);
+    super(_abi, _bytecode, signer)
   }
 
   deploy(overrides?: Overrides): Promise<StoreInterface> {
-    return super.deploy(overrides || {}) as Promise<StoreInterface>;
+    return super.deploy(overrides || {}) as Promise<StoreInterface>
   }
   getDeployTransaction(overrides?: Overrides): TransactionRequest {
-    return super.getDeployTransaction(overrides || {});
+    return super.getDeployTransaction(overrides || {})
   }
   attach(address: string): StoreInterface {
-    return super.attach(address) as StoreInterface;
+    return super.attach(address) as StoreInterface
   }
   connect(signer: Signer): StoreInterfaceInstanceCreator {
-    return super.connect(signer) as StoreInterfaceInstanceCreator;
+    return super.connect(signer) as StoreInterfaceInstanceCreator
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): StoreInterface {
-    return new Contract(address, _abi, signerOrProvider) as StoreInterface;
+  static connect(address: string, signerOrProvider: Signer | Provider): StoreInterface {
+    return new Contract(address, _abi, signerOrProvider) as StoreInterface
   }
 }
 
@@ -143,6 +140,6 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+]
 
-const _bytecode = "";
+const _bytecode = ""

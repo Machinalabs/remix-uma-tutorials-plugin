@@ -1,31 +1,28 @@
-import { Signer } from "ethers";
-import { Provider, TransactionRequest } from "@ethersproject/providers";
-import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
+import { Signer } from "ethers"
+import { Provider, TransactionRequest } from "@ethersproject/providers"
+import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts"
 
-import { ExpandedIerc20 } from "./ExpandedIerc20ContractInterface";
+import { ExpandedIerc20 } from "./ExpandedIerc20ContractInterface"
 
 export class ExpandedIerc20InstanceCreator extends ContractFactory {
   constructor(signer?: Signer) {
-    super(_abi, _bytecode, signer);
+    super(_abi, _bytecode, signer)
   }
 
   deploy(overrides?: Overrides): Promise<ExpandedIerc20> {
-    return super.deploy(overrides || {}) as Promise<ExpandedIerc20>;
+    return super.deploy(overrides || {}) as Promise<ExpandedIerc20>
   }
   getDeployTransaction(overrides?: Overrides): TransactionRequest {
-    return super.getDeployTransaction(overrides || {});
+    return super.getDeployTransaction(overrides || {})
   }
   attach(address: string): ExpandedIerc20 {
-    return super.attach(address) as ExpandedIerc20;
+    return super.attach(address) as ExpandedIerc20
   }
   connect(signer: Signer): ExpandedIerc20InstanceCreator {
-    return super.connect(signer) as ExpandedIerc20InstanceCreator;
+    return super.connect(signer) as ExpandedIerc20InstanceCreator
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): ExpandedIerc20 {
-    return new Contract(address, _abi, signerOrProvider) as ExpandedIerc20;
+  static connect(address: string, signerOrProvider: Signer | Provider): ExpandedIerc20 {
+    return new Contract(address, _abi, signerOrProvider) as ExpandedIerc20
   }
 }
 
@@ -250,6 +247,6 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+]
 
-const _bytecode = "";
+const _bytecode = ""

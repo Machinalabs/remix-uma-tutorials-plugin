@@ -1,39 +1,28 @@
-import { Signer } from "ethers";
-import { Provider, TransactionRequest } from "@ethersproject/providers";
-import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
+import { Signer } from "ethers"
+import { Provider, TransactionRequest } from "@ethersproject/providers"
+import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts"
 
-import { ContractCreator } from "./ContractCreatorContractInterface";
+import { ContractCreator } from "./ContractCreatorContractInterface"
 
 export class ContractCreatorInstanceCreator extends ContractFactory {
   constructor(signer?: Signer) {
-    super(_abi, _bytecode, signer);
+    super(_abi, _bytecode, signer)
   }
 
-  deploy(
-    _finderAddress: string,
-    overrides?: Overrides
-  ): Promise<ContractCreator> {
-    return super.deploy(_finderAddress, overrides || {}) as Promise<
-      ContractCreator
-    >;
+  deploy(_finderAddress: string, overrides?: Overrides): Promise<ContractCreator> {
+    return super.deploy(_finderAddress, overrides || {}) as Promise<ContractCreator>
   }
-  getDeployTransaction(
-    _finderAddress: string,
-    overrides?: Overrides
-  ): TransactionRequest {
-    return super.getDeployTransaction(_finderAddress, overrides || {});
+  getDeployTransaction(_finderAddress: string, overrides?: Overrides): TransactionRequest {
+    return super.getDeployTransaction(_finderAddress, overrides || {})
   }
   attach(address: string): ContractCreator {
-    return super.attach(address) as ContractCreator;
+    return super.attach(address) as ContractCreator
   }
   connect(signer: Signer): ContractCreatorInstanceCreator {
-    return super.connect(signer) as ContractCreatorInstanceCreator;
+    return super.connect(signer) as ContractCreatorInstanceCreator
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): ContractCreator {
-    return new Contract(address, _abi, signerOrProvider) as ContractCreator;
+  static connect(address: string, signerOrProvider: Signer | Provider): ContractCreator {
+    return new Contract(address, _abi, signerOrProvider) as ContractCreator
   }
 }
 
@@ -49,6 +38,6 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "constructor",
   },
-];
+]
 
-const _bytecode = "";
+const _bytecode = ""

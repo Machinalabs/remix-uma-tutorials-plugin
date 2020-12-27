@@ -1,28 +1,28 @@
-import { Signer } from "ethers";
-import { Provider, TransactionRequest } from "@ethersproject/providers";
-import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
+import { Signer } from "ethers"
+import { Provider, TransactionRequest } from "@ethersproject/providers"
+import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts"
 
-import { Ierc20 } from "./Ierc20ContractInterface";
+import { Ierc20 } from "./Ierc20ContractInterface"
 
 export class Ierc20InstanceCreator extends ContractFactory {
   constructor(signer?: Signer) {
-    super(_abi, _bytecode, signer);
+    super(_abi, _bytecode, signer)
   }
 
   deploy(overrides?: Overrides): Promise<Ierc20> {
-    return super.deploy(overrides || {}) as Promise<Ierc20>;
+    return super.deploy(overrides || {}) as Promise<Ierc20>
   }
   getDeployTransaction(overrides?: Overrides): TransactionRequest {
-    return super.getDeployTransaction(overrides || {});
+    return super.getDeployTransaction(overrides || {})
   }
   attach(address: string): Ierc20 {
-    return super.attach(address) as Ierc20;
+    return super.attach(address) as Ierc20
   }
   connect(signer: Signer): Ierc20InstanceCreator {
-    return super.connect(signer) as Ierc20InstanceCreator;
+    return super.connect(signer) as Ierc20InstanceCreator
   }
   static connect(address: string, signerOrProvider: Signer | Provider): Ierc20 {
-    return new Contract(address, _abi, signerOrProvider) as Ierc20;
+    return new Contract(address, _abi, signerOrProvider) as Ierc20
   }
 }
 
@@ -210,6 +210,6 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+]
 
-const _bytecode = "";
+const _bytecode = ""

@@ -1,31 +1,28 @@
-import { Signer } from "ethers";
-import { Provider, TransactionRequest } from "@ethersproject/providers";
-import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
+import { Signer } from "ethers"
+import { Provider, TransactionRequest } from "@ethersproject/providers"
+import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts"
 
-import { MultiRole } from "./MultiRoleContractInterface";
+import { MultiRole } from "./MultiRoleContractInterface"
 
 export class MultiRoleInstanceCreator extends ContractFactory {
   constructor(signer?: Signer) {
-    super(_abi, _bytecode, signer);
+    super(_abi, _bytecode, signer)
   }
 
   deploy(overrides?: Overrides): Promise<MultiRole> {
-    return super.deploy(overrides || {}) as Promise<MultiRole>;
+    return super.deploy(overrides || {}) as Promise<MultiRole>
   }
   getDeployTransaction(overrides?: Overrides): TransactionRequest {
-    return super.getDeployTransaction(overrides || {});
+    return super.getDeployTransaction(overrides || {})
   }
   attach(address: string): MultiRole {
-    return super.attach(address) as MultiRole;
+    return super.attach(address) as MultiRole
   }
   connect(signer: Signer): MultiRoleInstanceCreator {
-    return super.connect(signer) as MultiRoleInstanceCreator;
+    return super.connect(signer) as MultiRoleInstanceCreator
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): MultiRole {
-    return new Contract(address, _abi, signerOrProvider) as MultiRole;
+  static connect(address: string, signerOrProvider: Signer | Provider): MultiRole {
+    return new Contract(address, _abi, signerOrProvider) as MultiRole
   }
 }
 
@@ -215,6 +212,6 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+]
 
-const _bytecode = "";
+const _bytecode = ""

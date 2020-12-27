@@ -3,9 +3,7 @@ import { useStep, StepProvider } from "./useStep"
 
 describe("useStep tests", () => {
   const render = () => {
-    const wrapper = ({ children }: any) => (
-      <StepProvider>{children}</StepProvider>
-    )
+    const wrapper = ({ children }: any) => <StepProvider>{children}</StepProvider>
     const { result } = renderHook(() => useStep(), { wrapper })
     return {
       result,

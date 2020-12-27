@@ -1,31 +1,28 @@
-import { Signer } from "ethers";
-import { Provider, TransactionRequest } from "@ethersproject/providers";
-import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
+import { Signer } from "ethers"
+import { Provider, TransactionRequest } from "@ethersproject/providers"
+import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts"
 
-import { Ownable } from "./OwnableContractInterface";
+import { Ownable } from "./OwnableContractInterface"
 
 export class OwnableInstanceCreator extends ContractFactory {
   constructor(signer?: Signer) {
-    super(_abi, _bytecode, signer);
+    super(_abi, _bytecode, signer)
   }
 
   deploy(overrides?: Overrides): Promise<Ownable> {
-    return super.deploy(overrides || {}) as Promise<Ownable>;
+    return super.deploy(overrides || {}) as Promise<Ownable>
   }
   getDeployTransaction(overrides?: Overrides): TransactionRequest {
-    return super.getDeployTransaction(overrides || {});
+    return super.getDeployTransaction(overrides || {})
   }
   attach(address: string): Ownable {
-    return super.attach(address) as Ownable;
+    return super.attach(address) as Ownable
   }
   connect(signer: Signer): OwnableInstanceCreator {
-    return super.connect(signer) as OwnableInstanceCreator;
+    return super.connect(signer) as OwnableInstanceCreator
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): Ownable {
-    return new Contract(address, _abi, signerOrProvider) as Ownable;
+  static connect(address: string, signerOrProvider: Signer | Provider): Ownable {
+    return new Contract(address, _abi, signerOrProvider) as Ownable
   }
 }
 
@@ -87,6 +84,6 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+]
 
-const _bytecode = "";
+const _bytecode = ""

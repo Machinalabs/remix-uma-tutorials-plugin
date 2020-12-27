@@ -1,9 +1,4 @@
-import React, {
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from "react"
+import React, { PropsWithChildren, useContext, useEffect, useState } from "react"
 
 import { PluginClient } from "@remixproject/plugin"
 import { IRemixApi } from "@remixproject/plugin-api"
@@ -31,9 +26,7 @@ const RemixContext = React.createContext<IRemixProvider>({
 
 const PLUGIN_NAME = "Remix Gas Profiler"
 
-export const RemixProvider: React.FC<PropsWithChildren<{}>> = ({
-  children,
-}) => {
+export const RemixProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const [clientInstance, setClientInstance] = useState(undefined as any)
   const [themeType, setThemeType] = useState<ThemeType>("dark")
 

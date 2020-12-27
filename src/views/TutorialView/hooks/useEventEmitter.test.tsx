@@ -3,9 +3,7 @@ import { EventProvider, useEventEmitter } from "./useEventEmitter"
 
 describe("useEventEmitter tests", () => {
   const render = () => {
-    const wrapper = ({ children }: any) => (
-      <EventProvider>{children}</EventProvider>
-    )
+    const wrapper = ({ children }: any) => <EventProvider>{children}</EventProvider>
     const { result } = renderHook(() => useEventEmitter(), { wrapper })
     return {
       result,

@@ -1,12 +1,12 @@
-import { Signer } from "ethers";
-import { Provider, TransactionRequest } from "@ethersproject/providers";
-import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts";
+import { Signer } from "ethers"
+import { Provider, TransactionRequest } from "@ethersproject/providers"
+import { Contract, ContractFactory, Overrides } from "@ethersproject/contracts"
 
-import { FeePayer } from "./FeePayerContractInterface";
+import { FeePayer } from "./FeePayerContractInterface"
 
 export class FeePayerInstanceCreator extends ContractFactory {
   constructor(signer?: Signer) {
-    super(_abi, _bytecode, signer);
+    super(_abi, _bytecode, signer)
   }
 
   deploy(
@@ -20,7 +20,7 @@ export class FeePayerInstanceCreator extends ContractFactory {
       _finderAddress,
       _timerAddress,
       overrides || {}
-    ) as Promise<FeePayer>;
+    ) as Promise<FeePayer>
   }
   getDeployTransaction(
     _collateralAddress: string,
@@ -33,19 +33,16 @@ export class FeePayerInstanceCreator extends ContractFactory {
       _finderAddress,
       _timerAddress,
       overrides || {}
-    );
+    )
   }
   attach(address: string): FeePayer {
-    return super.attach(address) as FeePayer;
+    return super.attach(address) as FeePayer
   }
   connect(signer: Signer): FeePayerInstanceCreator {
-    return super.connect(signer) as FeePayerInstanceCreator;
+    return super.connect(signer) as FeePayerInstanceCreator
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): FeePayer {
-    return new Contract(address, _abi, signerOrProvider) as FeePayer;
+  static connect(address: string, signerOrProvider: Signer | Provider): FeePayer {
+    return new Contract(address, _abi, signerOrProvider) as FeePayer
   }
 }
 
@@ -221,6 +218,6 @@ const _abi = [
     stateMutability: "view",
     type: "function",
   },
-];
+]
 
-const _bytecode = "";
+const _bytecode = ""

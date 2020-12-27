@@ -6,9 +6,7 @@ interface Props {
   from: string
 }
 
-export const DefaultLayout: React.FC<PropsWithChildren<Props>> = ({
-  children,
-}) => {
+export const DefaultLayout: React.FC<PropsWithChildren<Props>> = ({ children }) => {
   return (
     <Container fluid={true}>
       <Row className="full-height">
