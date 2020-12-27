@@ -70,11 +70,11 @@ jobs:
           root: ./
           paths:
             - build
-            - ./package.json
 
   deploy: 
     <<: *defaults
     steps:
+      - checkout
       - *restore_cache
       - attach_workspace:
           at: ./
