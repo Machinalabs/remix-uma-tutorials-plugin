@@ -75,6 +75,7 @@ jobs:
   deploy: 
     <<: *defaults
     steps:
+      - *restore_cache
       - attach_workspace:
           at: ./
       - run:
