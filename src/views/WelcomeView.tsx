@@ -8,12 +8,14 @@ import { UMADeployer } from "../extras/deployment"
 import { useRemix } from "../hooks"
 import { TITLE } from "../text"
 import { debug } from "../utils"
+import { useContract } from "./TutorialView/hooks/useContract"
 
 const TUTORIAL_ROUTE = "/tutorial/deploy_collateral_token"
 
 export const WelcomeView: React.FC = () => {
   const { clientInstance } = useRemix()
   const [isStarting, setIsStarting] = useState(false)
+  const { setContracts } = useContract()
   const history = useHistory()
 
   useEffect(() => {
@@ -27,6 +29,8 @@ export const WelcomeView: React.FC = () => {
           clientInstance,
           from: accounts[0],
         })
+
+        setContracts(addresses)
 
         debug("Addresses", addresses)
 

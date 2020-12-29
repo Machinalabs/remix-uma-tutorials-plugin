@@ -7,11 +7,14 @@ import { RemixProvider } from "./hooks"
 import "bootstrap/dist/css/bootstrap.min.css"
 
 import "./App.css"
+import { ContractProvider } from "./views/TutorialView/hooks"
 
 const App = () => {
   return (
     <RemixProvider>
-      <Routes />
+      <ContractProvider>
+        <Routes />
+      </ContractProvider>
     </RemixProvider>
   )
 }
