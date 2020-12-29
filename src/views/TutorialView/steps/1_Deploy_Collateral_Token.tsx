@@ -1,6 +1,53 @@
-import React from "react"
+import React, { useState } from "react"
+import { ErrorMessage, Field, Formik, FormikErrors, Form } from "formik"
+import BootstrapForm from 'react-bootstrap/Form'
+import Row from "react-bootstrap/Row"
+import Col from 'react-bootstrap/Col'
+
+import { TestnetErc20InstanceCreator } from '../../../extras/uma-ethers'
+import { debug, defaultTransactionValues } from "../../../utils"
+import { useRemix } from "../../../hooks"
+import { Button } from "../../../components"
+
+interface FormProps {
+  name: string
+  symbol: string
+  decimals: number
+}
+
+const initialValues: FormProps = {
+  name: '',
+  symbol: '',
+  decimals: 0
+}
 
 export const DeployCollateralToken: React.FC = () => {
+  const { clientInstance } = useRemix()
+  const [isSendingTransaction, setIsSendingTransaction] = useState(false)
+
+  const handleSubmit = async (values: FormProps, { setSubmitting }) => {
+    debug("Deploying collateral token", values)
+    const sendTx = async () => {
+      const { data: collateralTokenDeployData } = new TestnetErc20InstanceCreator().getDeployTransaction(values.name, values.symbol, parseInt(values.decimals as any, 10))
+      debug("collateralTokenDeployData", collateralTokenDeployData)
+
+      const accounts = await clientInstance.udapp.getAccounts()
+      debug("Accounts", accounts)
+
+      const { createdAddress: TestnetErc20Address } = await clientInstance.udapp.sendTransaction({
+        ...defaultTransactionValues,
+        from: accounts[0],
+        data: collateralTokenDeployData as string,
+      })
+      debug("TestnetErc20Address", TestnetErc20Address)
+    }
+
+    sendTx()
+      .then(() => {
+        setSubmitting(false)
+      })
+  }
+
   return (
     <React.Fragment>
       <h4>Deploy collateral token</h4>
@@ -10,10 +57,66 @@ export const DeployCollateralToken: React.FC = () => {
         collateral tokens on our behalf.
       </p>
 
-      {/* TODO: FORM to deploy a collateral token */}
+      {/* Form to deploy a collateral token */}
+      <Formik
+        initialValues={initialValues}
+        validate={values => {
+          const errors: FormikErrors<FormProps> = {};
+          if (!values.name) {
+            errors.name = 'Required';
+          }
+          if (!values.symbol) {
+            errors.symbol = 'Required';
+          }
+          if (!values.decimals) {
+            errors.decimals = 'Required';
+          } else if (values.decimals > 255) {
+            errors.decimals = 'Max value is 255'
+          }
+
+          return errors;
+        }}
+        onSubmit={handleSubmit}>
+        {({ isSubmitting }) => (
+          <Form>
+            <BootstrapForm.Group as={Row} >
+              <BootstrapForm.Label column sm={2}>Name</BootstrapForm.Label>
+              <Col sm={4}>
+                <Field name="name" as={CustomInputComponent} />
+                <ErrorMessage className="red" name="name" component="div" />
+              </Col>
+            </BootstrapForm.Group>
+
+            <BootstrapForm.Group as={Row} >
+              <BootstrapForm.Label column sm={2}>Symbol</BootstrapForm.Label>
+              <Col sm={4}>
+                <Field name="symbol" as={CustomInputComponent} />
+                <ErrorMessage className="red" name="symbol" component="div" />
+              </Col>
+            </BootstrapForm.Group>
+
+            <BootstrapForm.Group as={Row} >
+              <BootstrapForm.Label column sm={2}>Decimals</BootstrapForm.Label>
+              <Col sm={4}>
+                <Field name="decimals" as={CustomInputComponent} />
+                <ErrorMessage className="red" name="decimals" component="div" />
+              </Col>
+            </BootstrapForm.Group>
+
+            <Button variant="primary" type="submit" size="sm" disabled={isSubmitting} isLoading={isSubmitting} loadingText="Submitting..." text="Submit" />
+
+          </Form>
+        )}
+      </Formik>
+
+
     </React.Fragment>
   )
 }
+
+const CustomInputComponent = (props) => (
+  <BootstrapForm.Control type="text" key="name" size="sm" placeholder="name" {...props} />
+);
 
 /**
  *
