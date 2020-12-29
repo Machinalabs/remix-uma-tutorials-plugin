@@ -3,7 +3,7 @@ import { utils } from "ethers"
 import { RemixTx } from "@remixproject/plugin-api"
 
 import { RemixClientInstanceType } from "../../hooks"
-import { debug } from "../../utils"
+import { debug, defaultTransactionValues } from "../../utils"
 
 import {
   TimerInstanceCreator,
@@ -39,7 +39,7 @@ export interface Options {
 }
 
 export interface IDeployer {
-  deploy: (options: Options) => Promise<Result> // TODO Review why it is compiling even if classes are not implementing the interface
+  deploy: (options: Options) => Promise<Map<UMAContractName, EthereumAddress>> // TODO Review why it is compiling even if classes are not implementing the interface
 }
 
 enum InterfaceName {
@@ -53,14 +53,6 @@ enum InterfaceName {
 enum RegistryRoles {
   OWNER = "0",
   CONTRACT_CREATOR = "1",
-}
-
-const defaultTransactionValues: RemixTx = {
-  gasLimit: toHex(4712388),
-  value: "0x00",
-  useCall: false,
-  from: "0x0",
-  data: "0x0",
 }
 
 const assert = (value: any) => {
@@ -98,10 +90,6 @@ export type UMAContractName =
 export class UMADeployer implements IDeployer {
   async deploy(options: Options) {
     const addresses = new Map<UMAContractName, EthereumAddress>()
-    const result: Result = {
-      success: true,
-      error: undefined,
-    }
 
     const clientInstance = options.clientInstance
     const fromAddress = options.from
@@ -388,6 +376,6 @@ export class UMADeployer implements IDeployer {
     assert(TokenFactoryAddress).isString()
     debug("TokenFactory deployed", TokenFactoryAddress)
     addresses.set("TokenFactory", TokenFactoryAddress as string)
-    return result
+    return addresses
   }
 }
