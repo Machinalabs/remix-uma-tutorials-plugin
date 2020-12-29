@@ -20,7 +20,7 @@ import {
   // TestnetErc20InstanceCreator,
   // Weth9InstanceCreator,
   // ExpiringMultiPartyCreatorInstanceCreator,
-  // AddressWhitelistInstanceCreator,
+  AddressWhitelistInstanceCreator,
   // ExpiringMultiPartyInstanceCreator,
   // ExpiringMultiPartyLibFactoryLibrary,
 } from "../uma-ethers"
@@ -86,6 +86,7 @@ export type UMAContractName =
   | "Governor"
   | "DesignatedVotingFactory"
   | "TokenFactory"
+  | "AddressWhitelist"
 
 export class UMADeployer implements IDeployer {
   async deploy(options: Options) {
@@ -120,9 +121,7 @@ export class UMADeployer implements IDeployer {
 
     // 3) Deploy voting token
     const votingTokenInstanceCreator = new VotingTokenInstanceCreator().getDeployTransaction()
-    const {
-      createdAddress: VotingTokenInstanceAddress,
-    } = await clientInstance.udapp.sendTransaction({
+    const { createdAddress: VotingTokenInstanceAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       from: fromAddress,
       data: votingTokenInstanceCreator.data as string,
@@ -150,10 +149,7 @@ export class UMADeployer implements IDeployer {
     })
 
     // mint tokens
-    const mintEncodedData = votingTokenInterface.encodeFunctionData("mint", [
-      signerAddress,
-      toWei("100000000"),
-    ])
+    const mintEncodedData = votingTokenInterface.encodeFunctionData("mint", [signerAddress, toWei("100000000")])
     await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       data: mintEncodedData,
@@ -173,9 +169,7 @@ export class UMADeployer implements IDeployer {
 
     // 4) Deploy identifier white list
     const identifierWhiteListInstanceCreator = new IdentifierWhitelistInstanceCreator().getDeployTransaction()
-    const {
-      createdAddress: IdentifierWhiteListAddress,
-    } = await clientInstance.udapp.sendTransaction({
+    const { createdAddress: IdentifierWhiteListAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       from: fromAddress,
       data: identifierWhiteListInstanceCreator.data as string,
@@ -241,9 +235,7 @@ export class UMADeployer implements IDeployer {
 
     // 6) Deploy financial contracts admin
     const financialContractsAdminInstanceCreator = new FinancialContractsAdminInstanceCreator().getDeployTransaction()
-    const {
-      createdAddress: FinancialContractsAdminAddress,
-    } = await clientInstance.udapp.sendTransaction({
+    const { createdAddress: FinancialContractsAdminAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       from: fromAddress,
       data: financialContractsAdminInstanceCreator.data as string,
@@ -256,10 +248,7 @@ export class UMADeployer implements IDeployer {
     // update implementation on the Finder
     const changeImplementationAddressEncodedDataForFinancialContract = finderInstanceInterface.encodeFunctionData(
       "changeImplementationAddress",
-      [
-        utils.formatBytes32String(InterfaceName.FinancialContractsAdmin),
-        FinancialContractsAdminAddress,
-      ]
+      [utils.formatBytes32String(InterfaceName.FinancialContractsAdmin), FinancialContractsAdminAddress]
     )
     await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
@@ -328,10 +317,10 @@ export class UMADeployer implements IDeployer {
     })
     debug("Governor added to registry")
 
-    const registryRegisterContractEncodedData = registryInstanceInterface.encodeFunctionData(
-      "registerContract",
-      [[], GovernorAddress]
-    )
+    const registryRegisterContractEncodedData = registryInstanceInterface.encodeFunctionData("registerContract", [
+      [],
+      GovernorAddress,
+    ])
     await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       data: registryRegisterContractEncodedData,
@@ -339,10 +328,10 @@ export class UMADeployer implements IDeployer {
     })
     debug("Registered Governor Contract in the registry")
 
-    const registryRemoveMemberEncodedData = registryInstanceInterface.encodeFunctionData(
-      "removeMember",
-      [RegistryRoles.CONTRACT_CREATOR, signerAddress]
-    )
+    const registryRemoveMemberEncodedData = registryInstanceInterface.encodeFunctionData("removeMember", [
+      RegistryRoles.CONTRACT_CREATOR,
+      signerAddress,
+    ])
     await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       data: registryRemoveMemberEncodedData,
@@ -354,9 +343,7 @@ export class UMADeployer implements IDeployer {
     const designatedVotingInstanceCreator = new DesignatedVotingFactoryInstanceCreator().getDeployTransaction(
       FinderInstanceAddres as string
     )
-    const {
-      createdAddress: DesignatedVotingFactoryAddress,
-    } = await clientInstance.udapp.sendTransaction({
+    const { createdAddress: DesignatedVotingFactoryAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       from: fromAddress,
       data: designatedVotingInstanceCreator.data as string,
@@ -376,6 +363,56 @@ export class UMADeployer implements IDeployer {
     assert(TokenFactoryAddress).isString()
     debug("TokenFactory deployed", TokenFactoryAddress)
     addresses.set("TokenFactory", TokenFactoryAddress as string)
+
+    // Deploy AddressWhitelist
+    const addressWhitelistInstanceCreator = new AddressWhitelistInstanceCreator().getDeployTransaction()
+    const { createdAddress: AddressWhitelistAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: addressWhitelistInstanceCreator.data as string,
+    })
+    assert(AddressWhitelistAddress).isDefined()
+    assert(AddressWhitelistAddress).isString()
+    debug("AddressWhitelist deployed", AddressWhitelistAddress)
+    addresses.set("AddressWhitelist", AddressWhitelistAddress as string)
+
+    // Then deploy expiring multi pary creator
+
+
+    // const multiPartyLibrary = await new ExpiringMultiPartyLibFactoryLibrary(
+    //     signer
+    // ).deployLibrary();
+    // debug("multiPartyLibrary", multiPartyLibrary.ExpiringMultiPartyLib);
+
+    // const expiringMultiPartyCreatorInstance = await new ExpiringMultiPartyCreatorInstanceCreator(
+    //     multiPartyLibrary,
+    //     signer
+    // ).deploy(
+    //     finderInstance.address,
+    //     collateralCurrencyWhitelistInstance.address,
+    //     tokenFactoryInstance.address,
+    //     timerInstance.address
+    // );
+    // debug(
+    //     "expiringMultiPartyCreatorInstance",
+    //     expiringMultiPartyCreatorInstance.address
+    // );
+
+    // await registryInstance.addMember(
+    //     RegistryRoles.CONTRACT_CREATOR,
+    //     expiringMultiPartyCreatorInstance.address
+    // );
+
+    // // 13) Deploy local WETH
+    // const wethInstance = await new Weth9InstanceCreator(signer).deploy();
+    // debug("wethInstance", wethInstance.address);
+
+    // // Add wethTokenAddress to the margin currency whitelist
+    // const collateralWhitelistAddress = await expiringMultiPartyCreatorInstance.collateralTokenWhitelist();
+    // const collateralWhitelist = await new AddressWhitelistInstanceCreator(
+    //     signer
+    // ).attach(collateralWhitelistAddress);
+    // await collateralWhitelist.addToWhitelist(wethInstance.address);
     return addresses
   }
 }
