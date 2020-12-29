@@ -27,12 +27,7 @@ export const NavMenu: React.FC = () => {
               fontWeight: 500,
             }}
           >
-            <Nav.Link
-              as={StyledDiv}
-              key={currentStepDefinition.key}
-              href={currentStepDefinition.route}
-              disabled={true}
-            >
+            <Nav.Link as={StyledDiv} key={currentStepDefinition.key} href={currentStepDefinition.route} disabled={true}>
               {text}
             </Nav.Link>
           </StyledNavLink>

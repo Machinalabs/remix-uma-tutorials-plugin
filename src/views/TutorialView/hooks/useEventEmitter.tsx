@@ -70,9 +70,7 @@ export const useEventEmitter = () => {
   const context = useContext(EventContext)
 
   if (context === null) {
-    throw new Error(
-      "useEvent() can only be used inside of <EventProvider />, please declare it at a higher level"
-    )
+    throw new Error("useEvent() can only be used inside of <EventProvider />, please declare it at a higher level")
   }
   return context
 }

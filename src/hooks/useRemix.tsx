@@ -9,8 +9,7 @@ import { log } from "../utils"
 
 import { RemixClient } from "./RemixClient"
 
-export type RemixClientInstanceType = PluginApi<Readonly<IRemixApi>> &
-  PluginClient<Api, Readonly<IRemixApi>>
+export type RemixClientInstanceType = PluginApi<Readonly<IRemixApi>> & PluginClient<Api, Readonly<IRemixApi>>
 
 interface IRemixProvider {
   clientInstance: RemixClientInstanceType
@@ -69,9 +68,7 @@ export const useRemix = () => {
   const context = useContext(RemixContext)
 
   if (context === null) {
-    throw new Error(
-      "useRemix() can only be used inside of <RemixProvider />, please declare it at a higher level"
-    )
+    throw new Error("useRemix() can only be used inside of <RemixProvider />, please declare it at a higher level")
   }
   return context
 }

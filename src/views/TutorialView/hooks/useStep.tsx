@@ -158,9 +158,7 @@ export const useStep = () => {
   const context = useContext(StepContext)
 
   if (context === null) {
-    throw new Error(
-      "useStep() can only be used inside of <StepProvider />, please declare it at a higher level"
-    )
+    throw new Error("useStep() can only be used inside of <StepProvider />, please declare it at a higher level")
   }
   return context
 }
