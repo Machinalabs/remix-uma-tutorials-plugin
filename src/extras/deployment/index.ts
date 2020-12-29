@@ -21,6 +21,9 @@ import {
   // Weth9InstanceCreator,
   // ExpiringMultiPartyCreatorInstanceCreator,
   AddressWhitelistInstanceCreator,
+  ExpiringMultiPartyLibFactoryLibrary,
+  ExpiringMultiPartyCreatorInstanceCreator,
+  Weth9InstanceCreator,
   // ExpiringMultiPartyInstanceCreator,
   // ExpiringMultiPartyLibFactoryLibrary,
 } from "../uma-ethers"
@@ -87,6 +90,7 @@ export type UMAContractName =
   | "DesignatedVotingFactory"
   | "TokenFactory"
   | "AddressWhitelist"
+  | "ExpiringMultiPartyCreator"
 
 export class UMADeployer implements IDeployer {
   async deploy(options: Options) {
@@ -376,43 +380,68 @@ export class UMADeployer implements IDeployer {
     debug("AddressWhitelist deployed", AddressWhitelistAddress)
     addresses.set("AddressWhitelist", AddressWhitelistAddress as string)
 
-    // Then deploy expiring multi pary creator
+    // Then deploy expiring multi party creator (library)
+    const { data: multiPartyLibraryData } = new ExpiringMultiPartyLibFactoryLibrary().getDeployTransaction()
+    const { createdAddress: MultipartyLibraryAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: multiPartyLibraryData as string,
+    })
+    assert(MultipartyLibraryAddress).isDefined()
+    assert(MultipartyLibraryAddress).isString()
+    debug("MultipartyLibrary deployed", MultipartyLibraryAddress)
 
+    // Then deploy expiring multi party creator (contract)
+    const { data: ExpiringMultiPartyCreatorData } = new ExpiringMultiPartyCreatorInstanceCreator({
+      'ExpiringMultiPartyLib': MultipartyLibraryAddress as string
+    }).getDeployTransaction(FinderInstanceAddres as string, AddressWhitelistAddress as string, TokenFactoryAddress as string, TimerInstanceAddress as string)
+    const { createdAddress: ExpiringMultiPartyCreatorAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: ExpiringMultiPartyCreatorData as string,
+    })
+    assert(ExpiringMultiPartyCreatorAddress).isDefined()
+    assert(ExpiringMultiPartyCreatorAddress).isString()
+    debug("ExpiringMultiPartyCreator deployed", ExpiringMultiPartyCreatorAddress)
+    addresses.set("ExpiringMultiPartyCreator", ExpiringMultiPartyCreatorAddress as string)
 
-    // const multiPartyLibrary = await new ExpiringMultiPartyLibFactoryLibrary(
-    //     signer
-    // ).deployLibrary();
-    // debug("multiPartyLibrary", multiPartyLibrary.ExpiringMultiPartyLib);
+    const registryAddMemberEncodedDataForEMP = registryInstanceInterface.encodeFunctionData("addMember", [
+      RegistryRoles.CONTRACT_CREATOR,
+      ExpiringMultiPartyCreatorAddress as string,
+    ])
 
-    // const expiringMultiPartyCreatorInstance = await new ExpiringMultiPartyCreatorInstanceCreator(
-    //     multiPartyLibrary,
-    //     signer
-    // ).deploy(
-    //     finderInstance.address,
-    //     collateralCurrencyWhitelistInstance.address,
-    //     tokenFactoryInstance.address,
-    //     timerInstance.address
-    // );
-    // debug(
-    //     "expiringMultiPartyCreatorInstance",
-    //     expiringMultiPartyCreatorInstance.address
-    // );
+    await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      data: registryAddMemberEncodedDataForEMP,
+      from: fromAddress,
+    })
+    debug("ExpiringMultiPartyCreator added to registry")
 
-    // await registryInstance.addMember(
-    //     RegistryRoles.CONTRACT_CREATOR,
-    //     expiringMultiPartyCreatorInstance.address
-    // );
+    // 13) Deploy local WETH
 
-    // // 13) Deploy local WETH
-    // const wethInstance = await new Weth9InstanceCreator(signer).deploy();
-    // debug("wethInstance", wethInstance.address);
+    // Then deploy expiring multi party creator (library)
+    const { data: wethData } = new Weth9InstanceCreator().getDeployTransaction()
+    const { createdAddress: WethAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: wethData as string,
+    })
+    assert(WethAddress).isDefined()
+    assert(WethAddress).isString()
+    debug("WETH deployed", WethAddress)
 
-    // // Add wethTokenAddress to the margin currency whitelist
-    // const collateralWhitelistAddress = await expiringMultiPartyCreatorInstance.collateralTokenWhitelist();
-    // const collateralWhitelist = await new AddressWhitelistInstanceCreator(
-    //     signer
-    // ).attach(collateralWhitelistAddress);
-    // await collateralWhitelist.addToWhitelist(wethInstance.address);
+    const collateralCurrencyWhitelistInterface = new AddressWhitelistInstanceCreator().interface
+    const addToWhitelistEncodedData = collateralCurrencyWhitelistInterface.encodeFunctionData(
+      "addToWhitelist",
+      [WethAddress]
+    )
+    await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      data: addToWhitelistEncodedData,
+      from: fromAddress,
+      to: AddressWhitelistAddress,
+    })
+    debug("WETH Token added to whitelist")
     return addresses
   }
 }
