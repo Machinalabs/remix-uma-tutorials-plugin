@@ -10,10 +10,7 @@ interface FinderInterfaceInterface extends ethers.utils.Interface {
     "getImplementationAddress(bytes32)": FunctionFragment
   }
 
-  encodeFunctionData(
-    functionFragment: "changeImplementationAddress",
-    values: [BytesLike, string]
-  ): string
+  encodeFunctionData(functionFragment: "changeImplementationAddress", values: [BytesLike, string]): string
   encodeFunctionData(functionFragment: "getImplementationAddress", values: [BytesLike]): string
 
   decodeFunctionResult(functionFragment: "changeImplementationAddress", data: BytesLike): Result
@@ -71,18 +68,12 @@ export interface FinderInterface extends Contract {
   filters: {}
 
   estimateGas: {
-    changeImplementationAddress(
-      interfaceName: BytesLike,
-      implementationAddress: string
-    ): Promise<BigNumber>
+    changeImplementationAddress(interfaceName: BytesLike, implementationAddress: string): Promise<BigNumber>
     getImplementationAddress(interfaceName: BytesLike): Promise<BigNumber>
   }
 
   populateTransaction: {
-    changeImplementationAddress(
-      interfaceName: BytesLike,
-      implementationAddress: string
-    ): Promise<PopulatedTransaction>
+    changeImplementationAddress(interfaceName: BytesLike, implementationAddress: string): Promise<PopulatedTransaction>
     getImplementationAddress(interfaceName: BytesLike): Promise<PopulatedTransaction>
   }
 }

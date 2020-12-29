@@ -18,14 +18,8 @@ interface MultiRoleTestInterface extends ethers.utils.Interface {
   }
 
   encodeFunctionData(functionFragment: "addMember", values: [BigNumberish, string]): string
-  encodeFunctionData(
-    functionFragment: "createExclusiveRole",
-    values: [BigNumberish, BigNumberish, string]
-  ): string
-  encodeFunctionData(
-    functionFragment: "createSharedRole",
-    values: [BigNumberish, BigNumberish, string[]]
-  ): string
+  encodeFunctionData(functionFragment: "createExclusiveRole", values: [BigNumberish, BigNumberish, string]): string
+  encodeFunctionData(functionFragment: "createSharedRole", values: [BigNumberish, BigNumberish, string[]]): string
   encodeFunctionData(functionFragment: "getMember", values: [BigNumberish]): string
   encodeFunctionData(functionFragment: "holdsRole", values: [BigNumberish, string]): string
   encodeFunctionData(functionFragment: "removeMember", values: [BigNumberish, string]): string
@@ -68,11 +62,7 @@ export interface MultiRoleTest extends Contract {
   interface: MultiRoleTestInterface
 
   functions: {
-    addMember(
-      roleId: BigNumberish,
-      newMember: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
     createExclusiveRole(
       roleId: BigNumberish,
@@ -103,19 +93,11 @@ export interface MultiRoleTest extends Contract {
       0: boolean
     }>
 
-    removeMember(
-      roleId: BigNumberish,
-      memberToRemove: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
     renounceMembership(roleId: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-    resetMember(
-      roleId: BigNumberish,
-      newMember: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    resetMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
     revertIfNotHoldingRole(
       roleId: BigNumberish,
@@ -125,11 +107,7 @@ export interface MultiRoleTest extends Contract {
     }>
   }
 
-  addMember(
-    roleId: BigNumberish,
-    newMember: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
   createExclusiveRole(
     roleId: BigNumberish,
@@ -147,25 +125,13 @@ export interface MultiRoleTest extends Contract {
 
   getMember(roleId: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-  holdsRole(
-    roleId: BigNumberish,
-    memberToCheck: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  holdsRole(roleId: BigNumberish, memberToCheck: string, overrides?: CallOverrides): Promise<boolean>
 
-  removeMember(
-    roleId: BigNumberish,
-    memberToRemove: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
   renounceMembership(roleId: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-  resetMember(
-    roleId: BigNumberish,
-    newMember: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  resetMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
   revertIfNotHoldingRole(roleId: BigNumberish, overrides?: CallOverrides): Promise<void>
 
@@ -188,11 +154,7 @@ export interface MultiRoleTest extends Contract {
 
     getMember(roleId: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-    holdsRole(
-      roleId: BigNumberish,
-      memberToCheck: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    holdsRole(roleId: BigNumberish, memberToCheck: string, overrides?: CallOverrides): Promise<boolean>
 
     removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<void>
 
@@ -204,37 +166,17 @@ export interface MultiRoleTest extends Contract {
   }
 
   filters: {
-    AddedSharedMember(
-      roleId: BigNumberish | null,
-      newMember: string | null,
-      manager: string | null
-    ): EventFilter
+    AddedSharedMember(roleId: BigNumberish | null, newMember: string | null, manager: string | null): EventFilter
 
-    RemovedSharedMember(
-      roleId: BigNumberish | null,
-      oldMember: string | null,
-      manager: string | null
-    ): EventFilter
+    RemovedSharedMember(roleId: BigNumberish | null, oldMember: string | null, manager: string | null): EventFilter
 
-    ResetExclusiveMember(
-      roleId: BigNumberish | null,
-      newMember: string | null,
-      manager: string | null
-    ): EventFilter
+    ResetExclusiveMember(roleId: BigNumberish | null, newMember: string | null, manager: string | null): EventFilter
   }
 
   estimateGas: {
     addMember(roleId: BigNumberish, newMember: string): Promise<BigNumber>
-    createExclusiveRole(
-      roleId: BigNumberish,
-      managingRoleId: BigNumberish,
-      initialMember: string
-    ): Promise<BigNumber>
-    createSharedRole(
-      roleId: BigNumberish,
-      managingRoleId: BigNumberish,
-      initialMembers: string[]
-    ): Promise<BigNumber>
+    createExclusiveRole(roleId: BigNumberish, managingRoleId: BigNumberish, initialMember: string): Promise<BigNumber>
+    createSharedRole(roleId: BigNumberish, managingRoleId: BigNumberish, initialMembers: string[]): Promise<BigNumber>
     getMember(roleId: BigNumberish): Promise<BigNumber>
     holdsRole(roleId: BigNumberish, memberToCheck: string): Promise<BigNumber>
     removeMember(roleId: BigNumberish, memberToRemove: string): Promise<BigNumber>

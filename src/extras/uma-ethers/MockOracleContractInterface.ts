@@ -20,10 +20,7 @@ interface MockOracleInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "getPendingQueries", values?: undefined): string
   encodeFunctionData(functionFragment: "getPrice", values: [BytesLike, BigNumberish]): string
   encodeFunctionData(functionFragment: "hasPrice", values: [BytesLike, BigNumberish]): string
-  encodeFunctionData(
-    functionFragment: "pushPrice",
-    values: [BytesLike, BigNumberish, BigNumberish]
-  ): string
+  encodeFunctionData(functionFragment: "pushPrice", values: [BytesLike, BigNumberish, BigNumberish]): string
   encodeFunctionData(functionFragment: "requestPrice", values: [BytesLike, BigNumberish]): string
   encodeFunctionData(functionFragment: "setCurrentTime", values: [BigNumberish]): string
   encodeFunctionData(functionFragment: "timerAddress", values?: undefined): string
@@ -89,11 +86,7 @@ export interface MockOracle extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>
 
-    requestPrice(
-      identifier: BytesLike,
-      time: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    requestPrice(identifier: BytesLike, time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
     setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -121,11 +114,7 @@ export interface MockOracle extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>
 
-  requestPrice(
-    identifier: BytesLike,
-    time: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  requestPrice(identifier: BytesLike, time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -138,20 +127,11 @@ export interface MockOracle extends Contract {
       overrides?: CallOverrides
     ): Promise<{ identifier: string; time: BigNumber; 0: string; 1: BigNumber }[]>
 
-    getPrice(
-      identifier: BytesLike,
-      time: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>
+    getPrice(identifier: BytesLike, time: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     hasPrice(identifier: BytesLike, time: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-    pushPrice(
-      identifier: BytesLike,
-      time: BigNumberish,
-      price: BigNumberish,
-      overrides?: Overrides
-    ): Promise<void>
+    pushPrice(identifier: BytesLike, time: BigNumberish, price: BigNumberish, overrides?: Overrides): Promise<void>
 
     requestPrice(identifier: BytesLike, time: BigNumberish, overrides?: Overrides): Promise<void>
 
@@ -178,11 +158,7 @@ export interface MockOracle extends Contract {
     getPendingQueries(): Promise<PopulatedTransaction>
     getPrice(identifier: BytesLike, time: BigNumberish): Promise<PopulatedTransaction>
     hasPrice(identifier: BytesLike, time: BigNumberish): Promise<PopulatedTransaction>
-    pushPrice(
-      identifier: BytesLike,
-      time: BigNumberish,
-      price: BigNumberish
-    ): Promise<PopulatedTransaction>
+    pushPrice(identifier: BytesLike, time: BigNumberish, price: BigNumberish): Promise<PopulatedTransaction>
     requestPrice(identifier: BytesLike, time: BigNumberish): Promise<PopulatedTransaction>
     setCurrentTime(time: BigNumberish): Promise<PopulatedTransaction>
     timerAddress(): Promise<PopulatedTransaction>

@@ -51,10 +51,7 @@ interface VotingTokenInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "totalSupply", values?: undefined): string
   encodeFunctionData(functionFragment: "totalSupplyAt", values: [BigNumberish]): string
   encodeFunctionData(functionFragment: "transfer", values: [string, BigNumberish]): string
-  encodeFunctionData(
-    functionFragment: "transferFrom",
-    values: [string, string, BigNumberish]
-  ): string
+  encodeFunctionData(functionFragment: "transferFrom", values: [string, string, BigNumberish]): string
 
   decodeFunctionResult(functionFragment: "addMember", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result
@@ -110,11 +107,7 @@ export interface VotingToken extends Contract {
   interface: VotingTokenInterface
 
   functions: {
-    addMember(
-      roleId: BigNumberish,
-      newMember: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
     allowance(
       owner: string,
@@ -124,11 +117,7 @@ export interface VotingToken extends Contract {
       0: BigNumber
     }>
 
-    approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    approve(spender: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
     balanceOf(
       account: string,
@@ -174,17 +163,9 @@ export interface VotingToken extends Contract {
       0: boolean
     }>
 
-    increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    increaseAllowance(spender: string, addedValue: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-    mint(
-      recipient: string,
-      value: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    mint(recipient: string, value: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
     name(
       overrides?: CallOverrides
@@ -192,19 +173,11 @@ export interface VotingToken extends Contract {
       0: string
     }>
 
-    removeMember(
-      roleId: BigNumberish,
-      memberToRemove: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
     renounceMembership(roleId: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-    resetMember(
-      roleId: BigNumberish,
-      newMember: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    resetMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
     snapshot(overrides?: Overrides): Promise<ContractTransaction>
 
@@ -227,11 +200,7 @@ export interface VotingToken extends Contract {
       0: BigNumber
     }>
 
-    transfer(
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    transfer(recipient: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
     transferFrom(
       sender: string,
@@ -241,69 +210,37 @@ export interface VotingToken extends Contract {
     ): Promise<ContractTransaction>
   }
 
-  addMember(
-    roleId: BigNumberish,
-    newMember: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
   allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<BigNumber>
 
-  approve(
-    spender: string,
-    amount: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  approve(spender: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>
 
-  balanceOfAt(
-    account: string,
-    snapshotId: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>
+  balanceOfAt(account: string, snapshotId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
   burn(value: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   decimals(overrides?: CallOverrides): Promise<number>
 
-  decreaseAllowance(
-    spender: string,
-    subtractedValue: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  decreaseAllowance(spender: string, subtractedValue: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   getMember(roleId: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-  holdsRole(
-    roleId: BigNumberish,
-    memberToCheck: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  holdsRole(roleId: BigNumberish, memberToCheck: string, overrides?: CallOverrides): Promise<boolean>
 
-  increaseAllowance(
-    spender: string,
-    addedValue: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  increaseAllowance(spender: string, addedValue: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   mint(recipient: string, value: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   name(overrides?: CallOverrides): Promise<string>
 
-  removeMember(
-    roleId: BigNumberish,
-    memberToRemove: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
   renounceMembership(roleId: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-  resetMember(
-    roleId: BigNumberish,
-    newMember: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  resetMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
   snapshot(overrides?: Overrides): Promise<ContractTransaction>
 
@@ -313,11 +250,7 @@ export interface VotingToken extends Contract {
 
   totalSupplyAt(snapshotId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
-  transfer(
-    recipient: string,
-    amount: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  transfer(recipient: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   transferFrom(
     sender: string,
@@ -335,35 +268,19 @@ export interface VotingToken extends Contract {
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>
 
-    balanceOfAt(
-      account: string,
-      snapshotId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>
+    balanceOfAt(account: string, snapshotId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     burn(value: BigNumberish, overrides?: Overrides): Promise<void>
 
     decimals(overrides?: CallOverrides): Promise<number>
 
-    decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: Overrides
-    ): Promise<boolean>
+    decreaseAllowance(spender: string, subtractedValue: BigNumberish, overrides?: Overrides): Promise<boolean>
 
     getMember(roleId: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-    holdsRole(
-      roleId: BigNumberish,
-      memberToCheck: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    holdsRole(roleId: BigNumberish, memberToCheck: string, overrides?: CallOverrides): Promise<boolean>
 
-    increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides
-    ): Promise<boolean>
+    increaseAllowance(spender: string, addedValue: BigNumberish, overrides?: Overrides): Promise<boolean>
 
     mint(recipient: string, value: BigNumberish, overrides?: Overrides): Promise<boolean>
 
@@ -385,34 +302,17 @@ export interface VotingToken extends Contract {
 
     transfer(recipient: string, amount: BigNumberish, overrides?: Overrides): Promise<boolean>
 
-    transferFrom(
-      sender: string,
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<boolean>
+    transferFrom(sender: string, recipient: string, amount: BigNumberish, overrides?: Overrides): Promise<boolean>
   }
 
   filters: {
-    AddedSharedMember(
-      roleId: BigNumberish | null,
-      newMember: string | null,
-      manager: string | null
-    ): EventFilter
+    AddedSharedMember(roleId: BigNumberish | null, newMember: string | null, manager: string | null): EventFilter
 
     Approval(owner: string | null, spender: string | null, value: null): EventFilter
 
-    RemovedSharedMember(
-      roleId: BigNumberish | null,
-      oldMember: string | null,
-      manager: string | null
-    ): EventFilter
+    RemovedSharedMember(roleId: BigNumberish | null, oldMember: string | null, manager: string | null): EventFilter
 
-    ResetExclusiveMember(
-      roleId: BigNumberish | null,
-      newMember: string | null,
-      manager: string | null
-    ): EventFilter
+    ResetExclusiveMember(roleId: BigNumberish | null, newMember: string | null, manager: string | null): EventFilter
 
     Snapshot(id: null): EventFilter
 
@@ -466,10 +366,6 @@ export interface VotingToken extends Contract {
     totalSupply(): Promise<PopulatedTransaction>
     totalSupplyAt(snapshotId: BigNumberish): Promise<PopulatedTransaction>
     transfer(recipient: string, amount: BigNumberish): Promise<PopulatedTransaction>
-    transferFrom(
-      sender: string,
-      recipient: string,
-      amount: BigNumberish
-    ): Promise<PopulatedTransaction>
+    transferFrom(sender: string, recipient: string, amount: BigNumberish): Promise<PopulatedTransaction>
   }
 }

@@ -14,10 +14,7 @@ interface FinderInterface extends ethers.utils.Interface {
     "transferOwnership(address)": FunctionFragment
   }
 
-  encodeFunctionData(
-    functionFragment: "changeImplementationAddress",
-    values: [BytesLike, string]
-  ): string
+  encodeFunctionData(functionFragment: "changeImplementationAddress", values: [BytesLike, string]): string
   encodeFunctionData(functionFragment: "getImplementationAddress", values: [BytesLike]): string
   encodeFunctionData(functionFragment: "interfacesImplemented", values: [BytesLike]): string
   encodeFunctionData(functionFragment: "owner", values?: undefined): string
@@ -129,10 +126,7 @@ export interface Finder extends Contract {
   }
 
   estimateGas: {
-    changeImplementationAddress(
-      interfaceName: BytesLike,
-      implementationAddress: string
-    ): Promise<BigNumber>
+    changeImplementationAddress(interfaceName: BytesLike, implementationAddress: string): Promise<BigNumber>
     getImplementationAddress(interfaceName: BytesLike): Promise<BigNumber>
     interfacesImplemented(arg0: BytesLike): Promise<BigNumber>
     owner(): Promise<BigNumber>
@@ -141,10 +135,7 @@ export interface Finder extends Contract {
   }
 
   populateTransaction: {
-    changeImplementationAddress(
-      interfaceName: BytesLike,
-      implementationAddress: string
-    ): Promise<PopulatedTransaction>
+    changeImplementationAddress(interfaceName: BytesLike, implementationAddress: string): Promise<PopulatedTransaction>
     getImplementationAddress(interfaceName: BytesLike): Promise<PopulatedTransaction>
     interfacesImplemented(arg0: BytesLike): Promise<PopulatedTransaction>
     owner(): Promise<PopulatedTransaction>

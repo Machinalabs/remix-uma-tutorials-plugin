@@ -46,10 +46,7 @@ export interface FinancialContractsAdmin extends Contract {
   interface: FinancialContractsAdminInterface
 
   functions: {
-    callEmergencyShutdown(
-      financialContract: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    callEmergencyShutdown(financialContract: string, overrides?: Overrides): Promise<ContractTransaction>
 
     callRemargin(financialContract: string, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -64,10 +61,7 @@ export interface FinancialContractsAdmin extends Contract {
     transferOwnership(newOwner: string, overrides?: Overrides): Promise<ContractTransaction>
   }
 
-  callEmergencyShutdown(
-    financialContract: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  callEmergencyShutdown(financialContract: string, overrides?: Overrides): Promise<ContractTransaction>
 
   callRemargin(financialContract: string, overrides?: Overrides): Promise<ContractTransaction>
 

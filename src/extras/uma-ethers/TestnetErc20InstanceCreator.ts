@@ -9,12 +9,7 @@ export class TestnetErc20InstanceCreator extends ContractFactory {
     super(_abi, _bytecode, signer)
   }
 
-  deploy(
-    _name: string,
-    _symbol: string,
-    _decimals: BigNumberish,
-    overrides?: Overrides
-  ): Promise<TestnetErc20> {
+  deploy(_name: string, _symbol: string, _decimals: BigNumberish, overrides?: Overrides): Promise<TestnetErc20> {
     return super.deploy(_name, _symbol, _decimals, overrides || {}) as Promise<TestnetErc20>
   }
   getDeployTransaction(

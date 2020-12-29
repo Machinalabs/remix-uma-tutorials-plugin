@@ -52,29 +52,17 @@ export interface OracleInterface extends Contract {
       0: boolean
     }>
 
-    requestPrice(
-      identifier: BytesLike,
-      time: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    requestPrice(identifier: BytesLike, time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
   }
 
   getPrice(identifier: BytesLike, time: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
   hasPrice(identifier: BytesLike, time: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-  requestPrice(
-    identifier: BytesLike,
-    time: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  requestPrice(identifier: BytesLike, time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   callStatic: {
-    getPrice(
-      identifier: BytesLike,
-      time: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>
+    getPrice(identifier: BytesLike, time: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     hasPrice(identifier: BytesLike, time: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 

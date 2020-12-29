@@ -15,12 +15,7 @@ export class GovernorInstanceCreator extends ContractFactory {
     _timerAddress: string,
     overrides?: Overrides
   ): Promise<Governor> {
-    return super.deploy(
-      _finderAddress,
-      _startingId,
-      _timerAddress,
-      overrides || {}
-    ) as Promise<Governor>
+    return super.deploy(_finderAddress, _startingId, _timerAddress, overrides || {}) as Promise<Governor>
   }
   getDeployTransaction(
     _finderAddress: string,

@@ -16,19 +16,13 @@ interface ResultComputationTestInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "data", values?: undefined): string
   encodeFunctionData(functionFragment: "wrapAddVote", values: [BigNumberish, BigNumberish]): string
   encodeFunctionData(functionFragment: "wrapGetResolvedPrice", values: [BigNumberish]): string
-  encodeFunctionData(
-    functionFragment: "wrapGetTotalCorrectlyVotedTokens",
-    values?: undefined
-  ): string
+  encodeFunctionData(functionFragment: "wrapGetTotalCorrectlyVotedTokens", values?: undefined): string
   encodeFunctionData(functionFragment: "wrapWasVoteCorrect", values: [BytesLike]): string
 
   decodeFunctionResult(functionFragment: "data", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "wrapAddVote", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "wrapGetResolvedPrice", data: BytesLike): Result
-  decodeFunctionResult(
-    functionFragment: "wrapGetTotalCorrectlyVotedTokens",
-    data: BytesLike
-  ): Result
+  decodeFunctionResult(functionFragment: "wrapGetTotalCorrectlyVotedTokens", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "wrapWasVoteCorrect", data: BytesLike): Result
 
   events: {}
@@ -96,11 +90,7 @@ export interface ResultComputationTest extends Contract {
     1: BigNumber
   }>
 
-  wrapAddVote(
-    votePrice: BigNumberish,
-    numberTokens: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  wrapAddVote(votePrice: BigNumberish, numberTokens: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   wrapGetResolvedPrice(
     minVoteThreshold: BigNumberish,
@@ -126,11 +116,7 @@ export interface ResultComputationTest extends Contract {
       1: BigNumber
     }>
 
-    wrapAddVote(
-      votePrice: BigNumberish,
-      numberTokens: BigNumberish,
-      overrides?: Overrides
-    ): Promise<void>
+    wrapAddVote(votePrice: BigNumberish, numberTokens: BigNumberish, overrides?: Overrides): Promise<void>
 
     wrapGetResolvedPrice(
       minVoteThreshold: BigNumberish,

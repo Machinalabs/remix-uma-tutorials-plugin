@@ -9,10 +9,7 @@ interface TokenFactoryInterface extends ethers.utils.Interface {
     "createToken(string,string,uint8)": FunctionFragment
   }
 
-  encodeFunctionData(
-    functionFragment: "createToken",
-    values: [string, string, BigNumberish]
-  ): string
+  encodeFunctionData(functionFragment: "createToken", values: [string, string, BigNumberish]): string
 
   decodeFunctionResult(functionFragment: "createToken", data: BytesLike): Result
 
@@ -60,18 +57,10 @@ export interface TokenFactory extends Contract {
   filters: {}
 
   estimateGas: {
-    createToken(
-      tokenName: string,
-      tokenSymbol: string,
-      tokenDecimals: BigNumberish
-    ): Promise<BigNumber>
+    createToken(tokenName: string, tokenSymbol: string, tokenDecimals: BigNumberish): Promise<BigNumber>
   }
 
   populateTransaction: {
-    createToken(
-      tokenName: string,
-      tokenSymbol: string,
-      tokenDecimals: BigNumberish
-    ): Promise<PopulatedTransaction>
+    createToken(tokenName: string, tokenSymbol: string, tokenDecimals: BigNumberish): Promise<PopulatedTransaction>
   }
 }

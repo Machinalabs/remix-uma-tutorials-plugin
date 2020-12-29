@@ -53,10 +53,7 @@ interface PricelessPositionManagerInterface extends ethers.utils.Interface {
   ): string
   encodeFunctionData(functionFragment: "cumulativeFeeMultiplier", values?: undefined): string
   encodeFunctionData(functionFragment: "deposit", values: [{ rawValue: BigNumberish }]): string
-  encodeFunctionData(
-    functionFragment: "depositTo",
-    values: [string, { rawValue: BigNumberish }]
-  ): string
+  encodeFunctionData(functionFragment: "depositTo", values: [string, { rawValue: BigNumberish }]): string
   encodeFunctionData(functionFragment: "emergencyShutdown", values?: undefined): string
   encodeFunctionData(functionFragment: "expirationTimestamp", values?: undefined): string
   encodeFunctionData(functionFragment: "expire", values?: undefined): string
@@ -73,10 +70,7 @@ interface PricelessPositionManagerInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "redeem", values: [{ rawValue: BigNumberish }]): string
   encodeFunctionData(functionFragment: "remargin", values?: undefined): string
   encodeFunctionData(functionFragment: "requestTransferPosition", values?: undefined): string
-  encodeFunctionData(
-    functionFragment: "requestWithdrawal",
-    values: [{ rawValue: BigNumberish }]
-  ): string
+  encodeFunctionData(functionFragment: "requestWithdrawal", values: [{ rawValue: BigNumberish }]): string
   encodeFunctionData(functionFragment: "setCurrentTime", values: [BigNumberish]): string
   encodeFunctionData(functionFragment: "settleExpired", values?: undefined): string
   encodeFunctionData(functionFragment: "timerAddress", values?: undefined): string
@@ -206,10 +200,7 @@ export interface PricelessPositionManager extends Contract {
       0: BigNumber
     }>
 
-    deposit(
-      collateralAmount: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    deposit(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
     depositTo(
       sponsor: string,
@@ -298,19 +289,13 @@ export interface PricelessPositionManager extends Contract {
       0: BigNumber
     }>
 
-    redeem(
-      numTokens: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    redeem(numTokens: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
     remargin(overrides?: Overrides): Promise<ContractTransaction>
 
     requestTransferPosition(overrides?: Overrides): Promise<ContractTransaction>
 
-    requestWithdrawal(
-      collateralAmount: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    requestWithdrawal(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
     setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -342,15 +327,9 @@ export interface PricelessPositionManager extends Contract {
       0: BigNumber
     }>
 
-    transferPositionPassedRequest(
-      newSponsorAddress: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    transferPositionPassedRequest(newSponsorAddress: string, overrides?: Overrides): Promise<ContractTransaction>
 
-    withdraw(
-      collateralAmount: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    withdraw(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
     withdrawPassedRequest(overrides?: Overrides): Promise<ContractTransaction>
 
@@ -377,10 +356,7 @@ export interface PricelessPositionManager extends Contract {
 
   cumulativeFeeMultiplier(overrides?: CallOverrides): Promise<BigNumber>
 
-  deposit(
-    collateralAmount: { rawValue: BigNumberish },
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  deposit(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
   depositTo(
     sponsor: string,
@@ -398,10 +374,7 @@ export interface PricelessPositionManager extends Contract {
 
   finder(overrides?: CallOverrides): Promise<string>
 
-  getCollateral(
-    sponsor: string,
-    overrides?: CallOverrides
-  ): Promise<{ rawValue: BigNumber; 0: BigNumber }>
+  getCollateral(sponsor: string, overrides?: CallOverrides): Promise<{ rawValue: BigNumber; 0: BigNumber }>
 
   getCurrentTime(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -437,10 +410,7 @@ export interface PricelessPositionManager extends Contract {
 
   requestTransferPosition(overrides?: Overrides): Promise<ContractTransaction>
 
-  requestWithdrawal(
-    collateralAmount: { rawValue: BigNumberish },
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  requestWithdrawal(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
   setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -454,15 +424,9 @@ export interface PricelessPositionManager extends Contract {
 
   totalTokensOutstanding(overrides?: CallOverrides): Promise<BigNumber>
 
-  transferPositionPassedRequest(
-    newSponsorAddress: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  transferPositionPassedRequest(newSponsorAddress: string, overrides?: Overrides): Promise<ContractTransaction>
 
-  withdraw(
-    collateralAmount: { rawValue: BigNumberish },
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  withdraw(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
   withdrawPassedRequest(overrides?: Overrides): Promise<ContractTransaction>
 
@@ -487,11 +451,7 @@ export interface PricelessPositionManager extends Contract {
 
     deposit(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<void>
 
-    depositTo(
-      sponsor: string,
-      collateralAmount: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<void>
+    depositTo(sponsor: string, collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<void>
 
     emergencyShutdown(overrides?: Overrides): Promise<void>
 
@@ -503,10 +463,7 @@ export interface PricelessPositionManager extends Contract {
 
     finder(overrides?: CallOverrides): Promise<string>
 
-    getCollateral(
-      sponsor: string,
-      overrides?: CallOverrides
-    ): Promise<{ rawValue: BigNumber; 0: BigNumber }>
+    getCollateral(sponsor: string, overrides?: CallOverrides): Promise<{ rawValue: BigNumber; 0: BigNumber }>
 
     getCurrentTime(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -536,19 +493,13 @@ export interface PricelessPositionManager extends Contract {
 
     rawTotalPositionCollateral(overrides?: CallOverrides): Promise<BigNumber>
 
-    redeem(
-      numTokens: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<{ rawValue: BigNumber; 0: BigNumber }>
+    redeem(numTokens: { rawValue: BigNumberish }, overrides?: Overrides): Promise<{ rawValue: BigNumber; 0: BigNumber }>
 
     remargin(overrides?: Overrides): Promise<void>
 
     requestTransferPosition(overrides?: Overrides): Promise<void>
 
-    requestWithdrawal(
-      collateralAmount: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<void>
+    requestWithdrawal(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<void>
 
     setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<void>
 
@@ -558,9 +509,7 @@ export interface PricelessPositionManager extends Contract {
 
     tokenCurrency(overrides?: CallOverrides): Promise<string>
 
-    totalPositionCollateral(
-      overrides?: CallOverrides
-    ): Promise<{ rawValue: BigNumber; 0: BigNumber }>
+    totalPositionCollateral(overrides?: CallOverrides): Promise<{ rawValue: BigNumber; 0: BigNumber }>
 
     totalTokensOutstanding(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -581,11 +530,7 @@ export interface PricelessPositionManager extends Contract {
 
     Deposit(sponsor: string | null, collateralAmount: BigNumberish | null): EventFilter
 
-    EmergencyShutdown(
-      caller: string | null,
-      originalExpirationTimestamp: null,
-      shutdownTimestamp: null
-    ): EventFilter
+    EmergencyShutdown(caller: string | null, originalExpirationTimestamp: null, shutdownTimestamp: null): EventFilter
 
     EndedSponsorPosition(sponsor: string | null): EventFilter
 
@@ -599,11 +544,7 @@ export interface PricelessPositionManager extends Contract {
       tokenAmount: BigNumberish | null
     ): EventFilter
 
-    Redeem(
-      sponsor: string | null,
-      collateralAmount: BigNumberish | null,
-      tokenAmount: BigNumberish | null
-    ): EventFilter
+    Redeem(sponsor: string | null, collateralAmount: BigNumberish | null, tokenAmount: BigNumberish | null): EventFilter
 
     RegularFeesPaid(regularFee: BigNumberish | null, lateFee: BigNumberish | null): EventFilter
 
@@ -611,22 +552,13 @@ export interface PricelessPositionManager extends Contract {
 
     RequestTransferPositionCanceled(oldSponsor: string | null): EventFilter
 
-    RequestTransferPositionExecuted(
-      oldSponsor: string | null,
-      newSponsor: string | null
-    ): EventFilter
+    RequestTransferPositionExecuted(oldSponsor: string | null, newSponsor: string | null): EventFilter
 
     RequestWithdrawal(sponsor: string | null, collateralAmount: BigNumberish | null): EventFilter
 
-    RequestWithdrawalCanceled(
-      sponsor: string | null,
-      collateralAmount: BigNumberish | null
-    ): EventFilter
+    RequestWithdrawalCanceled(sponsor: string | null, collateralAmount: BigNumberish | null): EventFilter
 
-    RequestWithdrawalExecuted(
-      sponsor: string | null,
-      collateralAmount: BigNumberish | null
-    ): EventFilter
+    RequestWithdrawalExecuted(sponsor: string | null, collateralAmount: BigNumberish | null): EventFilter
 
     SettleExpiredPosition(
       caller: string | null,
@@ -642,10 +574,7 @@ export interface PricelessPositionManager extends Contract {
     cancelWithdrawal(): Promise<BigNumber>
     collateralCurrency(): Promise<BigNumber>
     contractState(): Promise<BigNumber>
-    create(
-      collateralAmount: { rawValue: BigNumberish },
-      numTokens: { rawValue: BigNumberish }
-    ): Promise<BigNumber>
+    create(collateralAmount: { rawValue: BigNumberish }, numTokens: { rawValue: BigNumberish }): Promise<BigNumber>
     cumulativeFeeMultiplier(): Promise<BigNumber>
     deposit(collateralAmount: { rawValue: BigNumberish }): Promise<BigNumber>
     depositTo(sponsor: string, collateralAmount: { rawValue: BigNumberish }): Promise<BigNumber>
@@ -689,10 +618,7 @@ export interface PricelessPositionManager extends Contract {
     ): Promise<PopulatedTransaction>
     cumulativeFeeMultiplier(): Promise<PopulatedTransaction>
     deposit(collateralAmount: { rawValue: BigNumberish }): Promise<PopulatedTransaction>
-    depositTo(
-      sponsor: string,
-      collateralAmount: { rawValue: BigNumberish }
-    ): Promise<PopulatedTransaction>
+    depositTo(sponsor: string, collateralAmount: { rawValue: BigNumberish }): Promise<PopulatedTransaction>
     emergencyShutdown(): Promise<PopulatedTransaction>
     expirationTimestamp(): Promise<PopulatedTransaction>
     expire(): Promise<PopulatedTransaction>

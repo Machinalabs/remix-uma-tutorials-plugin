@@ -1,11 +1,5 @@
 import { ethers, EventFilter, Signer, BigNumber, BigNumberish, PopulatedTransaction } from "ethers"
-import {
-  Contract,
-  ContractTransaction,
-  Overrides,
-  PayableOverrides,
-  CallOverrides,
-} from "@ethersproject/contracts"
+import { Contract, ContractTransaction, Overrides, PayableOverrides, CallOverrides } from "@ethersproject/contracts"
 import { BytesLike } from "@ethersproject/bytes"
 import { Listener, Provider } from "@ethersproject/providers"
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi"
@@ -24,10 +18,7 @@ interface StoreInterfaceInterface extends ethers.utils.Interface {
     values: [BigNumberish, BigNumberish, { rawValue: BigNumberish }]
   ): string
   encodeFunctionData(functionFragment: "payOracleFees", values?: undefined): string
-  encodeFunctionData(
-    functionFragment: "payOracleFeesErc20",
-    values: [string, { rawValue: BigNumberish }]
-  ): string
+  encodeFunctionData(functionFragment: "payOracleFeesErc20", values: [string, { rawValue: BigNumberish }]): string
 
   decodeFunctionResult(functionFragment: "computeFinalFee", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "computeRegularFee", data: BytesLike): Result
@@ -79,10 +70,7 @@ export interface StoreInterface extends Contract {
     ): Promise<ContractTransaction>
   }
 
-  computeFinalFee(
-    currency: string,
-    overrides?: CallOverrides
-  ): Promise<{ rawValue: BigNumber; 0: BigNumber }>
+  computeFinalFee(currency: string, overrides?: CallOverrides): Promise<{ rawValue: BigNumber; 0: BigNumber }>
 
   computeRegularFee(
     startTime: BigNumberish,
@@ -105,10 +93,7 @@ export interface StoreInterface extends Contract {
   ): Promise<ContractTransaction>
 
   callStatic: {
-    computeFinalFee(
-      currency: string,
-      overrides?: CallOverrides
-    ): Promise<{ rawValue: BigNumber; 0: BigNumber }>
+    computeFinalFee(currency: string, overrides?: CallOverrides): Promise<{ rawValue: BigNumber; 0: BigNumber }>
 
     computeRegularFee(
       startTime: BigNumberish,
@@ -124,11 +109,7 @@ export interface StoreInterface extends Contract {
 
     payOracleFees(overrides?: PayableOverrides): Promise<void>
 
-    payOracleFeesErc20(
-      erc20Address: string,
-      amount: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<void>
+    payOracleFeesErc20(erc20Address: string, amount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<void>
   }
 
   filters: {}
@@ -152,9 +133,6 @@ export interface StoreInterface extends Contract {
       pfc: { rawValue: BigNumberish }
     ): Promise<PopulatedTransaction>
     payOracleFees(): Promise<PopulatedTransaction>
-    payOracleFeesErc20(
-      erc20Address: string,
-      amount: { rawValue: BigNumberish }
-    ): Promise<PopulatedTransaction>
+    payOracleFeesErc20(erc20Address: string, amount: { rawValue: BigNumberish }): Promise<PopulatedTransaction>
   }
 }

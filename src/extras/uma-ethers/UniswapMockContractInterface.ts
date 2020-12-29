@@ -34,18 +34,10 @@ export interface UniswapMock extends Contract {
   interface: UniswapMockInterface
 
   functions: {
-    setPrice(
-      reserve0: BigNumberish,
-      reserve1: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    setPrice(reserve0: BigNumberish, reserve1: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
   }
 
-  setPrice(
-    reserve0: BigNumberish,
-    reserve1: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  setPrice(reserve0: BigNumberish, reserve1: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   callStatic: {
     setPrice(reserve0: BigNumberish, reserve1: BigNumberish, overrides?: Overrides): Promise<void>

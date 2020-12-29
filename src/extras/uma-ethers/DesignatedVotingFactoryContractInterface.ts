@@ -68,11 +68,7 @@ export interface DesignatedVotingFactory extends Contract {
   interface: DesignatedVotingFactoryInterface
 
   functions: {
-    addMember(
-      roleId: BigNumberish,
-      newMember: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
     designatedVotingContracts(
       arg0: string,
@@ -98,78 +94,40 @@ export interface DesignatedVotingFactory extends Contract {
 
     newDesignatedVoting(ownerAddress: string, overrides?: Overrides): Promise<ContractTransaction>
 
-    removeMember(
-      roleId: BigNumberish,
-      memberToRemove: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
     renounceMembership(roleId: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-    resetMember(
-      roleId: BigNumberish,
-      newMember: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    resetMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
-    setDesignatedVoting(
-      designatedVotingAddress: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    setDesignatedVoting(designatedVotingAddress: string, overrides?: Overrides): Promise<ContractTransaction>
 
     withdraw(amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-    withdrawErc20(
-      erc20Address: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    withdrawErc20(erc20Address: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
   }
 
-  addMember(
-    roleId: BigNumberish,
-    newMember: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
   designatedVotingContracts(arg0: string, overrides?: CallOverrides): Promise<string>
 
   getMember(roleId: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-  holdsRole(
-    roleId: BigNumberish,
-    memberToCheck: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  holdsRole(roleId: BigNumberish, memberToCheck: string, overrides?: CallOverrides): Promise<boolean>
 
   newDesignatedVoting(ownerAddress: string, overrides?: Overrides): Promise<ContractTransaction>
 
-  removeMember(
-    roleId: BigNumberish,
-    memberToRemove: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
   renounceMembership(roleId: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-  resetMember(
-    roleId: BigNumberish,
-    newMember: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  resetMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
-  setDesignatedVoting(
-    designatedVotingAddress: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  setDesignatedVoting(designatedVotingAddress: string, overrides?: Overrides): Promise<ContractTransaction>
 
   withdraw(amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-  withdrawErc20(
-    erc20Address: string,
-    amount: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  withdrawErc20(erc20Address: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   callStatic: {
     addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<void>
@@ -178,11 +136,7 @@ export interface DesignatedVotingFactory extends Contract {
 
     getMember(roleId: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-    holdsRole(
-      roleId: BigNumberish,
-      memberToCheck: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    holdsRole(roleId: BigNumberish, memberToCheck: string, overrides?: CallOverrides): Promise<boolean>
 
     newDesignatedVoting(ownerAddress: string, overrides?: Overrides): Promise<string>
 
@@ -200,23 +154,11 @@ export interface DesignatedVotingFactory extends Contract {
   }
 
   filters: {
-    AddedSharedMember(
-      roleId: BigNumberish | null,
-      newMember: string | null,
-      manager: string | null
-    ): EventFilter
+    AddedSharedMember(roleId: BigNumberish | null, newMember: string | null, manager: string | null): EventFilter
 
-    RemovedSharedMember(
-      roleId: BigNumberish | null,
-      oldMember: string | null,
-      manager: string | null
-    ): EventFilter
+    RemovedSharedMember(roleId: BigNumberish | null, oldMember: string | null, manager: string | null): EventFilter
 
-    ResetExclusiveMember(
-      roleId: BigNumberish | null,
-      newMember: string | null,
-      manager: string | null
-    ): EventFilter
+    ResetExclusiveMember(roleId: BigNumberish | null, newMember: string | null, manager: string | null): EventFilter
   }
 
   estimateGas: {

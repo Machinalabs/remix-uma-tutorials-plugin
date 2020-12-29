@@ -21,10 +21,7 @@ export class IdentifierWhitelistInterfaceInstanceCreator extends ContractFactory
   connect(signer: Signer): IdentifierWhitelistInterfaceInstanceCreator {
     return super.connect(signer) as IdentifierWhitelistInterfaceInstanceCreator
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): IdentifierWhitelistInterface {
+  static connect(address: string, signerOrProvider: Signer | Provider): IdentifierWhitelistInterface {
     return new Contract(address, _abi, signerOrProvider) as IdentifierWhitelistInterface
   }
 }

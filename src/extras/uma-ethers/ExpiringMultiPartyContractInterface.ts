@@ -65,20 +65,11 @@ interface ExpiringMultiPartyInterface extends ethers.utils.Interface {
   ): string
   encodeFunctionData(
     functionFragment: "createLiquidation",
-    values: [
-      string,
-      { rawValue: BigNumberish },
-      { rawValue: BigNumberish },
-      { rawValue: BigNumberish },
-      BigNumberish
-    ]
+    values: [string, { rawValue: BigNumberish }, { rawValue: BigNumberish }, { rawValue: BigNumberish }, BigNumberish]
   ): string
   encodeFunctionData(functionFragment: "cumulativeFeeMultiplier", values?: undefined): string
   encodeFunctionData(functionFragment: "deposit", values: [{ rawValue: BigNumberish }]): string
-  encodeFunctionData(
-    functionFragment: "depositTo",
-    values: [string, { rawValue: BigNumberish }]
-  ): string
+  encodeFunctionData(functionFragment: "depositTo", values: [string, { rawValue: BigNumberish }]): string
   encodeFunctionData(functionFragment: "dispute", values: [BigNumberish, string]): string
   encodeFunctionData(functionFragment: "disputeBondPct", values?: undefined): string
   encodeFunctionData(functionFragment: "disputerDisputeRewardPct", values?: undefined): string
@@ -102,10 +93,7 @@ interface ExpiringMultiPartyInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "redeem", values: [{ rawValue: BigNumberish }]): string
   encodeFunctionData(functionFragment: "remargin", values?: undefined): string
   encodeFunctionData(functionFragment: "requestTransferPosition", values?: undefined): string
-  encodeFunctionData(
-    functionFragment: "requestWithdrawal",
-    values: [{ rawValue: BigNumberish }]
-  ): string
+  encodeFunctionData(functionFragment: "requestWithdrawal", values: [{ rawValue: BigNumberish }]): string
   encodeFunctionData(functionFragment: "setCurrentTime", values: [BigNumberish]): string
   encodeFunctionData(functionFragment: "settleExpired", values?: undefined): string
   encodeFunctionData(functionFragment: "sponsorDisputeRewardPct", values?: undefined): string
@@ -115,10 +103,7 @@ interface ExpiringMultiPartyInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "totalTokensOutstanding", values?: undefined): string
   encodeFunctionData(functionFragment: "transferPositionPassedRequest", values: [string]): string
   encodeFunctionData(functionFragment: "withdraw", values: [{ rawValue: BigNumberish }]): string
-  encodeFunctionData(
-    functionFragment: "withdrawLiquidation",
-    values: [BigNumberish, string]
-  ): string
+  encodeFunctionData(functionFragment: "withdrawLiquidation", values: [BigNumberish, string]): string
   encodeFunctionData(functionFragment: "withdrawPassedRequest", values?: undefined): string
   encodeFunctionData(functionFragment: "withdrawalLiveness", values?: undefined): string
 
@@ -275,10 +260,7 @@ export interface ExpiringMultiParty extends Contract {
       0: BigNumber
     }>
 
-    deposit(
-      collateralAmount: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    deposit(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
     depositTo(
       sponsor: string,
@@ -286,11 +268,7 @@ export interface ExpiringMultiParty extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>
 
-    dispute(
-      liquidationId: BigNumberish,
-      sponsor: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    dispute(liquidationId: BigNumberish, sponsor: string, overrides?: Overrides): Promise<ContractTransaction>
 
     disputeBondPct(
       overrides?: CallOverrides
@@ -483,19 +461,13 @@ export interface ExpiringMultiParty extends Contract {
       0: BigNumber
     }>
 
-    redeem(
-      numTokens: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    redeem(numTokens: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
     remargin(overrides?: Overrides): Promise<ContractTransaction>
 
     requestTransferPosition(overrides?: Overrides): Promise<ContractTransaction>
 
-    requestWithdrawal(
-      collateralAmount: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    requestWithdrawal(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
     setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -534,15 +506,9 @@ export interface ExpiringMultiParty extends Contract {
       0: BigNumber
     }>
 
-    transferPositionPassedRequest(
-      newSponsorAddress: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    transferPositionPassedRequest(newSponsorAddress: string, overrides?: Overrides): Promise<ContractTransaction>
 
-    withdraw(
-      collateralAmount: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    withdraw(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
     withdrawLiquidation(
       liquidationId: BigNumberish,
@@ -586,10 +552,7 @@ export interface ExpiringMultiParty extends Contract {
 
   cumulativeFeeMultiplier(overrides?: CallOverrides): Promise<BigNumber>
 
-  deposit(
-    collateralAmount: { rawValue: BigNumberish },
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  deposit(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
   depositTo(
     sponsor: string,
@@ -597,11 +560,7 @@ export interface ExpiringMultiParty extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>
 
-  dispute(
-    liquidationId: BigNumberish,
-    sponsor: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  dispute(liquidationId: BigNumberish, sponsor: string, overrides?: Overrides): Promise<ContractTransaction>
 
   disputeBondPct(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -617,10 +576,7 @@ export interface ExpiringMultiParty extends Contract {
 
   finder(overrides?: CallOverrides): Promise<string>
 
-  getCollateral(
-    sponsor: string,
-    overrides?: CallOverrides
-  ): Promise<{ rawValue: BigNumber; 0: BigNumber }>
+  getCollateral(sponsor: string, overrides?: CallOverrides): Promise<{ rawValue: BigNumber; 0: BigNumber }>
 
   getCurrentTime(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -719,10 +675,7 @@ export interface ExpiringMultiParty extends Contract {
 
   requestTransferPosition(overrides?: Overrides): Promise<ContractTransaction>
 
-  requestWithdrawal(
-    collateralAmount: { rawValue: BigNumberish },
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  requestWithdrawal(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
   setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -738,21 +691,11 @@ export interface ExpiringMultiParty extends Contract {
 
   totalTokensOutstanding(overrides?: CallOverrides): Promise<BigNumber>
 
-  transferPositionPassedRequest(
-    newSponsorAddress: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  transferPositionPassedRequest(newSponsorAddress: string, overrides?: Overrides): Promise<ContractTransaction>
 
-  withdraw(
-    collateralAmount: { rawValue: BigNumberish },
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  withdraw(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
-  withdrawLiquidation(
-    liquidationId: BigNumberish,
-    sponsor: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  withdrawLiquidation(liquidationId: BigNumberish, sponsor: string, overrides?: Overrides): Promise<ContractTransaction>
 
   withdrawPassedRequest(overrides?: Overrides): Promise<ContractTransaction>
 
@@ -795,11 +738,7 @@ export interface ExpiringMultiParty extends Contract {
 
     deposit(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<void>
 
-    depositTo(
-      sponsor: string,
-      collateralAmount: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<void>
+    depositTo(sponsor: string, collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<void>
 
     dispute(
       liquidationId: BigNumberish,
@@ -821,10 +760,7 @@ export interface ExpiringMultiParty extends Contract {
 
     finder(overrides?: CallOverrides): Promise<string>
 
-    getCollateral(
-      sponsor: string,
-      overrides?: CallOverrides
-    ): Promise<{ rawValue: BigNumber; 0: BigNumber }>
+    getCollateral(sponsor: string, overrides?: CallOverrides): Promise<{ rawValue: BigNumber; 0: BigNumber }>
 
     getCurrentTime(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -917,19 +853,13 @@ export interface ExpiringMultiParty extends Contract {
 
     rawTotalPositionCollateral(overrides?: CallOverrides): Promise<BigNumber>
 
-    redeem(
-      numTokens: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<{ rawValue: BigNumber; 0: BigNumber }>
+    redeem(numTokens: { rawValue: BigNumberish }, overrides?: Overrides): Promise<{ rawValue: BigNumber; 0: BigNumber }>
 
     remargin(overrides?: Overrides): Promise<void>
 
     requestTransferPosition(overrides?: Overrides): Promise<void>
 
-    requestWithdrawal(
-      collateralAmount: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<void>
+    requestWithdrawal(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<void>
 
     setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<void>
 
@@ -941,9 +871,7 @@ export interface ExpiringMultiParty extends Contract {
 
     tokenCurrency(overrides?: CallOverrides): Promise<string>
 
-    totalPositionCollateral(
-      overrides?: CallOverrides
-    ): Promise<{ rawValue: BigNumber; 0: BigNumber }>
+    totalPositionCollateral(overrides?: CallOverrides): Promise<{ rawValue: BigNumber; 0: BigNumber }>
 
     totalTokensOutstanding(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -979,11 +907,7 @@ export interface ExpiringMultiParty extends Contract {
       disputeSucceeded: null
     ): EventFilter
 
-    EmergencyShutdown(
-      caller: string | null,
-      originalExpirationTimestamp: null,
-      shutdownTimestamp: null
-    ): EventFilter
+    EmergencyShutdown(caller: string | null, originalExpirationTimestamp: null, shutdownTimestamp: null): EventFilter
 
     EndedSponsorPosition(sponsor: string | null): EventFilter
 
@@ -1020,11 +944,7 @@ export interface ExpiringMultiParty extends Contract {
       tokenAmount: BigNumberish | null
     ): EventFilter
 
-    Redeem(
-      sponsor: string | null,
-      collateralAmount: BigNumberish | null,
-      tokenAmount: BigNumberish | null
-    ): EventFilter
+    Redeem(sponsor: string | null, collateralAmount: BigNumberish | null, tokenAmount: BigNumberish | null): EventFilter
 
     RegularFeesPaid(regularFee: BigNumberish | null, lateFee: BigNumberish | null): EventFilter
 
@@ -1032,22 +952,13 @@ export interface ExpiringMultiParty extends Contract {
 
     RequestTransferPositionCanceled(oldSponsor: string | null): EventFilter
 
-    RequestTransferPositionExecuted(
-      oldSponsor: string | null,
-      newSponsor: string | null
-    ): EventFilter
+    RequestTransferPositionExecuted(oldSponsor: string | null, newSponsor: string | null): EventFilter
 
     RequestWithdrawal(sponsor: string | null, collateralAmount: BigNumberish | null): EventFilter
 
-    RequestWithdrawalCanceled(
-      sponsor: string | null,
-      collateralAmount: BigNumberish | null
-    ): EventFilter
+    RequestWithdrawalCanceled(sponsor: string | null, collateralAmount: BigNumberish | null): EventFilter
 
-    RequestWithdrawalExecuted(
-      sponsor: string | null,
-      collateralAmount: BigNumberish | null
-    ): EventFilter
+    RequestWithdrawalExecuted(sponsor: string | null, collateralAmount: BigNumberish | null): EventFilter
 
     SettleExpiredPosition(
       caller: string | null,
@@ -1064,10 +975,7 @@ export interface ExpiringMultiParty extends Contract {
     collateralCurrency(): Promise<BigNumber>
     collateralRequirement(): Promise<BigNumber>
     contractState(): Promise<BigNumber>
-    create(
-      collateralAmount: { rawValue: BigNumberish },
-      numTokens: { rawValue: BigNumberish }
-    ): Promise<BigNumber>
+    create(collateralAmount: { rawValue: BigNumberish }, numTokens: { rawValue: BigNumberish }): Promise<BigNumber>
     createLiquidation(
       sponsor: string,
       minCollateralPerToken: { rawValue: BigNumberish },
@@ -1135,10 +1043,7 @@ export interface ExpiringMultiParty extends Contract {
     ): Promise<PopulatedTransaction>
     cumulativeFeeMultiplier(): Promise<PopulatedTransaction>
     deposit(collateralAmount: { rawValue: BigNumberish }): Promise<PopulatedTransaction>
-    depositTo(
-      sponsor: string,
-      collateralAmount: { rawValue: BigNumberish }
-    ): Promise<PopulatedTransaction>
+    depositTo(sponsor: string, collateralAmount: { rawValue: BigNumberish }): Promise<PopulatedTransaction>
     dispute(liquidationId: BigNumberish, sponsor: string): Promise<PopulatedTransaction>
     disputeBondPct(): Promise<PopulatedTransaction>
     disputerDisputeRewardPct(): Promise<PopulatedTransaction>

@@ -29,10 +29,7 @@ interface Erc20Interface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string
   encodeFunctionData(functionFragment: "totalSupply", values?: undefined): string
   encodeFunctionData(functionFragment: "transfer", values: [string, BigNumberish]): string
-  encodeFunctionData(
-    functionFragment: "transferFrom",
-    values: [string, string, BigNumberish]
-  ): string
+  encodeFunctionData(functionFragment: "transferFrom", values: [string, string, BigNumberish]): string
 
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result
@@ -77,11 +74,7 @@ export interface Erc20 extends Contract {
       0: BigNumber
     }>
 
-    approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    approve(spender: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
     balanceOf(
       account: string,
@@ -102,11 +95,7 @@ export interface Erc20 extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>
 
-    increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    increaseAllowance(spender: string, addedValue: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
     name(
       overrides?: CallOverrides
@@ -126,11 +115,7 @@ export interface Erc20 extends Contract {
       0: BigNumber
     }>
 
-    transfer(
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    transfer(recipient: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
     transferFrom(
       sender: string,
@@ -142,27 +127,15 @@ export interface Erc20 extends Contract {
 
   allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<BigNumber>
 
-  approve(
-    spender: string,
-    amount: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  approve(spender: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>
 
   decimals(overrides?: CallOverrides): Promise<number>
 
-  decreaseAllowance(
-    spender: string,
-    subtractedValue: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  decreaseAllowance(spender: string, subtractedValue: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-  increaseAllowance(
-    spender: string,
-    addedValue: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  increaseAllowance(spender: string, addedValue: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   name(overrides?: CallOverrides): Promise<string>
 
@@ -170,11 +143,7 @@ export interface Erc20 extends Contract {
 
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>
 
-  transfer(
-    recipient: string,
-    amount: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  transfer(recipient: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   transferFrom(
     sender: string,
@@ -192,17 +161,9 @@ export interface Erc20 extends Contract {
 
     decimals(overrides?: CallOverrides): Promise<number>
 
-    decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: Overrides
-    ): Promise<boolean>
+    decreaseAllowance(spender: string, subtractedValue: BigNumberish, overrides?: Overrides): Promise<boolean>
 
-    increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides
-    ): Promise<boolean>
+    increaseAllowance(spender: string, addedValue: BigNumberish, overrides?: Overrides): Promise<boolean>
 
     name(overrides?: CallOverrides): Promise<string>
 
@@ -212,12 +173,7 @@ export interface Erc20 extends Contract {
 
     transfer(recipient: string, amount: BigNumberish, overrides?: Overrides): Promise<boolean>
 
-    transferFrom(
-      sender: string,
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<boolean>
+    transferFrom(sender: string, recipient: string, amount: BigNumberish, overrides?: Overrides): Promise<boolean>
   }
 
   filters: {
@@ -251,10 +207,6 @@ export interface Erc20 extends Contract {
     symbol(): Promise<PopulatedTransaction>
     totalSupply(): Promise<PopulatedTransaction>
     transfer(recipient: string, amount: BigNumberish): Promise<PopulatedTransaction>
-    transferFrom(
-      sender: string,
-      recipient: string,
-      amount: BigNumberish
-    ): Promise<PopulatedTransaction>
+    transferFrom(sender: string, recipient: string, amount: BigNumberish): Promise<PopulatedTransaction>
   }
 }

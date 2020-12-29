@@ -15,12 +15,7 @@ export class ExpandedErc20InstanceCreator extends ContractFactory {
     _tokenDecimals: BigNumberish,
     overrides?: Overrides
   ): Promise<ExpandedErc20> {
-    return super.deploy(
-      _tokenName,
-      _tokenSymbol,
-      _tokenDecimals,
-      overrides || {}
-    ) as Promise<ExpandedErc20>
+    return super.deploy(_tokenName, _tokenSymbol, _tokenDecimals, overrides || {}) as Promise<ExpandedErc20>
   }
   getDeployTransaction(
     _tokenName: string,

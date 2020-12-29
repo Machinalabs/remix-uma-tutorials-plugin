@@ -203,10 +203,7 @@ export interface ExpiringMultiPartyCreator extends Contract {
   }
 
   filters: {
-    CreatedExpiringMultiParty(
-      expiringMultiPartyAddress: string | null,
-      deployerAddress: string | null
-    ): EventFilter
+    CreatedExpiringMultiParty(expiringMultiPartyAddress: string | null, deployerAddress: string | null): EventFilter
   }
 
   estimateGas: {

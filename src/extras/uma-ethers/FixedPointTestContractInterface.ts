@@ -45,80 +45,35 @@ interface FixedPointTestInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "wrapDivCeil", values: [BigNumberish, BigNumberish]): string
   encodeFunctionData(functionFragment: "wrapFromUnscaledUint", values: [BigNumberish]): string
   encodeFunctionData(functionFragment: "wrapIsEqual", values: [BigNumberish, BigNumberish]): string
-  encodeFunctionData(
-    functionFragment: "wrapIsGreaterThan",
-    values: [BigNumberish, BigNumberish]
-  ): string
-  encodeFunctionData(
-    functionFragment: "wrapIsGreaterThanOrEqual",
-    values: [BigNumberish, BigNumberish]
-  ): string
-  encodeFunctionData(
-    functionFragment: "wrapIsLessThan",
-    values: [BigNumberish, BigNumberish]
-  ): string
-  encodeFunctionData(
-    functionFragment: "wrapIsLessThanOrEqual",
-    values: [BigNumberish, BigNumberish]
-  ): string
+  encodeFunctionData(functionFragment: "wrapIsGreaterThan", values: [BigNumberish, BigNumberish]): string
+  encodeFunctionData(functionFragment: "wrapIsGreaterThanOrEqual", values: [BigNumberish, BigNumberish]): string
+  encodeFunctionData(functionFragment: "wrapIsLessThan", values: [BigNumberish, BigNumberish]): string
+  encodeFunctionData(functionFragment: "wrapIsLessThanOrEqual", values: [BigNumberish, BigNumberish]): string
   encodeFunctionData(functionFragment: "wrapMax", values: [BigNumberish, BigNumberish]): string
   encodeFunctionData(functionFragment: "wrapMin", values: [BigNumberish, BigNumberish]): string
   encodeFunctionData(functionFragment: "wrapMixedAdd", values: [BigNumberish, BigNumberish]): string
   encodeFunctionData(functionFragment: "wrapMixedDiv", values: [BigNumberish, BigNumberish]): string
-  encodeFunctionData(
-    functionFragment: "wrapMixedDivCeil",
-    values: [BigNumberish, BigNumberish]
-  ): string
-  encodeFunctionData(
-    functionFragment: "wrapMixedDivOpposite",
-    values: [BigNumberish, BigNumberish]
-  ): string
-  encodeFunctionData(
-    functionFragment: "wrapMixedIsEqual",
-    values: [BigNumberish, BigNumberish]
-  ): string
-  encodeFunctionData(
-    functionFragment: "wrapMixedIsGreaterThan",
-    values: [BigNumberish, BigNumberish]
-  ): string
-  encodeFunctionData(
-    functionFragment: "wrapMixedIsGreaterThanOpposite",
-    values: [BigNumberish, BigNumberish]
-  ): string
-  encodeFunctionData(
-    functionFragment: "wrapMixedIsGreaterThanOrEqual",
-    values: [BigNumberish, BigNumberish]
-  ): string
+  encodeFunctionData(functionFragment: "wrapMixedDivCeil", values: [BigNumberish, BigNumberish]): string
+  encodeFunctionData(functionFragment: "wrapMixedDivOpposite", values: [BigNumberish, BigNumberish]): string
+  encodeFunctionData(functionFragment: "wrapMixedIsEqual", values: [BigNumberish, BigNumberish]): string
+  encodeFunctionData(functionFragment: "wrapMixedIsGreaterThan", values: [BigNumberish, BigNumberish]): string
+  encodeFunctionData(functionFragment: "wrapMixedIsGreaterThanOpposite", values: [BigNumberish, BigNumberish]): string
+  encodeFunctionData(functionFragment: "wrapMixedIsGreaterThanOrEqual", values: [BigNumberish, BigNumberish]): string
   encodeFunctionData(
     functionFragment: "wrapMixedIsGreaterThanOrEqualOpposite",
     values: [BigNumberish, BigNumberish]
   ): string
-  encodeFunctionData(
-    functionFragment: "wrapMixedIsLessThan",
-    values: [BigNumberish, BigNumberish]
-  ): string
-  encodeFunctionData(
-    functionFragment: "wrapMixedIsLessThanOpposite",
-    values: [BigNumberish, BigNumberish]
-  ): string
-  encodeFunctionData(
-    functionFragment: "wrapMixedIsLessThanOrEqual",
-    values: [BigNumberish, BigNumberish]
-  ): string
+  encodeFunctionData(functionFragment: "wrapMixedIsLessThan", values: [BigNumberish, BigNumberish]): string
+  encodeFunctionData(functionFragment: "wrapMixedIsLessThanOpposite", values: [BigNumberish, BigNumberish]): string
+  encodeFunctionData(functionFragment: "wrapMixedIsLessThanOrEqual", values: [BigNumberish, BigNumberish]): string
   encodeFunctionData(
     functionFragment: "wrapMixedIsLessThanOrEqualOpposite",
     values: [BigNumberish, BigNumberish]
   ): string
   encodeFunctionData(functionFragment: "wrapMixedMul", values: [BigNumberish, BigNumberish]): string
-  encodeFunctionData(
-    functionFragment: "wrapMixedMulCeil",
-    values: [BigNumberish, BigNumberish]
-  ): string
+  encodeFunctionData(functionFragment: "wrapMixedMulCeil", values: [BigNumberish, BigNumberish]): string
   encodeFunctionData(functionFragment: "wrapMixedSub", values: [BigNumberish, BigNumberish]): string
-  encodeFunctionData(
-    functionFragment: "wrapMixedSubOpposite",
-    values: [BigNumberish, BigNumberish]
-  ): string
+  encodeFunctionData(functionFragment: "wrapMixedSubOpposite", values: [BigNumberish, BigNumberish]): string
   encodeFunctionData(functionFragment: "wrapMul", values: [BigNumberish, BigNumberish]): string
   encodeFunctionData(functionFragment: "wrapMulCeil", values: [BigNumberish, BigNumberish]): string
   encodeFunctionData(functionFragment: "wrapPow", values: [BigNumberish, BigNumberish]): string
@@ -143,17 +98,11 @@ interface FixedPointTestInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "wrapMixedIsGreaterThan", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "wrapMixedIsGreaterThanOpposite", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "wrapMixedIsGreaterThanOrEqual", data: BytesLike): Result
-  decodeFunctionResult(
-    functionFragment: "wrapMixedIsGreaterThanOrEqualOpposite",
-    data: BytesLike
-  ): Result
+  decodeFunctionResult(functionFragment: "wrapMixedIsGreaterThanOrEqualOpposite", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "wrapMixedIsLessThan", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "wrapMixedIsLessThanOpposite", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "wrapMixedIsLessThanOrEqual", data: BytesLike): Result
-  decodeFunctionResult(
-    functionFragment: "wrapMixedIsLessThanOrEqualOpposite",
-    data: BytesLike
-  ): Result
+  decodeFunctionResult(functionFragment: "wrapMixedIsLessThanOrEqualOpposite", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "wrapMixedMul", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "wrapMixedMulCeil", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "wrapMixedSub", data: BytesLike): Result
@@ -448,19 +397,11 @@ export interface FixedPointTest extends Contract {
 
   wrapIsGreaterThan(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-  wrapIsGreaterThanOrEqual(
-    a: BigNumberish,
-    b: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  wrapIsGreaterThanOrEqual(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
   wrapIsLessThan(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-  wrapIsLessThanOrEqual(
-    a: BigNumberish,
-    b: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  wrapIsLessThanOrEqual(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
   wrapMax(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
@@ -472,57 +413,25 @@ export interface FixedPointTest extends Contract {
 
   wrapMixedDivCeil(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
-  wrapMixedDivOpposite(
-    a: BigNumberish,
-    b: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>
+  wrapMixedDivOpposite(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
   wrapMixedIsEqual(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-  wrapMixedIsGreaterThan(
-    a: BigNumberish,
-    b: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  wrapMixedIsGreaterThan(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-  wrapMixedIsGreaterThanOpposite(
-    a: BigNumberish,
-    b: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  wrapMixedIsGreaterThanOpposite(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-  wrapMixedIsGreaterThanOrEqual(
-    a: BigNumberish,
-    b: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  wrapMixedIsGreaterThanOrEqual(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-  wrapMixedIsGreaterThanOrEqualOpposite(
-    a: BigNumberish,
-    b: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  wrapMixedIsGreaterThanOrEqualOpposite(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
   wrapMixedIsLessThan(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-  wrapMixedIsLessThanOpposite(
-    a: BigNumberish,
-    b: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  wrapMixedIsLessThanOpposite(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-  wrapMixedIsLessThanOrEqual(
-    a: BigNumberish,
-    b: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  wrapMixedIsLessThanOrEqual(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-  wrapMixedIsLessThanOrEqualOpposite(
-    a: BigNumberish,
-    b: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  wrapMixedIsLessThanOrEqualOpposite(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
   wrapMixedMul(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
@@ -530,11 +439,7 @@ export interface FixedPointTest extends Contract {
 
   wrapMixedSub(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
-  wrapMixedSubOpposite(
-    a: BigNumberish,
-    b: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>
+  wrapMixedSubOpposite(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
   wrapMul(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
@@ -557,19 +462,11 @@ export interface FixedPointTest extends Contract {
 
     wrapIsGreaterThan(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-    wrapIsGreaterThanOrEqual(
-      a: BigNumberish,
-      b: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    wrapIsGreaterThanOrEqual(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
     wrapIsLessThan(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-    wrapIsLessThanOrEqual(
-      a: BigNumberish,
-      b: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    wrapIsLessThanOrEqual(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
     wrapMax(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
@@ -579,83 +476,35 @@ export interface FixedPointTest extends Contract {
 
     wrapMixedDiv(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
-    wrapMixedDivCeil(
-      a: BigNumberish,
-      b: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>
+    wrapMixedDivCeil(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
-    wrapMixedDivOpposite(
-      a: BigNumberish,
-      b: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>
+    wrapMixedDivOpposite(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     wrapMixedIsEqual(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-    wrapMixedIsGreaterThan(
-      a: BigNumberish,
-      b: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    wrapMixedIsGreaterThan(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-    wrapMixedIsGreaterThanOpposite(
-      a: BigNumberish,
-      b: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    wrapMixedIsGreaterThanOpposite(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-    wrapMixedIsGreaterThanOrEqual(
-      a: BigNumberish,
-      b: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    wrapMixedIsGreaterThanOrEqual(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-    wrapMixedIsGreaterThanOrEqualOpposite(
-      a: BigNumberish,
-      b: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    wrapMixedIsGreaterThanOrEqualOpposite(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-    wrapMixedIsLessThan(
-      a: BigNumberish,
-      b: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    wrapMixedIsLessThan(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-    wrapMixedIsLessThanOpposite(
-      a: BigNumberish,
-      b: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    wrapMixedIsLessThanOpposite(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-    wrapMixedIsLessThanOrEqual(
-      a: BigNumberish,
-      b: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    wrapMixedIsLessThanOrEqual(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
-    wrapMixedIsLessThanOrEqualOpposite(
-      a: BigNumberish,
-      b: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    wrapMixedIsLessThanOrEqualOpposite(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
     wrapMixedMul(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
-    wrapMixedMulCeil(
-      a: BigNumberish,
-      b: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>
+    wrapMixedMulCeil(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     wrapMixedSub(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
-    wrapMixedSubOpposite(
-      a: BigNumberish,
-      b: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>
+    wrapMixedSubOpposite(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     wrapMul(a: BigNumberish, b: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
@@ -723,17 +572,11 @@ export interface FixedPointTest extends Contract {
     wrapMixedIsGreaterThan(a: BigNumberish, b: BigNumberish): Promise<PopulatedTransaction>
     wrapMixedIsGreaterThanOpposite(a: BigNumberish, b: BigNumberish): Promise<PopulatedTransaction>
     wrapMixedIsGreaterThanOrEqual(a: BigNumberish, b: BigNumberish): Promise<PopulatedTransaction>
-    wrapMixedIsGreaterThanOrEqualOpposite(
-      a: BigNumberish,
-      b: BigNumberish
-    ): Promise<PopulatedTransaction>
+    wrapMixedIsGreaterThanOrEqualOpposite(a: BigNumberish, b: BigNumberish): Promise<PopulatedTransaction>
     wrapMixedIsLessThan(a: BigNumberish, b: BigNumberish): Promise<PopulatedTransaction>
     wrapMixedIsLessThanOpposite(a: BigNumberish, b: BigNumberish): Promise<PopulatedTransaction>
     wrapMixedIsLessThanOrEqual(a: BigNumberish, b: BigNumberish): Promise<PopulatedTransaction>
-    wrapMixedIsLessThanOrEqualOpposite(
-      a: BigNumberish,
-      b: BigNumberish
-    ): Promise<PopulatedTransaction>
+    wrapMixedIsLessThanOrEqualOpposite(a: BigNumberish, b: BigNumberish): Promise<PopulatedTransaction>
     wrapMixedMul(a: BigNumberish, b: BigNumberish): Promise<PopulatedTransaction>
     wrapMixedMulCeil(a: BigNumberish, b: BigNumberish): Promise<PopulatedTransaction>
     wrapMixedSub(a: BigNumberish, b: BigNumberish): Promise<PopulatedTransaction>

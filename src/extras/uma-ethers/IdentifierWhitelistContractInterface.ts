@@ -53,10 +53,7 @@ export interface IdentifierWhitelist extends Contract {
   interface: IdentifierWhitelistInterface
 
   functions: {
-    addSupportedIdentifier(
-      identifier: BytesLike,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    addSupportedIdentifier(identifier: BytesLike, overrides?: Overrides): Promise<ContractTransaction>
 
     isIdentifierSupported(
       identifier: BytesLike,
@@ -71,10 +68,7 @@ export interface IdentifierWhitelist extends Contract {
       0: string
     }>
 
-    removeSupportedIdentifier(
-      identifier: BytesLike,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    removeSupportedIdentifier(identifier: BytesLike, overrides?: Overrides): Promise<ContractTransaction>
 
     renounceOwnership(overrides?: Overrides): Promise<ContractTransaction>
 
@@ -87,10 +81,7 @@ export interface IdentifierWhitelist extends Contract {
 
   owner(overrides?: CallOverrides): Promise<string>
 
-  removeSupportedIdentifier(
-    identifier: BytesLike,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  removeSupportedIdentifier(identifier: BytesLike, overrides?: Overrides): Promise<ContractTransaction>
 
   renounceOwnership(overrides?: Overrides): Promise<ContractTransaction>
 

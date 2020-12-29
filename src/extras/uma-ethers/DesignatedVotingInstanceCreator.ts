@@ -15,12 +15,7 @@ export class DesignatedVotingInstanceCreator extends ContractFactory {
     voterAddress: string,
     overrides?: Overrides
   ): Promise<DesignatedVoting> {
-    return super.deploy(
-      finderAddress,
-      ownerAddress,
-      voterAddress,
-      overrides || {}
-    ) as Promise<DesignatedVoting>
+    return super.deploy(finderAddress, ownerAddress, voterAddress, overrides || {}) as Promise<DesignatedVoting>
   }
   getDeployTransaction(
     finderAddress: string,

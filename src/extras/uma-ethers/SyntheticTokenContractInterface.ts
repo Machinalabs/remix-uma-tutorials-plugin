@@ -59,10 +59,7 @@ interface SyntheticTokenInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string
   encodeFunctionData(functionFragment: "totalSupply", values?: undefined): string
   encodeFunctionData(functionFragment: "transfer", values: [string, BigNumberish]): string
-  encodeFunctionData(
-    functionFragment: "transferFrom",
-    values: [string, string, BigNumberish]
-  ): string
+  encodeFunctionData(functionFragment: "transferFrom", values: [string, string, BigNumberish]): string
 
   decodeFunctionResult(functionFragment: "addBurner", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "addMember", data: BytesLike): Result
@@ -122,11 +119,7 @@ export interface SyntheticToken extends Contract {
   functions: {
     addBurner(account: string, overrides?: Overrides): Promise<ContractTransaction>
 
-    addMember(
-      roleId: BigNumberish,
-      newMember: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
     addMinter(account: string, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -138,11 +131,7 @@ export interface SyntheticToken extends Contract {
       0: BigNumber
     }>
 
-    approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    approve(spender: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
     balanceOf(
       account: string,
@@ -180,11 +169,7 @@ export interface SyntheticToken extends Contract {
       0: boolean
     }>
 
-    increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    increaseAllowance(spender: string, addedValue: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
     isBurner(
       account: string,
@@ -200,11 +185,7 @@ export interface SyntheticToken extends Contract {
       0: boolean
     }>
 
-    mint(
-      recipient: string,
-      value: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    mint(recipient: string, value: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
     name(
       overrides?: CallOverrides
@@ -214,21 +195,13 @@ export interface SyntheticToken extends Contract {
 
     removeBurner(account: string, overrides?: Overrides): Promise<ContractTransaction>
 
-    removeMember(
-      roleId: BigNumberish,
-      memberToRemove: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
     removeMinter(account: string, overrides?: Overrides): Promise<ContractTransaction>
 
     renounceMembership(roleId: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-    resetMember(
-      roleId: BigNumberish,
-      newMember: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    resetMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
     resetOwner(account: string, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -244,11 +217,7 @@ export interface SyntheticToken extends Contract {
       0: BigNumber
     }>
 
-    transfer(
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    transfer(recipient: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
     transferFrom(
       sender: string,
@@ -260,21 +229,13 @@ export interface SyntheticToken extends Contract {
 
   addBurner(account: string, overrides?: Overrides): Promise<ContractTransaction>
 
-  addMember(
-    roleId: BigNumberish,
-    newMember: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
   addMinter(account: string, overrides?: Overrides): Promise<ContractTransaction>
 
   allowance(owner: string, spender: string, overrides?: CallOverrides): Promise<BigNumber>
 
-  approve(
-    spender: string,
-    amount: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  approve(spender: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>
 
@@ -282,25 +243,13 @@ export interface SyntheticToken extends Contract {
 
   decimals(overrides?: CallOverrides): Promise<number>
 
-  decreaseAllowance(
-    spender: string,
-    subtractedValue: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  decreaseAllowance(spender: string, subtractedValue: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   getMember(roleId: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-  holdsRole(
-    roleId: BigNumberish,
-    memberToCheck: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  holdsRole(roleId: BigNumberish, memberToCheck: string, overrides?: CallOverrides): Promise<boolean>
 
-  increaseAllowance(
-    spender: string,
-    addedValue: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  increaseAllowance(spender: string, addedValue: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   isBurner(account: string, overrides?: CallOverrides): Promise<boolean>
 
@@ -312,21 +261,13 @@ export interface SyntheticToken extends Contract {
 
   removeBurner(account: string, overrides?: Overrides): Promise<ContractTransaction>
 
-  removeMember(
-    roleId: BigNumberish,
-    memberToRemove: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
   removeMinter(account: string, overrides?: Overrides): Promise<ContractTransaction>
 
   renounceMembership(roleId: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-  resetMember(
-    roleId: BigNumberish,
-    newMember: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  resetMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
   resetOwner(account: string, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -334,11 +275,7 @@ export interface SyntheticToken extends Contract {
 
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>
 
-  transfer(
-    recipient: string,
-    amount: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  transfer(recipient: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   transferFrom(
     sender: string,
@@ -364,25 +301,13 @@ export interface SyntheticToken extends Contract {
 
     decimals(overrides?: CallOverrides): Promise<number>
 
-    decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: Overrides
-    ): Promise<boolean>
+    decreaseAllowance(spender: string, subtractedValue: BigNumberish, overrides?: Overrides): Promise<boolean>
 
     getMember(roleId: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-    holdsRole(
-      roleId: BigNumberish,
-      memberToCheck: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    holdsRole(roleId: BigNumberish, memberToCheck: string, overrides?: CallOverrides): Promise<boolean>
 
-    increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides
-    ): Promise<boolean>
+    increaseAllowance(spender: string, addedValue: BigNumberish, overrides?: Overrides): Promise<boolean>
 
     isBurner(account: string, overrides?: CallOverrides): Promise<boolean>
 
@@ -410,34 +335,17 @@ export interface SyntheticToken extends Contract {
 
     transfer(recipient: string, amount: BigNumberish, overrides?: Overrides): Promise<boolean>
 
-    transferFrom(
-      sender: string,
-      recipient: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<boolean>
+    transferFrom(sender: string, recipient: string, amount: BigNumberish, overrides?: Overrides): Promise<boolean>
   }
 
   filters: {
-    AddedSharedMember(
-      roleId: BigNumberish | null,
-      newMember: string | null,
-      manager: string | null
-    ): EventFilter
+    AddedSharedMember(roleId: BigNumberish | null, newMember: string | null, manager: string | null): EventFilter
 
     Approval(owner: string | null, spender: string | null, value: null): EventFilter
 
-    RemovedSharedMember(
-      roleId: BigNumberish | null,
-      oldMember: string | null,
-      manager: string | null
-    ): EventFilter
+    RemovedSharedMember(roleId: BigNumberish | null, oldMember: string | null, manager: string | null): EventFilter
 
-    ResetExclusiveMember(
-      roleId: BigNumberish | null,
-      newMember: string | null,
-      manager: string | null
-    ): EventFilter
+    ResetExclusiveMember(roleId: BigNumberish | null, newMember: string | null, manager: string | null): EventFilter
 
     Transfer(from: string | null, to: string | null, value: null): EventFilter
   }
@@ -497,10 +405,6 @@ export interface SyntheticToken extends Contract {
     symbol(): Promise<PopulatedTransaction>
     totalSupply(): Promise<PopulatedTransaction>
     transfer(recipient: string, amount: BigNumberish): Promise<PopulatedTransaction>
-    transferFrom(
-      sender: string,
-      recipient: string,
-      amount: BigNumberish
-    ): Promise<PopulatedTransaction>
+    transferFrom(sender: string, recipient: string, amount: BigNumberish): Promise<PopulatedTransaction>
   }
 }

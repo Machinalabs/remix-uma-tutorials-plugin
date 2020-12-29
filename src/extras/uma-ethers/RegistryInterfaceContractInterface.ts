@@ -78,11 +78,7 @@ export interface RegistryInterface extends Contract {
       0: boolean
     }>
 
-    registerContract(
-      parties: string[],
-      contractAddress: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    registerContract(parties: string[], contractAddress: string, overrides?: Overrides): Promise<ContractTransaction>
 
     removePartyFromContract(party: string, overrides?: Overrides): Promise<ContractTransaction>
   }
@@ -95,17 +91,9 @@ export interface RegistryInterface extends Contract {
 
   isContractRegistered(contractAddress: string, overrides?: CallOverrides): Promise<boolean>
 
-  isPartyMemberOfContract(
-    party: string,
-    contractAddress: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  isPartyMemberOfContract(party: string, contractAddress: string, overrides?: CallOverrides): Promise<boolean>
 
-  registerContract(
-    parties: string[],
-    contractAddress: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  registerContract(parties: string[], contractAddress: string, overrides?: Overrides): Promise<ContractTransaction>
 
   removePartyFromContract(party: string, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -118,17 +106,9 @@ export interface RegistryInterface extends Contract {
 
     isContractRegistered(contractAddress: string, overrides?: CallOverrides): Promise<boolean>
 
-    isPartyMemberOfContract(
-      party: string,
-      contractAddress: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    isPartyMemberOfContract(party: string, contractAddress: string, overrides?: CallOverrides): Promise<boolean>
 
-    registerContract(
-      parties: string[],
-      contractAddress: string,
-      overrides?: Overrides
-    ): Promise<void>
+    registerContract(parties: string[], contractAddress: string, overrides?: Overrides): Promise<void>
 
     removePartyFromContract(party: string, overrides?: Overrides): Promise<void>
   }

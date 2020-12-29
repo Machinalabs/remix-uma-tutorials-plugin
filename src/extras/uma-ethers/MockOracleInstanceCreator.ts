@@ -9,18 +9,10 @@ export class MockOracleInstanceCreator extends ContractFactory {
     super(_abi, _bytecode, signer)
   }
 
-  deploy(
-    _finderAddress: string,
-    _timerAddress: string,
-    overrides?: Overrides
-  ): Promise<MockOracle> {
+  deploy(_finderAddress: string, _timerAddress: string, overrides?: Overrides): Promise<MockOracle> {
     return super.deploy(_finderAddress, _timerAddress, overrides || {}) as Promise<MockOracle>
   }
-  getDeployTransaction(
-    _finderAddress: string,
-    _timerAddress: string,
-    overrides?: Overrides
-  ): TransactionRequest {
+  getDeployTransaction(_finderAddress: string, _timerAddress: string, overrides?: Overrides): TransactionRequest {
     return super.getDeployTransaction(_finderAddress, _timerAddress, overrides || {})
   }
   attach(address: string): MockOracle {

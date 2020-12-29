@@ -84,10 +84,7 @@ export interface AddressWhitelist extends Contract {
       0: string
     }>
 
-    removeFromWhitelist(
-      elementToRemove: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    removeFromWhitelist(elementToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
     renounceOwnership(overrides?: Overrides): Promise<ContractTransaction>
 

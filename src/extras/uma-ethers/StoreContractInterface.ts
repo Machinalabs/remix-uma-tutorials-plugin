@@ -1,11 +1,5 @@
 import { ethers, EventFilter, Signer, BigNumber, BigNumberish, PopulatedTransaction } from "ethers"
-import {
-  Contract,
-  ContractTransaction,
-  Overrides,
-  PayableOverrides,
-  CallOverrides,
-} from "@ethersproject/contracts"
+import { Contract, ContractTransaction, Overrides, PayableOverrides, CallOverrides } from "@ethersproject/contracts"
 import { BytesLike } from "@ethersproject/bytes"
 import { Listener, Provider } from "@ethersproject/providers"
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi"
@@ -49,26 +43,14 @@ interface StoreInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "getMember", values: [BigNumberish]): string
   encodeFunctionData(functionFragment: "holdsRole", values: [BigNumberish, string]): string
   encodeFunctionData(functionFragment: "payOracleFees", values?: undefined): string
-  encodeFunctionData(
-    functionFragment: "payOracleFeesErc20",
-    values: [string, { rawValue: BigNumberish }]
-  ): string
+  encodeFunctionData(functionFragment: "payOracleFeesErc20", values: [string, { rawValue: BigNumberish }]): string
   encodeFunctionData(functionFragment: "removeMember", values: [BigNumberish, string]): string
   encodeFunctionData(functionFragment: "renounceMembership", values: [BigNumberish]): string
   encodeFunctionData(functionFragment: "resetMember", values: [BigNumberish, string]): string
   encodeFunctionData(functionFragment: "setCurrentTime", values: [BigNumberish]): string
-  encodeFunctionData(
-    functionFragment: "setFinalFee",
-    values: [string, { rawValue: BigNumberish }]
-  ): string
-  encodeFunctionData(
-    functionFragment: "setFixedOracleFeePerSecondPerPfc",
-    values: [{ rawValue: BigNumberish }]
-  ): string
-  encodeFunctionData(
-    functionFragment: "setWeeklyDelayFeePerSecondPerPfc",
-    values: [{ rawValue: BigNumberish }]
-  ): string
+  encodeFunctionData(functionFragment: "setFinalFee", values: [string, { rawValue: BigNumberish }]): string
+  encodeFunctionData(functionFragment: "setFixedOracleFeePerSecondPerPfc", values: [{ rawValue: BigNumberish }]): string
+  encodeFunctionData(functionFragment: "setWeeklyDelayFeePerSecondPerPfc", values: [{ rawValue: BigNumberish }]): string
   encodeFunctionData(functionFragment: "timerAddress", values?: undefined): string
   encodeFunctionData(functionFragment: "weeklyDelayFeePerSecondPerPfc", values?: undefined): string
   encodeFunctionData(functionFragment: "withdraw", values: [BigNumberish]): string
@@ -90,14 +72,8 @@ interface StoreInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "resetMember", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "setCurrentTime", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "setFinalFee", data: BytesLike): Result
-  decodeFunctionResult(
-    functionFragment: "setFixedOracleFeePerSecondPerPfc",
-    data: BytesLike
-  ): Result
-  decodeFunctionResult(
-    functionFragment: "setWeeklyDelayFeePerSecondPerPfc",
-    data: BytesLike
-  ): Result
+  decodeFunctionResult(functionFragment: "setFixedOracleFeePerSecondPerPfc", data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "setWeeklyDelayFeePerSecondPerPfc", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "timerAddress", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "weeklyDelayFeePerSecondPerPfc", data: BytesLike): Result
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result
@@ -140,11 +116,7 @@ export interface Store extends Contract {
       0: BigNumber
     }>
 
-    addMember(
-      roleId: BigNumberish,
-      newMember: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
     computeFinalFee(
       currency: string,
@@ -209,19 +181,11 @@ export interface Store extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>
 
-    removeMember(
-      roleId: BigNumberish,
-      memberToRemove: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
     renounceMembership(roleId: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-    resetMember(
-      roleId: BigNumberish,
-      newMember: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    resetMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
     setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -256,25 +220,14 @@ export interface Store extends Contract {
 
     withdraw(amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-    withdrawErc20(
-      erc20Address: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    withdrawErc20(erc20Address: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
   }
 
   SECONDS_PER_WEEK(overrides?: CallOverrides): Promise<BigNumber>
 
-  addMember(
-    roleId: BigNumberish,
-    newMember: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
-  computeFinalFee(
-    currency: string,
-    overrides?: CallOverrides
-  ): Promise<{ rawValue: BigNumber; 0: BigNumber }>
+  computeFinalFee(currency: string, overrides?: CallOverrides): Promise<{ rawValue: BigNumber; 0: BigNumber }>
 
   computeRegularFee(
     startTime: BigNumberish,
@@ -296,11 +249,7 @@ export interface Store extends Contract {
 
   getMember(roleId: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-  holdsRole(
-    roleId: BigNumberish,
-    memberToCheck: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  holdsRole(roleId: BigNumberish, memberToCheck: string, overrides?: CallOverrides): Promise<boolean>
 
   payOracleFees(overrides?: PayableOverrides): Promise<ContractTransaction>
 
@@ -310,19 +259,11 @@ export interface Store extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>
 
-  removeMember(
-    roleId: BigNumberish,
-    memberToRemove: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
   renounceMembership(roleId: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-  resetMember(
-    roleId: BigNumberish,
-    newMember: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  resetMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
   setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -348,21 +289,14 @@ export interface Store extends Contract {
 
   withdraw(amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-  withdrawErc20(
-    erc20Address: string,
-    amount: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  withdrawErc20(erc20Address: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   callStatic: {
     SECONDS_PER_WEEK(overrides?: CallOverrides): Promise<BigNumber>
 
     addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<void>
 
-    computeFinalFee(
-      currency: string,
-      overrides?: CallOverrides
-    ): Promise<{ rawValue: BigNumber; 0: BigNumber }>
+    computeFinalFee(currency: string, overrides?: CallOverrides): Promise<{ rawValue: BigNumber; 0: BigNumber }>
 
     computeRegularFee(
       startTime: BigNumberish,
@@ -384,19 +318,11 @@ export interface Store extends Contract {
 
     getMember(roleId: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-    holdsRole(
-      roleId: BigNumberish,
-      memberToCheck: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    holdsRole(roleId: BigNumberish, memberToCheck: string, overrides?: CallOverrides): Promise<boolean>
 
     payOracleFees(overrides?: PayableOverrides): Promise<void>
 
-    payOracleFeesErc20(
-      erc20Address: string,
-      amount: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<void>
+    payOracleFeesErc20(erc20Address: string, amount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<void>
 
     removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<void>
 
@@ -406,11 +332,7 @@ export interface Store extends Contract {
 
     setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<void>
 
-    setFinalFee(
-      currency: string,
-      newFinalFee: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<void>
+    setFinalFee(currency: string, newFinalFee: { rawValue: BigNumberish }, overrides?: Overrides): Promise<void>
 
     setFixedOracleFeePerSecondPerPfc(
       newFixedOracleFeePerSecondPerPfc: { rawValue: BigNumberish },
@@ -432,11 +354,7 @@ export interface Store extends Contract {
   }
 
   filters: {
-    AddedSharedMember(
-      roleId: BigNumberish | null,
-      newMember: string | null,
-      manager: string | null
-    ): EventFilter
+    AddedSharedMember(roleId: BigNumberish | null, newMember: string | null, manager: string | null): EventFilter
 
     NewFinalFee(newFinalFee: null): EventFilter
 
@@ -444,17 +362,9 @@ export interface Store extends Contract {
 
     NewWeeklyDelayFeePerSecondPerPfc(newWeeklyDelayFeePerSecondPerPfc: null): EventFilter
 
-    RemovedSharedMember(
-      roleId: BigNumberish | null,
-      oldMember: string | null,
-      manager: string | null
-    ): EventFilter
+    RemovedSharedMember(roleId: BigNumberish | null, oldMember: string | null, manager: string | null): EventFilter
 
-    ResetExclusiveMember(
-      roleId: BigNumberish | null,
-      newMember: string | null,
-      manager: string | null
-    ): EventFilter
+    ResetExclusiveMember(roleId: BigNumberish | null, newMember: string | null, manager: string | null): EventFilter
   }
 
   estimateGas: {
@@ -478,12 +388,8 @@ export interface Store extends Contract {
     resetMember(roleId: BigNumberish, newMember: string): Promise<BigNumber>
     setCurrentTime(time: BigNumberish): Promise<BigNumber>
     setFinalFee(currency: string, newFinalFee: { rawValue: BigNumberish }): Promise<BigNumber>
-    setFixedOracleFeePerSecondPerPfc(newFixedOracleFeePerSecondPerPfc: {
-      rawValue: BigNumberish
-    }): Promise<BigNumber>
-    setWeeklyDelayFeePerSecondPerPfc(newWeeklyDelayFeePerSecondPerPfc: {
-      rawValue: BigNumberish
-    }): Promise<BigNumber>
+    setFixedOracleFeePerSecondPerPfc(newFixedOracleFeePerSecondPerPfc: { rawValue: BigNumberish }): Promise<BigNumber>
+    setWeeklyDelayFeePerSecondPerPfc(newWeeklyDelayFeePerSecondPerPfc: { rawValue: BigNumberish }): Promise<BigNumber>
     timerAddress(): Promise<BigNumber>
     weeklyDelayFeePerSecondPerPfc(): Promise<BigNumber>
     withdraw(amount: BigNumberish): Promise<BigNumber>
@@ -505,18 +411,12 @@ export interface Store extends Contract {
     getMember(roleId: BigNumberish): Promise<PopulatedTransaction>
     holdsRole(roleId: BigNumberish, memberToCheck: string): Promise<PopulatedTransaction>
     payOracleFees(): Promise<PopulatedTransaction>
-    payOracleFeesErc20(
-      erc20Address: string,
-      amount: { rawValue: BigNumberish }
-    ): Promise<PopulatedTransaction>
+    payOracleFeesErc20(erc20Address: string, amount: { rawValue: BigNumberish }): Promise<PopulatedTransaction>
     removeMember(roleId: BigNumberish, memberToRemove: string): Promise<PopulatedTransaction>
     renounceMembership(roleId: BigNumberish): Promise<PopulatedTransaction>
     resetMember(roleId: BigNumberish, newMember: string): Promise<PopulatedTransaction>
     setCurrentTime(time: BigNumberish): Promise<PopulatedTransaction>
-    setFinalFee(
-      currency: string,
-      newFinalFee: { rawValue: BigNumberish }
-    ): Promise<PopulatedTransaction>
+    setFinalFee(currency: string, newFinalFee: { rawValue: BigNumberish }): Promise<PopulatedTransaction>
     setFixedOracleFeePerSecondPerPfc(newFixedOracleFeePerSecondPerPfc: {
       rawValue: BigNumberish
     }): Promise<PopulatedTransaction>

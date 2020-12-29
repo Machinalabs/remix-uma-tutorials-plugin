@@ -44,10 +44,7 @@ interface DesignatedVotingInterface extends ethers.utils.Interface {
       }[]
     ]
   ): string
-  encodeFunctionData(
-    functionFragment: "commitVote",
-    values: [BytesLike, BigNumberish, BytesLike]
-  ): string
+  encodeFunctionData(functionFragment: "commitVote", values: [BytesLike, BigNumberish, BytesLike]): string
   encodeFunctionData(functionFragment: "getMember", values: [BigNumberish]): string
   encodeFunctionData(functionFragment: "holdsRole", values: [BigNumberish, string]): string
   encodeFunctionData(functionFragment: "removeMember", values: [BigNumberish, string]): string
@@ -103,11 +100,7 @@ export interface DesignatedVoting extends Contract {
   interface: DesignatedVotingInterface
 
   functions: {
-    addMember(
-      roleId: BigNumberish,
-      newMember: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
     batchCommit(
       commits: {
@@ -151,19 +144,11 @@ export interface DesignatedVoting extends Contract {
       0: boolean
     }>
 
-    removeMember(
-      roleId: BigNumberish,
-      memberToRemove: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
     renounceMembership(roleId: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-    resetMember(
-      roleId: BigNumberish,
-      newMember: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    resetMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
     retrieveRewards(
       roundId: BigNumberish,
@@ -181,18 +166,10 @@ export interface DesignatedVoting extends Contract {
 
     withdraw(amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-    withdrawErc20(
-      erc20Address: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    withdrawErc20(erc20Address: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
   }
 
-  addMember(
-    roleId: BigNumberish,
-    newMember: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
   batchCommit(
     commits: {
@@ -223,25 +200,13 @@ export interface DesignatedVoting extends Contract {
 
   getMember(roleId: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-  holdsRole(
-    roleId: BigNumberish,
-    memberToCheck: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  holdsRole(roleId: BigNumberish, memberToCheck: string, overrides?: CallOverrides): Promise<boolean>
 
-  removeMember(
-    roleId: BigNumberish,
-    memberToRemove: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
   renounceMembership(roleId: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-  resetMember(
-    roleId: BigNumberish,
-    newMember: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  resetMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
   retrieveRewards(
     roundId: BigNumberish,
@@ -259,11 +224,7 @@ export interface DesignatedVoting extends Contract {
 
   withdraw(amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-  withdrawErc20(
-    erc20Address: string,
-    amount: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  withdrawErc20(erc20Address: string, amount: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   callStatic: {
     addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<void>
@@ -288,20 +249,11 @@ export interface DesignatedVoting extends Contract {
       overrides?: Overrides
     ): Promise<void>
 
-    commitVote(
-      identifier: BytesLike,
-      time: BigNumberish,
-      hash: BytesLike,
-      overrides?: Overrides
-    ): Promise<void>
+    commitVote(identifier: BytesLike, time: BigNumberish, hash: BytesLike, overrides?: Overrides): Promise<void>
 
     getMember(roleId: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-    holdsRole(
-      roleId: BigNumberish,
-      memberToCheck: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    holdsRole(roleId: BigNumberish, memberToCheck: string, overrides?: CallOverrides): Promise<boolean>
 
     removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<void>
 
@@ -329,23 +281,11 @@ export interface DesignatedVoting extends Contract {
   }
 
   filters: {
-    AddedSharedMember(
-      roleId: BigNumberish | null,
-      newMember: string | null,
-      manager: string | null
-    ): EventFilter
+    AddedSharedMember(roleId: BigNumberish | null, newMember: string | null, manager: string | null): EventFilter
 
-    RemovedSharedMember(
-      roleId: BigNumberish | null,
-      oldMember: string | null,
-      manager: string | null
-    ): EventFilter
+    RemovedSharedMember(roleId: BigNumberish | null, oldMember: string | null, manager: string | null): EventFilter
 
-    ResetExclusiveMember(
-      roleId: BigNumberish | null,
-      newMember: string | null,
-      manager: string | null
-    ): EventFilter
+    ResetExclusiveMember(roleId: BigNumberish | null, newMember: string | null, manager: string | null): EventFilter
   }
 
   estimateGas: {
@@ -376,12 +316,7 @@ export interface DesignatedVoting extends Contract {
       roundId: BigNumberish,
       toRetrieve: { identifier: BytesLike; time: BigNumberish }[]
     ): Promise<BigNumber>
-    revealVote(
-      identifier: BytesLike,
-      time: BigNumberish,
-      price: BigNumberish,
-      salt: BigNumberish
-    ): Promise<BigNumber>
+    revealVote(identifier: BytesLike, time: BigNumberish, price: BigNumberish, salt: BigNumberish): Promise<BigNumber>
     withdraw(amount: BigNumberish): Promise<BigNumber>
     withdrawErc20(erc20Address: string, amount: BigNumberish): Promise<BigNumber>
   }
@@ -404,11 +339,7 @@ export interface DesignatedVoting extends Contract {
         salt: BigNumberish
       }[]
     ): Promise<PopulatedTransaction>
-    commitVote(
-      identifier: BytesLike,
-      time: BigNumberish,
-      hash: BytesLike
-    ): Promise<PopulatedTransaction>
+    commitVote(identifier: BytesLike, time: BigNumberish, hash: BytesLike): Promise<PopulatedTransaction>
     getMember(roleId: BigNumberish): Promise<PopulatedTransaction>
     holdsRole(roleId: BigNumberish, memberToCheck: string): Promise<PopulatedTransaction>
     removeMember(roleId: BigNumberish, memberToRemove: string): Promise<PopulatedTransaction>

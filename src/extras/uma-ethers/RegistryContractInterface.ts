@@ -86,11 +86,7 @@ export interface Registry extends Contract {
   interface: RegistryInterface
 
   functions: {
-    addMember(
-      roleId: BigNumberish,
-      newMember: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
     addPartyToContract(party: string, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -147,11 +143,7 @@ export interface Registry extends Contract {
       0: boolean
     }>
 
-    registerContract(
-      parties: string[],
-      contractAddress: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    registerContract(parties: string[], contractAddress: string, overrides?: Overrides): Promise<ContractTransaction>
 
     registeredContracts(
       arg0: BigNumberish,
@@ -160,31 +152,16 @@ export interface Registry extends Contract {
       0: string
     }>
 
-    removeMember(
-      roleId: BigNumberish,
-      memberToRemove: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
-    removePartyFromContract(
-      partyAddress: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    removePartyFromContract(partyAddress: string, overrides?: Overrides): Promise<ContractTransaction>
 
     renounceMembership(roleId: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-    resetMember(
-      roleId: BigNumberish,
-      newMember: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    resetMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
   }
 
-  addMember(
-    roleId: BigNumberish,
-    newMember: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
   addPartyToContract(party: string, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -204,43 +181,23 @@ export interface Registry extends Contract {
 
   getRegisteredContracts(party: string, overrides?: CallOverrides): Promise<string[]>
 
-  holdsRole(
-    roleId: BigNumberish,
-    memberToCheck: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  holdsRole(roleId: BigNumberish, memberToCheck: string, overrides?: CallOverrides): Promise<boolean>
 
   isContractRegistered(contractAddress: string, overrides?: CallOverrides): Promise<boolean>
 
-  isPartyMemberOfContract(
-    party: string,
-    contractAddress: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  isPartyMemberOfContract(party: string, contractAddress: string, overrides?: CallOverrides): Promise<boolean>
 
-  registerContract(
-    parties: string[],
-    contractAddress: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  registerContract(parties: string[], contractAddress: string, overrides?: Overrides): Promise<ContractTransaction>
 
   registeredContracts(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-  removeMember(
-    roleId: BigNumberish,
-    memberToRemove: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
   removePartyFromContract(partyAddress: string, overrides?: Overrides): Promise<ContractTransaction>
 
   renounceMembership(roleId: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-  resetMember(
-    roleId: BigNumberish,
-    newMember: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  resetMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
   callStatic: {
     addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<void>
@@ -263,25 +220,13 @@ export interface Registry extends Contract {
 
     getRegisteredContracts(party: string, overrides?: CallOverrides): Promise<string[]>
 
-    holdsRole(
-      roleId: BigNumberish,
-      memberToCheck: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    holdsRole(roleId: BigNumberish, memberToCheck: string, overrides?: CallOverrides): Promise<boolean>
 
     isContractRegistered(contractAddress: string, overrides?: CallOverrides): Promise<boolean>
 
-    isPartyMemberOfContract(
-      party: string,
-      contractAddress: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    isPartyMemberOfContract(party: string, contractAddress: string, overrides?: CallOverrides): Promise<boolean>
 
-    registerContract(
-      parties: string[],
-      contractAddress: string,
-      overrides?: Overrides
-    ): Promise<void>
+    registerContract(parties: string[], contractAddress: string, overrides?: Overrides): Promise<void>
 
     registeredContracts(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>
 
@@ -295,33 +240,17 @@ export interface Registry extends Contract {
   }
 
   filters: {
-    AddedSharedMember(
-      roleId: BigNumberish | null,
-      newMember: string | null,
-      manager: string | null
-    ): EventFilter
+    AddedSharedMember(roleId: BigNumberish | null, newMember: string | null, manager: string | null): EventFilter
 
-    NewContractRegistered(
-      contractAddress: string | null,
-      creator: string | null,
-      parties: null
-    ): EventFilter
+    NewContractRegistered(contractAddress: string | null, creator: string | null, parties: null): EventFilter
 
     PartyAdded(contractAddress: string | null, party: string | null): EventFilter
 
     PartyRemoved(contractAddress: string | null, party: string | null): EventFilter
 
-    RemovedSharedMember(
-      roleId: BigNumberish | null,
-      oldMember: string | null,
-      manager: string | null
-    ): EventFilter
+    RemovedSharedMember(roleId: BigNumberish | null, oldMember: string | null, manager: string | null): EventFilter
 
-    ResetExclusiveMember(
-      roleId: BigNumberish | null,
-      newMember: string | null,
-      manager: string | null
-    ): EventFilter
+    ResetExclusiveMember(roleId: BigNumberish | null, newMember: string | null, manager: string | null): EventFilter
   }
 
   estimateGas: {

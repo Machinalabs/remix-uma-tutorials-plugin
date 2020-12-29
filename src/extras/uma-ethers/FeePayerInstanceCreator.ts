@@ -15,12 +15,7 @@ export class FeePayerInstanceCreator extends ContractFactory {
     _timerAddress: string,
     overrides?: Overrides
   ): Promise<FeePayer> {
-    return super.deploy(
-      _collateralAddress,
-      _finderAddress,
-      _timerAddress,
-      overrides || {}
-    ) as Promise<FeePayer>
+    return super.deploy(_collateralAddress, _finderAddress, _timerAddress, overrides || {}) as Promise<FeePayer>
   }
   getDeployTransaction(
     _collateralAddress: string,
@@ -28,12 +23,7 @@ export class FeePayerInstanceCreator extends ContractFactory {
     _timerAddress: string,
     overrides?: Overrides
   ): TransactionRequest {
-    return super.getDeployTransaction(
-      _collateralAddress,
-      _finderAddress,
-      _timerAddress,
-      overrides || {}
-    )
+    return super.getDeployTransaction(_collateralAddress, _finderAddress, _timerAddress, overrides || {})
   }
   attach(address: string): FeePayer {
     return super.attach(address) as FeePayer

@@ -67,10 +67,7 @@ export interface VoteTimingTest extends Contract {
 
   wrapComputeCurrentPhase(currentTime: BigNumberish, overrides?: CallOverrides): Promise<number>
 
-  wrapComputeCurrentRoundId(
-    currentTime: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>
+  wrapComputeCurrentRoundId(currentTime: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
   wrapInit(phaseLength: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -79,10 +76,7 @@ export interface VoteTimingTest extends Contract {
 
     wrapComputeCurrentPhase(currentTime: BigNumberish, overrides?: CallOverrides): Promise<number>
 
-    wrapComputeCurrentRoundId(
-      currentTime: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>
+    wrapComputeCurrentRoundId(currentTime: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     wrapInit(phaseLength: BigNumberish, overrides?: Overrides): Promise<void>
   }

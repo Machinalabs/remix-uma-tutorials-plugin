@@ -1,11 +1,5 @@
 import { ethers, EventFilter, Signer, BigNumber, BigNumberish, PopulatedTransaction } from "ethers"
-import {
-  Contract,
-  ContractTransaction,
-  Overrides,
-  PayableOverrides,
-  CallOverrides,
-} from "@ethersproject/contracts"
+import { Contract, ContractTransaction, Overrides, PayableOverrides, CallOverrides } from "@ethersproject/contracts"
 import { BytesLike } from "@ethersproject/bytes"
 import { Listener, Provider } from "@ethersproject/providers"
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi"
@@ -29,10 +23,7 @@ interface GovernorInterface extends ethers.utils.Interface {
   }
 
   encodeFunctionData(functionFragment: "addMember", values: [BigNumberish, string]): string
-  encodeFunctionData(
-    functionFragment: "executeProposal",
-    values: [BigNumberish, BigNumberish]
-  ): string
+  encodeFunctionData(functionFragment: "executeProposal", values: [BigNumberish, BigNumberish]): string
   encodeFunctionData(functionFragment: "getCurrentTime", values?: undefined): string
   encodeFunctionData(functionFragment: "getMember", values: [BigNumberish]): string
   encodeFunctionData(functionFragment: "getProposal", values: [BigNumberish]): string
@@ -93,11 +84,7 @@ export interface Governor extends Contract {
   interface: GovernorInterface
 
   functions: {
-    addMember(
-      roleId: BigNumberish,
-      newMember: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
     executeProposal(
       id: BigNumberish,
@@ -171,19 +158,11 @@ export interface Governor extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>
 
-    removeMember(
-      roleId: BigNumberish,
-      memberToRemove: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
     renounceMembership(roleId: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-    resetMember(
-      roleId: BigNumberish,
-      newMember: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    resetMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
     setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -194,11 +173,7 @@ export interface Governor extends Contract {
     }>
   }
 
-  addMember(
-    roleId: BigNumberish,
-    newMember: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
   executeProposal(
     id: BigNumberish,
@@ -234,11 +209,7 @@ export interface Governor extends Contract {
     1: BigNumber
   }>
 
-  holdsRole(
-    roleId: BigNumberish,
-    memberToCheck: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>
+  holdsRole(roleId: BigNumberish, memberToCheck: string, overrides?: CallOverrides): Promise<boolean>
 
   numProposals(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -249,19 +220,11 @@ export interface Governor extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>
 
-  removeMember(
-    roleId: BigNumberish,
-    memberToRemove: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<ContractTransaction>
 
   renounceMembership(roleId: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-  resetMember(
-    roleId: BigNumberish,
-    newMember: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  resetMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<ContractTransaction>
 
   setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -270,11 +233,7 @@ export interface Governor extends Contract {
   callStatic: {
     addMember(roleId: BigNumberish, newMember: string, overrides?: Overrides): Promise<void>
 
-    executeProposal(
-      id: BigNumberish,
-      transactionIndex: BigNumberish,
-      overrides?: PayableOverrides
-    ): Promise<void>
+    executeProposal(id: BigNumberish, transactionIndex: BigNumberish, overrides?: PayableOverrides): Promise<void>
 
     getCurrentTime(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -304,20 +263,13 @@ export interface Governor extends Contract {
       1: BigNumber
     }>
 
-    holdsRole(
-      roleId: BigNumberish,
-      memberToCheck: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>
+    holdsRole(roleId: BigNumberish, memberToCheck: string, overrides?: CallOverrides): Promise<boolean>
 
     numProposals(overrides?: CallOverrides): Promise<BigNumber>
 
     proposals(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
-    propose(
-      transactions: { to: string; value: BigNumberish; data: BytesLike }[],
-      overrides?: Overrides
-    ): Promise<void>
+    propose(transactions: { to: string; value: BigNumberish; data: BytesLike }[], overrides?: Overrides): Promise<void>
 
     removeMember(roleId: BigNumberish, memberToRemove: string, overrides?: Overrides): Promise<void>
 
@@ -331,27 +283,15 @@ export interface Governor extends Contract {
   }
 
   filters: {
-    AddedSharedMember(
-      roleId: BigNumberish | null,
-      newMember: string | null,
-      manager: string | null
-    ): EventFilter
+    AddedSharedMember(roleId: BigNumberish | null, newMember: string | null, manager: string | null): EventFilter
 
     NewProposal(id: BigNumberish | null, transactions: null): EventFilter
 
     ProposalExecuted(id: BigNumberish | null, transactionIndex: null): EventFilter
 
-    RemovedSharedMember(
-      roleId: BigNumberish | null,
-      oldMember: string | null,
-      manager: string | null
-    ): EventFilter
+    RemovedSharedMember(roleId: BigNumberish | null, oldMember: string | null, manager: string | null): EventFilter
 
-    ResetExclusiveMember(
-      roleId: BigNumberish | null,
-      newMember: string | null,
-      manager: string | null
-    ): EventFilter
+    ResetExclusiveMember(roleId: BigNumberish | null, newMember: string | null, manager: string | null): EventFilter
   }
 
   estimateGas: {
@@ -363,9 +303,7 @@ export interface Governor extends Contract {
     holdsRole(roleId: BigNumberish, memberToCheck: string): Promise<BigNumber>
     numProposals(): Promise<BigNumber>
     proposals(arg0: BigNumberish): Promise<BigNumber>
-    propose(
-      transactions: { to: string; value: BigNumberish; data: BytesLike }[]
-    ): Promise<BigNumber>
+    propose(transactions: { to: string; value: BigNumberish; data: BytesLike }[]): Promise<BigNumber>
     removeMember(roleId: BigNumberish, memberToRemove: string): Promise<BigNumber>
     renounceMembership(roleId: BigNumberish): Promise<BigNumber>
     resetMember(roleId: BigNumberish, newMember: string): Promise<BigNumber>
@@ -382,9 +320,7 @@ export interface Governor extends Contract {
     holdsRole(roleId: BigNumberish, memberToCheck: string): Promise<PopulatedTransaction>
     numProposals(): Promise<PopulatedTransaction>
     proposals(arg0: BigNumberish): Promise<PopulatedTransaction>
-    propose(
-      transactions: { to: string; value: BigNumberish; data: BytesLike }[]
-    ): Promise<PopulatedTransaction>
+    propose(transactions: { to: string; value: BigNumberish; data: BytesLike }[]): Promise<PopulatedTransaction>
     removeMember(roleId: BigNumberish, memberToRemove: string): Promise<PopulatedTransaction>
     renounceMembership(roleId: BigNumberish): Promise<PopulatedTransaction>
     resetMember(roleId: BigNumberish, newMember: string): Promise<PopulatedTransaction>

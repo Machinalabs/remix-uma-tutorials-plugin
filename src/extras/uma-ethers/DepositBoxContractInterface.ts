@@ -38,10 +38,7 @@ interface DepositBoxInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "payRegularFees", values?: undefined): string
   encodeFunctionData(functionFragment: "pfc", values?: undefined): string
   encodeFunctionData(functionFragment: "remargin", values?: undefined): string
-  encodeFunctionData(
-    functionFragment: "requestWithdrawal",
-    values: [{ rawValue: BigNumberish }]
-  ): string
+  encodeFunctionData(functionFragment: "requestWithdrawal", values: [{ rawValue: BigNumberish }]): string
   encodeFunctionData(functionFragment: "setCurrentTime", values: [BigNumberish]): string
   encodeFunctionData(functionFragment: "timerAddress", values?: undefined): string
   encodeFunctionData(functionFragment: "totalDepositBoxCollateral", values?: undefined): string
@@ -114,10 +111,7 @@ export interface DepositBox extends Contract {
       0: BigNumber
     }>
 
-    deposit(
-      collateralAmount: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    deposit(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
     emergencyShutdown(overrides?: Overrides): Promise<ContractTransaction>
 
@@ -180,10 +174,7 @@ export interface DepositBox extends Contract {
 
   cumulativeFeeMultiplier(overrides?: CallOverrides): Promise<BigNumber>
 
-  deposit(
-    collateralAmount: { rawValue: BigNumberish },
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  deposit(collateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
   emergencyShutdown(overrides?: Overrides): Promise<ContractTransaction>
 
@@ -191,10 +182,7 @@ export interface DepositBox extends Contract {
 
   finder(overrides?: CallOverrides): Promise<string>
 
-  getCollateral(
-    user: string,
-    overrides?: CallOverrides
-  ): Promise<{ rawValue: BigNumber; 0: BigNumber }>
+  getCollateral(user: string, overrides?: CallOverrides): Promise<{ rawValue: BigNumber; 0: BigNumber }>
 
   getCurrentTime(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -215,9 +203,7 @@ export interface DepositBox extends Contract {
 
   timerAddress(overrides?: CallOverrides): Promise<string>
 
-  totalDepositBoxCollateral(
-    overrides?: CallOverrides
-  ): Promise<{ rawValue: BigNumber; 0: BigNumber }>
+  totalDepositBoxCollateral(overrides?: CallOverrides): Promise<{ rawValue: BigNumber; 0: BigNumber }>
 
   callStatic: {
     cancelWithdrawal(overrides?: Overrides): Promise<void>
@@ -234,10 +220,7 @@ export interface DepositBox extends Contract {
 
     finder(overrides?: CallOverrides): Promise<string>
 
-    getCollateral(
-      user: string,
-      overrides?: CallOverrides
-    ): Promise<{ rawValue: BigNumber; 0: BigNumber }>
+    getCollateral(user: string, overrides?: CallOverrides): Promise<{ rawValue: BigNumber; 0: BigNumber }>
 
     getCurrentTime(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -249,18 +232,13 @@ export interface DepositBox extends Contract {
 
     remargin(overrides?: Overrides): Promise<void>
 
-    requestWithdrawal(
-      denominatedCollateralAmount: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<void>
+    requestWithdrawal(denominatedCollateralAmount: { rawValue: BigNumberish }, overrides?: Overrides): Promise<void>
 
     setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<void>
 
     timerAddress(overrides?: CallOverrides): Promise<string>
 
-    totalDepositBoxCollateral(
-      overrides?: CallOverrides
-    ): Promise<{ rawValue: BigNumber; 0: BigNumber }>
+    totalDepositBoxCollateral(overrides?: CallOverrides): Promise<{ rawValue: BigNumber; 0: BigNumber }>
   }
 
   filters: {
@@ -328,9 +306,7 @@ export interface DepositBox extends Contract {
     payRegularFees(): Promise<PopulatedTransaction>
     pfc(): Promise<PopulatedTransaction>
     remargin(): Promise<PopulatedTransaction>
-    requestWithdrawal(denominatedCollateralAmount: {
-      rawValue: BigNumberish
-    }): Promise<PopulatedTransaction>
+    requestWithdrawal(denominatedCollateralAmount: { rawValue: BigNumberish }): Promise<PopulatedTransaction>
     setCurrentTime(time: BigNumberish): Promise<PopulatedTransaction>
     timerAddress(): Promise<PopulatedTransaction>
     totalDepositBoxCollateral(): Promise<PopulatedTransaction>

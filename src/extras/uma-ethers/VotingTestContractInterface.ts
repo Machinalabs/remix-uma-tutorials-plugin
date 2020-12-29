@@ -66,10 +66,7 @@ interface VotingTestInterface extends ethers.utils.Interface {
     functionFragment: "commitAndEmitEncryptedVote",
     values: [BytesLike, BigNumberish, BytesLike, BytesLike]
   ): string
-  encodeFunctionData(
-    functionFragment: "commitVote",
-    values: [BytesLike, BigNumberish, BytesLike]
-  ): string
+  encodeFunctionData(functionFragment: "commitVote", values: [BytesLike, BigNumberish, BytesLike]): string
   encodeFunctionData(functionFragment: "gatPercentage", values?: undefined): string
   encodeFunctionData(functionFragment: "getCurrentRoundId", values?: undefined): string
   encodeFunctionData(functionFragment: "getCurrentTime", values?: undefined): string
@@ -98,19 +95,10 @@ interface VotingTestInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "rewardsExpirationTimeout", values?: undefined): string
   encodeFunctionData(functionFragment: "rounds", values: [BigNumberish]): string
   encodeFunctionData(functionFragment: "setCurrentTime", values: [BigNumberish]): string
-  encodeFunctionData(
-    functionFragment: "setGatPercentage",
-    values: [{ rawValue: BigNumberish }]
-  ): string
-  encodeFunctionData(
-    functionFragment: "setInflationRate",
-    values: [{ rawValue: BigNumberish }]
-  ): string
+  encodeFunctionData(functionFragment: "setGatPercentage", values: [{ rawValue: BigNumberish }]): string
+  encodeFunctionData(functionFragment: "setInflationRate", values: [{ rawValue: BigNumberish }]): string
   encodeFunctionData(functionFragment: "setMigrated", values: [string]): string
-  encodeFunctionData(
-    functionFragment: "setRewardsExpirationTimeout",
-    values: [BigNumberish]
-  ): string
+  encodeFunctionData(functionFragment: "setRewardsExpirationTimeout", values: [BigNumberish]): string
   encodeFunctionData(functionFragment: "snapshotCurrentRound", values?: undefined): string
   encodeFunctionData(functionFragment: "timerAddress", values?: undefined): string
   encodeFunctionData(functionFragment: "transferOwnership", values: [string]): string
@@ -304,11 +292,7 @@ export interface VotingTest extends Contract {
 
     renounceOwnership(overrides?: Overrides): Promise<ContractTransaction>
 
-    requestPrice(
-      identifier: BytesLike,
-      time: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    requestPrice(identifier: BytesLike, time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
     retrieveRewards(
       voterAddress: string,
@@ -347,15 +331,9 @@ export interface VotingTest extends Contract {
 
     setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-    setGatPercentage(
-      newGatPercentage: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    setGatPercentage(newGatPercentage: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
-    setInflationRate(
-      newInflationRate: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    setInflationRate(newInflationRate: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
     setMigrated(newVotingAddress: string, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -454,11 +432,7 @@ export interface VotingTest extends Contract {
 
   renounceOwnership(overrides?: Overrides): Promise<ContractTransaction>
 
-  requestPrice(
-    identifier: BytesLike,
-    time: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  requestPrice(identifier: BytesLike, time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   retrieveRewards(
     voterAddress: string,
@@ -493,15 +467,9 @@ export interface VotingTest extends Contract {
 
   setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-  setGatPercentage(
-    newGatPercentage: { rawValue: BigNumberish },
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  setGatPercentage(newGatPercentage: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
-  setInflationRate(
-    newInflationRate: { rawValue: BigNumberish },
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  setInflationRate(newInflationRate: { rawValue: BigNumberish }, overrides?: Overrides): Promise<ContractTransaction>
 
   setMigrated(newVotingAddress: string, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -549,12 +517,7 @@ export interface VotingTest extends Contract {
       overrides?: Overrides
     ): Promise<void>
 
-    commitVote(
-      identifier: BytesLike,
-      time: BigNumberish,
-      hash: BytesLike,
-      overrides?: Overrides
-    ): Promise<void>
+    commitVote(identifier: BytesLike, time: BigNumberish, hash: BytesLike, overrides?: Overrides): Promise<void>
 
     gatPercentage(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -568,11 +531,7 @@ export interface VotingTest extends Contract {
       overrides?: CallOverrides
     ): Promise<{ identifier: string; time: BigNumber; 0: string; 1: BigNumber }[]>
 
-    getPrice(
-      identifier: BytesLike,
-      time: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>
+    getPrice(identifier: BytesLike, time: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     getPriceRequestStatuses(
       requests: { identifier: BytesLike; time: BigNumberish }[],
@@ -626,22 +585,13 @@ export interface VotingTest extends Contract {
 
     setCurrentTime(time: BigNumberish, overrides?: Overrides): Promise<void>
 
-    setGatPercentage(
-      newGatPercentage: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<void>
+    setGatPercentage(newGatPercentage: { rawValue: BigNumberish }, overrides?: Overrides): Promise<void>
 
-    setInflationRate(
-      newInflationRate: { rawValue: BigNumberish },
-      overrides?: Overrides
-    ): Promise<void>
+    setInflationRate(newInflationRate: { rawValue: BigNumberish }, overrides?: Overrides): Promise<void>
 
     setMigrated(newVotingAddress: string, overrides?: Overrides): Promise<void>
 
-    setRewardsExpirationTimeout(
-      NewRewardsExpirationTimeout: BigNumberish,
-      overrides?: Overrides
-    ): Promise<void>
+    setRewardsExpirationTimeout(NewRewardsExpirationTimeout: BigNumberish, overrides?: Overrides): Promise<void>
 
     snapshotCurrentRound(overrides?: Overrides): Promise<void>
 
@@ -665,18 +615,9 @@ export interface VotingTest extends Contract {
 
     OwnershipTransferred(previousOwner: string | null, newOwner: string | null): EventFilter
 
-    PriceRequestAdded(
-      roundId: BigNumberish | null,
-      identifier: BytesLike | null,
-      time: null
-    ): EventFilter
+    PriceRequestAdded(roundId: BigNumberish | null, identifier: BytesLike | null, time: null): EventFilter
 
-    PriceResolved(
-      roundId: BigNumberish | null,
-      identifier: BytesLike | null,
-      time: null,
-      price: null
-    ): EventFilter
+    PriceResolved(roundId: BigNumberish | null, identifier: BytesLike | null, time: null, price: null): EventFilter
 
     RewardsRetrieved(
       voter: string | null,
@@ -733,9 +674,7 @@ export interface VotingTest extends Contract {
     getPendingPriceRequestsArray(): Promise<BigNumber>
     getPendingRequests(): Promise<BigNumber>
     getPrice(identifier: BytesLike, time: BigNumberish): Promise<BigNumber>
-    getPriceRequestStatuses(
-      requests: { identifier: BytesLike; time: BigNumberish }[]
-    ): Promise<BigNumber>
+    getPriceRequestStatuses(requests: { identifier: BytesLike; time: BigNumberish }[]): Promise<BigNumber>
     getVotePhase(): Promise<BigNumber>
     hasPrice(identifier: BytesLike, time: BigNumberish): Promise<BigNumber>
     inflationRate(): Promise<BigNumber>
@@ -748,12 +687,7 @@ export interface VotingTest extends Contract {
       roundId: BigNumberish,
       toRetrieve: { identifier: BytesLike; time: BigNumberish }[]
     ): Promise<BigNumber>
-    revealVote(
-      identifier: BytesLike,
-      time: BigNumberish,
-      price: BigNumberish,
-      salt: BigNumberish
-    ): Promise<BigNumber>
+    revealVote(identifier: BytesLike, time: BigNumberish, price: BigNumberish, salt: BigNumberish): Promise<BigNumber>
     rewardsExpirationTimeout(): Promise<BigNumber>
     rounds(arg0: BigNumberish): Promise<BigNumber>
     setCurrentTime(time: BigNumberish): Promise<BigNumber>
@@ -791,20 +725,14 @@ export interface VotingTest extends Contract {
       hash: BytesLike,
       encryptedVote: BytesLike
     ): Promise<PopulatedTransaction>
-    commitVote(
-      identifier: BytesLike,
-      time: BigNumberish,
-      hash: BytesLike
-    ): Promise<PopulatedTransaction>
+    commitVote(identifier: BytesLike, time: BigNumberish, hash: BytesLike): Promise<PopulatedTransaction>
     gatPercentage(): Promise<PopulatedTransaction>
     getCurrentRoundId(): Promise<PopulatedTransaction>
     getCurrentTime(): Promise<PopulatedTransaction>
     getPendingPriceRequestsArray(): Promise<PopulatedTransaction>
     getPendingRequests(): Promise<PopulatedTransaction>
     getPrice(identifier: BytesLike, time: BigNumberish): Promise<PopulatedTransaction>
-    getPriceRequestStatuses(
-      requests: { identifier: BytesLike; time: BigNumberish }[]
-    ): Promise<PopulatedTransaction>
+    getPriceRequestStatuses(requests: { identifier: BytesLike; time: BigNumberish }[]): Promise<PopulatedTransaction>
     getVotePhase(): Promise<PopulatedTransaction>
     hasPrice(identifier: BytesLike, time: BigNumberish): Promise<PopulatedTransaction>
     inflationRate(): Promise<PopulatedTransaction>
@@ -829,9 +757,7 @@ export interface VotingTest extends Contract {
     setGatPercentage(newGatPercentage: { rawValue: BigNumberish }): Promise<PopulatedTransaction>
     setInflationRate(newInflationRate: { rawValue: BigNumberish }): Promise<PopulatedTransaction>
     setMigrated(newVotingAddress: string): Promise<PopulatedTransaction>
-    setRewardsExpirationTimeout(
-      NewRewardsExpirationTimeout: BigNumberish
-    ): Promise<PopulatedTransaction>
+    setRewardsExpirationTimeout(NewRewardsExpirationTimeout: BigNumberish): Promise<PopulatedTransaction>
     snapshotCurrentRound(): Promise<PopulatedTransaction>
     timerAddress(): Promise<PopulatedTransaction>
     transferOwnership(newOwner: string): Promise<PopulatedTransaction>

@@ -15,12 +15,7 @@ export class SyntheticTokenInstanceCreator extends ContractFactory {
     tokenDecimals: BigNumberish,
     overrides?: Overrides
   ): Promise<SyntheticToken> {
-    return super.deploy(
-      tokenName,
-      tokenSymbol,
-      tokenDecimals,
-      overrides || {}
-    ) as Promise<SyntheticToken>
+    return super.deploy(tokenName, tokenSymbol, tokenDecimals, overrides || {}) as Promise<SyntheticToken>
   }
   getDeployTransaction(
     tokenName: string,

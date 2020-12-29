@@ -1,11 +1,5 @@
 import { ethers, EventFilter, Signer, BigNumber, BigNumberish, PopulatedTransaction } from "ethers"
-import {
-  Contract,
-  ContractTransaction,
-  Overrides,
-  PayableOverrides,
-  CallOverrides,
-} from "@ethersproject/contracts"
+import { Contract, ContractTransaction, Overrides, PayableOverrides, CallOverrides } from "@ethersproject/contracts"
 import { BytesLike } from "@ethersproject/bytes"
 import { Listener, Provider } from "@ethersproject/providers"
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi"
@@ -34,10 +28,7 @@ interface Weth9Interface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string
   encodeFunctionData(functionFragment: "totalSupply", values?: undefined): string
   encodeFunctionData(functionFragment: "transfer", values: [string, BigNumberish]): string
-  encodeFunctionData(
-    functionFragment: "transferFrom",
-    values: [string, string, BigNumberish]
-  ): string
+  encodeFunctionData(functionFragment: "transferFrom", values: [string, string, BigNumberish]): string
   encodeFunctionData(functionFragment: "withdraw", values: [BigNumberish]): string
 
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result
@@ -124,12 +115,7 @@ export interface Weth9 extends Contract {
 
     transfer(dst: string, wad: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-    transferFrom(
-      src: string,
-      dst: string,
-      wad: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>
+    transferFrom(src: string, dst: string, wad: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
     withdraw(wad: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
   }
@@ -152,12 +138,7 @@ export interface Weth9 extends Contract {
 
   transfer(dst: string, wad: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
-  transferFrom(
-    src: string,
-    dst: string,
-    wad: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>
+  transferFrom(src: string, dst: string, wad: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
   withdraw(wad: BigNumberish, overrides?: Overrides): Promise<ContractTransaction>
 
@@ -180,12 +161,7 @@ export interface Weth9 extends Contract {
 
     transfer(dst: string, wad: BigNumberish, overrides?: Overrides): Promise<boolean>
 
-    transferFrom(
-      src: string,
-      dst: string,
-      wad: BigNumberish,
-      overrides?: Overrides
-    ): Promise<boolean>
+    transferFrom(src: string, dst: string, wad: BigNumberish, overrides?: Overrides): Promise<boolean>
 
     withdraw(wad: BigNumberish, overrides?: Overrides): Promise<void>
   }

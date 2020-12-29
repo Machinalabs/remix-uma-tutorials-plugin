@@ -39,10 +39,7 @@ interface VotingInterfaceInterface extends ethers.utils.Interface {
       }[]
     ]
   ): string
-  encodeFunctionData(
-    functionFragment: "commitVote",
-    values: [BytesLike, BigNumberish, BytesLike]
-  ): string
+  encodeFunctionData(functionFragment: "commitVote", values: [BytesLike, BigNumberish, BytesLike]): string
   encodeFunctionData(functionFragment: "getCurrentRoundId", values?: undefined): string
   encodeFunctionData(functionFragment: "getPendingRequests", values?: undefined): string
   encodeFunctionData(functionFragment: "getVotePhase", values?: undefined): string
@@ -219,12 +216,7 @@ export interface VotingInterface extends Contract {
       overrides?: Overrides
     ): Promise<void>
 
-    commitVote(
-      identifier: BytesLike,
-      time: BigNumberish,
-      hash: BytesLike,
-      overrides?: Overrides
-    ): Promise<void>
+    commitVote(identifier: BytesLike, time: BigNumberish, hash: BytesLike, overrides?: Overrides): Promise<void>
 
     getCurrentRoundId(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -280,12 +272,7 @@ export interface VotingInterface extends Contract {
       roundId: BigNumberish,
       toRetrieve: { identifier: BytesLike; time: BigNumberish }[]
     ): Promise<BigNumber>
-    revealVote(
-      identifier: BytesLike,
-      time: BigNumberish,
-      price: BigNumberish,
-      salt: BigNumberish
-    ): Promise<BigNumber>
+    revealVote(identifier: BytesLike, time: BigNumberish, price: BigNumberish, salt: BigNumberish): Promise<BigNumber>
     snapshotCurrentRound(): Promise<BigNumber>
   }
 
@@ -306,11 +293,7 @@ export interface VotingInterface extends Contract {
         salt: BigNumberish
       }[]
     ): Promise<PopulatedTransaction>
-    commitVote(
-      identifier: BytesLike,
-      time: BigNumberish,
-      hash: BytesLike
-    ): Promise<PopulatedTransaction>
+    commitVote(identifier: BytesLike, time: BigNumberish, hash: BytesLike): Promise<PopulatedTransaction>
     getCurrentRoundId(): Promise<PopulatedTransaction>
     getPendingRequests(): Promise<PopulatedTransaction>
     getVotePhase(): Promise<PopulatedTransaction>
