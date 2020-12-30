@@ -1,14 +1,13 @@
 import React, { useState } from "react"
-import { ErrorMessage, Field, Formik, FormikErrors, Form } from "formik"
-import BootstrapForm from "react-bootstrap/Form"
-import Row from "react-bootstrap/Row"
-import Col from "react-bootstrap/Col"
+import { Formik, FormikErrors, Form } from "formik"
 
 import { AddressWhitelistInstanceCreator, IdentifierWhitelistInstanceCreator, TestnetErc20InstanceCreator } from "../../../extras/uma-ethers"
 import { debug, defaultTransactionValues } from "../../../utils"
 import { useRemix } from "../../../hooks"
 import { Button } from "../../../components"
+
 import { useContract } from "../hooks"
+import { FormItem } from "../components"
 
 interface FormProps {
   name: string
@@ -76,8 +75,6 @@ export const DeployCollateralToken: React.FC = () => {
         We will deploy it and give permission to the expiring multiparty creator to spend the collateral tokens on our
         behalf.
       </p>
-
-      {/* Form to deploy a collateral token */}
       <Formik
         initialValues={initialValues}
         validate={(values) => {
@@ -96,39 +93,14 @@ export const DeployCollateralToken: React.FC = () => {
 
           return errors
         }}
-        onSubmit={handleSubmit}
-      >
+        onSubmit={handleSubmit}>
         {({ isSubmitting }) => (
           <Form>
-            <BootstrapForm.Group as={Row}>
-              <BootstrapForm.Label column sm={2}>
-                Name
-              </BootstrapForm.Label>
-              <Col sm={4}>
-                <Field name="name" as={CustomInputComponent} />
-                <ErrorMessage className="red" name="name" component="div" />
-              </Col>
-            </BootstrapForm.Group>
+            <FormItem label="Name" field="name" />
 
-            <BootstrapForm.Group as={Row}>
-              <BootstrapForm.Label column sm={2}>
-                Symbol
-              </BootstrapForm.Label>
-              <Col sm={4}>
-                <Field name="symbol" as={CustomInputComponent} />
-                <ErrorMessage className="red" name="symbol" component="div" />
-              </Col>
-            </BootstrapForm.Group>
+            <FormItem label="Symbol" field="symbol" />
 
-            <BootstrapForm.Group as={Row}>
-              <BootstrapForm.Label column sm={2}>
-                Decimals
-              </BootstrapForm.Label>
-              <Col sm={4}>
-                <Field name="decimals" as={CustomInputComponent} />
-                <ErrorMessage className="red" name="decimals" component="div" />
-              </Col>
-            </BootstrapForm.Group>
+            <FormItem label="Decimals" field="decimals" />
 
             <Button
               variant="primary"
@@ -145,7 +117,3 @@ export const DeployCollateralToken: React.FC = () => {
     </React.Fragment>
   )
 }
-
-const CustomInputComponent = (props) => (
-  <BootstrapForm.Control type="text" key="name" size="sm" placeholder="name" {...props} />
-)

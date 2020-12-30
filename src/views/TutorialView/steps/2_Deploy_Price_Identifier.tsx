@@ -10,6 +10,8 @@ import { debug, defaultTransactionValues } from "../../../utils"
 import { utils } from "ethers"
 import { useContract } from "../hooks/useContract"
 import { IdentifierWhitelistInterfaceInstanceCreator } from "../../../extras/uma-ethers"
+import { FormItem } from "../components"
+import { getValidatorFunction } from "../../../utils/form"
 
 interface FormProps {
   priceIdentifier: string
@@ -22,6 +24,7 @@ const initialValues: FormProps = {
 export const DeployPriceIdentifier: React.FC = () => {
   const { getContractAddress } = useContract()
   const { clientInstance } = useRemix()
+
   const handleSubmit = async (values: FormProps, { setSubmitting }) => {
     debug("Deploying price identifier", values)
 
@@ -60,27 +63,19 @@ export const DeployPriceIdentifier: React.FC = () => {
       <p>This is important to ensure that the UMA DVM can resolve any disputes for these synthethic tokens.</p>
       <Formik
         initialValues={initialValues}
-        validate={(values) => {
-          const errors: FormikErrors<FormProps> = {}
-          if (!values.priceIdentifier) {
-            errors.priceIdentifier = "Required"
-          }
+        validate={getValidatorFunction<FormProps>(initialValues)}
+        //   const errors: FormikErrors<FormProps> = {}
+        //   if (!values.priceIdentifier) {
+        //     errors.priceIdentifier = "Required"
+        //   }
 
-          return errors
-        }}
+        //   return errors
+        // }}
         onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => (
           <Form>
-            <BootstrapForm.Group as={Row}>
-              <BootstrapForm.Label column sm={2}>
-                Name
-              </BootstrapForm.Label>
-              <Col sm={4}>
-                <Field name="priceIdentifier" as={CustomInputComponent} />
-                <ErrorMessage className="red" name="priceIdentifier" component="div" />
-              </Col>
-            </BootstrapForm.Group>
+            <FormItem label="Price Identifier" field="priceIdentifier" />
 
             <Button
               variant="primary"
@@ -97,7 +92,3 @@ export const DeployPriceIdentifier: React.FC = () => {
     </React.Fragment>
   )
 }
-
-const CustomInputComponent = (props) => (
-  <BootstrapForm.Control type="text" key="name" size="sm" placeholder="name" {...props} />
-)
