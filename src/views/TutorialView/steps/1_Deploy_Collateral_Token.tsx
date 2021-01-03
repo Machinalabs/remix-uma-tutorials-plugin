@@ -1,7 +1,8 @@
 import React, { useState } from "react"
 import { Formik, FormikErrors, Form } from "formik"
+import Alert from 'react-bootstrap/Alert'
 
-import { AddressWhitelistInstanceCreator, IdentifierWhitelistInstanceCreator, TestnetErc20InstanceCreator } from "../../../extras/uma-ethers"
+import { AddressWhitelistInstanceCreator, TestnetErc20InstanceCreator } from "../../../extras/uma-ethers"
 import { debug, defaultTransactionValues } from "../../../utils"
 import { useRemix } from "../../../hooks"
 import { Button } from "../../../components"
@@ -25,7 +26,7 @@ export const DeployCollateralToken: React.FC = () => {
   const { clientInstance } = useRemix()
   const { getContractAddress } = useContract()
   const [isSendingTransaction, setIsSendingTransaction] = useState(false)
-  const { setCurrentStepCompleted } = useStep()
+  const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
 
   const handleSubmit = (values: FormProps, { setSubmitting }) => {
     debug("Deploying collateral token", values)
@@ -80,7 +81,7 @@ export const DeployCollateralToken: React.FC = () => {
       </p>
       <Formik
         initialValues={initialValues}
-        validate={(values) => {
+        validate={isCurrentStepCompleted ? undefined : (values) => {
           const errors: FormikErrors<FormProps> = {}
           if (!values.name) {
             errors.name = "Required"
@@ -99,12 +100,11 @@ export const DeployCollateralToken: React.FC = () => {
         onSubmit={handleSubmit}>
         {({ isSubmitting }) => (
           <Form>
-            <FormItem label="Name" field="name" />
+            <FormItem label="Name" field="name" readOnly={isCurrentStepCompleted} />
 
-            <FormItem label="Symbol" field="symbol" />
+            <FormItem label="Symbol" field="symbol" readOnly={isCurrentStepCompleted} />
 
-            <FormItem label="Decimals" field="decimals" placeHolder="i.e 18" />
-
+            <FormItem label="Decimals" field="decimals" placeHolder="i.e 18" readOnly={isCurrentStepCompleted} />
             <Button
               variant="primary"
               type="submit"
@@ -113,7 +113,12 @@ export const DeployCollateralToken: React.FC = () => {
               isLoading={isSubmitting}
               loadingText="Submitting..."
               text="Submit"
+              show={!isCurrentStepCompleted}
             />
+
+            <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted}>
+              You have successfully deployed the collateral token.
+              </Alert>
           </Form>
         )}
       </Formik>

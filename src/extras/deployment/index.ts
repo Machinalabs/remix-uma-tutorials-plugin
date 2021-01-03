@@ -1,7 +1,5 @@
-import { toHex, toWei } from "web3-utils"
+import { toWei } from "web3-utils"
 import { utils } from "ethers"
-import { RemixTx } from "@remixproject/plugin-api"
-
 import { RemixClientInstanceType } from "../../hooks"
 import { debug, defaultTransactionValues } from "../../utils"
 
@@ -17,15 +15,10 @@ import {
   GovernorInstanceCreator,
   DesignatedVotingFactoryInstanceCreator,
   TokenFactoryInstanceCreator,
-  // TestnetErc20InstanceCreator,
-  // Weth9InstanceCreator,
-  // ExpiringMultiPartyCreatorInstanceCreator,
   AddressWhitelistInstanceCreator,
   ExpiringMultiPartyLibFactoryLibrary,
   ExpiringMultiPartyCreatorInstanceCreator,
-  Weth9InstanceCreator,
-  // ExpiringMultiPartyInstanceCreator,
-  // ExpiringMultiPartyLibFactoryLibrary,
+  Weth9InstanceCreator
 } from "../uma-ethers"
 
 export type Bytes20 = string

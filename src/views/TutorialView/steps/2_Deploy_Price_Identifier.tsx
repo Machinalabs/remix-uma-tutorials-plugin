@@ -1,8 +1,6 @@
 import React from "react"
-import { ErrorMessage, Field, Formik, FormikErrors, Form } from "formik"
-import BootstrapForm from "react-bootstrap/Form"
-import Row from "react-bootstrap/Row"
-import Col from "react-bootstrap/Col"
+import { Formik, Form } from "formik"
+import Alert from 'react-bootstrap/Alert'
 
 import { useRemix } from "../../../hooks"
 import { Button } from "../../../components"
@@ -25,7 +23,7 @@ const initialValues: FormProps = {
 export const DeployPriceIdentifier: React.FC = () => {
   const { getContractAddress } = useContract()
   const { clientInstance } = useRemix()
-  const { setCurrentStepCompleted } = useStep()
+  const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
 
   const handleSubmit = (values: FormProps, { setSubmitting }) => {
     debug("Deploying price identifier", values)
@@ -51,7 +49,6 @@ export const DeployPriceIdentifier: React.FC = () => {
         from: accounts[0],
         to: address,
       })
-      console.log("Sent")
     }
 
     setTimeout(() => {
@@ -68,11 +65,14 @@ export const DeployPriceIdentifier: React.FC = () => {
       <p>This is important to ensure that the UMA DVM can resolve any disputes for these synthethic tokens.</p>
       <Formik
         initialValues={initialValues}
-        validate={getValidatorFunction<FormProps>(initialValues)}
+        validate={getValidatorFunction}
         onSubmit={handleSubmit}>
         {({ isSubmitting }) => (
           <Form>
-            <FormItem label="Price Identifier" field="priceIdentifier" placeHolder="i.e ETH/BTC" />
+            <FormItem label="Price Identifier" field="priceIdentifier"
+              placeHolder="i.e ETH/BTC"
+              readOnly={isCurrentStepCompleted}
+            />
 
             <Button
               variant="primary"
@@ -82,7 +82,12 @@ export const DeployPriceIdentifier: React.FC = () => {
               isLoading={isSubmitting}
               loadingText="Submitting..."
               text="Submit"
+              show={!isCurrentStepCompleted}
             />
+
+            <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted}>
+              You have successfully deployed the price identifier.
+              </Alert>
           </Form>
         )}
       </Formik>

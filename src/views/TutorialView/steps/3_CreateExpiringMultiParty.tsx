@@ -1,5 +1,5 @@
 import React from "react"
-import { Formik, FormikErrors, Form } from "formik"
+import { Formik, Form } from "formik"
 import { getValidatorFunction } from "../../../utils/form"
 
 import { FormItem } from "../components"
@@ -68,6 +68,7 @@ export const CreateExpiringMultiParty: React.FC = () => {
                 const label = splitItems.join(" ")
                 return <FormItem key={key} label={label} field={key} labelWidth={3} placeHolder={getPlaceHolder(key)} />
               }
+              return undefined
             })}
 
             <Button

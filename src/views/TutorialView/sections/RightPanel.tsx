@@ -23,7 +23,7 @@ export const RightPanel: React.FC = () => {
 
     getData()
 
-  }, [])
+  }, [clientInstance])
 
   return (
     <React.Fragment>
