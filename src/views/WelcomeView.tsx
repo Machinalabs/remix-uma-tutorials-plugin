@@ -39,7 +39,7 @@ export const WelcomeView: React.FC = () => {
 
       deployUMAContracts()
     }
-  }, [isStarting, clientInstance, history])
+  }, [isStarting, clientInstance, history]) // eslint-disable-line
 
   const handleOnClick = () => {
     setIsStarting(true)

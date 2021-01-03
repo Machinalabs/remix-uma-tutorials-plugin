@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { Formik, FormikErrors, Form } from "formik"
 import Alert from 'react-bootstrap/Alert'
 
@@ -25,7 +25,6 @@ const initialValues: FormProps = {
 export const DeployCollateralToken: React.FC = () => {
   const { clientInstance } = useRemix()
   const { getContractAddress } = useContract()
-  const [isSendingTransaction, setIsSendingTransaction] = useState(false)
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
 
   const handleSubmit = (values: FormProps, { setSubmitting }) => {
