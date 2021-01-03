@@ -13,13 +13,13 @@ import { FormItem } from "../components"
 interface FormProps {
   name: string
   symbol: string
-  decimals: number
+  decimals: string
 }
 
 const initialValues: FormProps = {
   name: "",
   symbol: "",
-  decimals: 0,
+  decimals: "",
 }
 
 export const DeployCollateralToken: React.FC = () => {
@@ -86,21 +86,21 @@ export const DeployCollateralToken: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.name) {
-                  errors.name = "Required"
-                }
-                if (!values.symbol) {
-                  errors.symbol = "Required"
-                }
-                if (!values.decimals) {
-                  errors.decimals = "Required"
-                } else if (values.decimals > 255) {
-                  errors.decimals = "Max value is 255"
-                }
-
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.name) {
+                errors.name = "Required"
               }
+              if (!values.symbol) {
+                errors.symbol = "Required"
+              }
+              if (!values.decimals) {
+                errors.decimals = "Required"
+              } else if (parseInt(values.decimals, 10) > 255) {
+                errors.decimals = "Max value is 255"
+              }
+
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -118,7 +118,7 @@ export const DeployCollateralToken: React.FC = () => {
               disabled={isSubmitting}
               isLoading={isSubmitting}
               loadingText="Submitting..."
-              text="Submit"
+              text="Deploy"
               show={!isCurrentStepCompleted}
             />
 

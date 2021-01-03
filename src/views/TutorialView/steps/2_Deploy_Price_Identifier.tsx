@@ -80,7 +80,7 @@ export const DeployPriceIdentifier: React.FC = () => {
               disabled={isSubmitting}
               isLoading={isSubmitting}
               loadingText="Submitting..."
-              text="Submit"
+              text="Deploy"
               show={!isCurrentStepCompleted}
             />
 

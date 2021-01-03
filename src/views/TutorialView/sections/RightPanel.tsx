@@ -8,8 +8,8 @@ export const RightPanel: React.FC = () => {
   const { clientInstance } = useRemix()
 
   const [account, setAccount] = useState("")
-  const [collateralBalance, setCollateralBalance] = useState("") // eslint-disable-line
-  const [syntheticBalance, setSyntheticBalance] = useState("") // eslint-disable-line
+  const [collateralBalance, setCollateralBalance] = useState(0) // eslint-disable-line
+  const [syntheticBalance, setSyntheticBalance] = useState(0) // eslint-disable-line
 
   useEffect(() => {
     const getData = async () => {
