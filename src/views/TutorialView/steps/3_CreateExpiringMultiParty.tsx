@@ -47,7 +47,7 @@ const getPlaceHolder = (key: string) => {
 }
 
 export const CreateExpiringMultiParty: React.FC = () => {
-  const handleSubmit = async (values: FormProps, { setSubmitting }) => {
+  const handleSubmit = (values: FormProps, { setSubmitting }) => {
 
   }
 
@@ -57,7 +57,7 @@ export const CreateExpiringMultiParty: React.FC = () => {
       <p>Now, we can create a new expiring multiparty synthetic token.</p>
       <Formik
         initialValues={initialValues}
-        validate={getValidatorFunction<FormProps>(initialValues)}
+        validate={getValidatorFunction}
         onSubmit={handleSubmit}>
         {({ isSubmitting }) => (
           <Form>
