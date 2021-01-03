@@ -110,7 +110,8 @@ export const DeployCollateralToken: React.FC = () => {
 
             <FormItem label="Symbol" field="symbol" readOnly={isCurrentStepCompleted} />
 
-            <FormItem label="Decimals" field="decimals" placeHolder="i.e 18" readOnly={isCurrentStepCompleted} />
+            <FormItem label="Decimals" field="decimals" placeHolder="i.e 18" readOnly={isCurrentStepCompleted} type="number" />
+
             <Button
               variant="primary"
               type="submit"
@@ -122,7 +123,7 @@ export const DeployCollateralToken: React.FC = () => {
               show={!isCurrentStepCompleted}
             />
 
-            <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted}>
+            <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted} transition={false}>
               You have successfully deployed the collateral token.
             </Alert>
           </Form>
