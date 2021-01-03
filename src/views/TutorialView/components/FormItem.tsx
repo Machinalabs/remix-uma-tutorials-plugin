@@ -15,7 +15,7 @@ interface Props {
 export const FormItem: React.FC<Props> = ({ label, field, labelWidth = 2, placeHolder, readOnly = false }) => {
   return (
     <BootstrapForm.Group as={Row}>
-      <BootstrapForm.Label column sm={labelWidth}>
+      <BootstrapForm.Label column={true} sm={labelWidth}>
         {label}
       </BootstrapForm.Label>
       <Col sm={4}>

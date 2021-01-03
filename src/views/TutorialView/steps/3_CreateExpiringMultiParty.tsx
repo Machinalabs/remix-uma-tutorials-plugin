@@ -47,7 +47,9 @@ const getPlaceHolder = (key: string) => {
 }
 
 export const CreateExpiringMultiParty: React.FC = () => {
-  const handleSubmit = (values: FormProps, { setSubmitting }) => {}
+  const handleSubmit = (values: FormProps, { setSubmitting }) => {
+    // TODO
+  }
 
   return (
     <React.Fragment>

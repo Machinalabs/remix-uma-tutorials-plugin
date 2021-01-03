@@ -62,9 +62,9 @@ export const ContractForm: React.FC<Props> = ({ abiItem }) => {
             {inputs &&
               inputs.map((item, index) => {
                 return (
-                  <Form.Group>
+                  <Form.Group key={index}>
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="text" key={index} size="sm" placeholder={`${item.type} ${item.name}`} />
+                    <Form.Control type="text" size="sm" placeholder={`${item.type} ${item.name}`} />
                   </Form.Group>
                   // <StyledInput
                   //     value={fields[index]}

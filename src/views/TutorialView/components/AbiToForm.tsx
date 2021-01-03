@@ -15,7 +15,7 @@ interface Props {
 export const AbiForm: React.FC<Props> = ({ abi, handleSubmit }) => {
   const [validationFunction, setValidationFunction] = useState(undefined)
 
-  const getInitialValues = (abi: AbiItem) => {
+  const getInitialValues = (abiItem: AbiItem) => {
     return {}
   }
 
@@ -35,7 +35,7 @@ export const AbiForm: React.FC<Props> = ({ abi, handleSubmit }) => {
       {({ isSubmitting }) => (
         <Form>
           <BootstrapForm.Group as={Row}>
-            <BootstrapForm.Label column sm={2}>
+            <BootstrapForm.Label column={true} sm={2}>
               Name
             </BootstrapForm.Label>
             <Col sm={4}>
