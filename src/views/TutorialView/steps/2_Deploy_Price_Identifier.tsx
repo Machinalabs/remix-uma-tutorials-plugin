@@ -84,7 +84,7 @@ export const DeployPriceIdentifier: React.FC = () => {
               show={!isCurrentStepCompleted}
             />
 
-            <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted}>
+            <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted} transition={false}>
               You have successfully deployed the price identifier.
             </Alert>
           </Form>
