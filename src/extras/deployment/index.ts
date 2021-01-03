@@ -18,7 +18,7 @@ import {
   AddressWhitelistInstanceCreator,
   ExpiringMultiPartyLibFactoryLibrary,
   ExpiringMultiPartyCreatorInstanceCreator,
-  Weth9InstanceCreator
+  Weth9InstanceCreator,
 } from "../uma-ethers"
 
 export type Bytes20 = string
@@ -386,8 +386,13 @@ export class UMADeployer implements IDeployer {
 
     // Then deploy expiring multi party creator (contract)
     const { data: ExpiringMultiPartyCreatorData } = new ExpiringMultiPartyCreatorInstanceCreator({
-      'ExpiringMultiPartyLib': MultipartyLibraryAddress as string
-    }).getDeployTransaction(FinderInstanceAddres as string, AddressWhitelistAddress as string, TokenFactoryAddress as string, TimerInstanceAddress as string)
+      ExpiringMultiPartyLib: MultipartyLibraryAddress as string,
+    }).getDeployTransaction(
+      FinderInstanceAddres as string,
+      AddressWhitelistAddress as string,
+      TokenFactoryAddress as string,
+      TimerInstanceAddress as string
+    )
     const { createdAddress: ExpiringMultiPartyCreatorAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       from: fromAddress,
@@ -424,10 +429,9 @@ export class UMADeployer implements IDeployer {
     debug("WETH deployed", WethAddress)
 
     const collateralCurrencyWhitelistInterface = new AddressWhitelistInstanceCreator().interface
-    const addToWhitelistEncodedData = collateralCurrencyWhitelistInterface.encodeFunctionData(
-      "addToWhitelist",
-      [WethAddress]
-    )
+    const addToWhitelistEncodedData = collateralCurrencyWhitelistInterface.encodeFunctionData("addToWhitelist", [
+      WethAddress,
+    ])
     await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       data: addToWhitelistEncodedData,

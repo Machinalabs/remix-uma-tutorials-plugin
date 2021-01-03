@@ -28,7 +28,7 @@ const initialValues: FormProps = {
 }
 
 const capitalizeFirstLetter = (item: string) => {
-  return item.charAt(0).toUpperCase() + item.slice(1);
+  return item.charAt(0).toUpperCase() + item.slice(1)
 }
 
 const getPlaceHolder = (key: string) => {
@@ -40,30 +40,24 @@ const getPlaceHolder = (key: string) => {
     case "syntheticSymbol":
       return "SNT"
     case "minSponsorTokens":
-      return "100";
+      return "100"
     case "collateralRequirement":
-      return "Percentage required (i.e. 125)";
+      return "Percentage required (i.e. 125)"
   }
 }
 
 export const CreateExpiringMultiParty: React.FC = () => {
-  const handleSubmit = (values: FormProps, { setSubmitting }) => {
-
-  }
+  const handleSubmit = (values: FormProps, { setSubmitting }) => {}
 
   return (
     <React.Fragment>
       <h4>Create a expiring multiparty synthethic contract</h4>
       <p>Now, we can create a new expiring multiparty synthetic token.</p>
-      <Formik
-        initialValues={initialValues}
-        validate={getValidatorFunction}
-        onSubmit={handleSubmit}>
+      <Formik initialValues={initialValues} validate={getValidatorFunction} onSubmit={handleSubmit}>
         {({ isSubmitting }) => (
           <Form>
-
             {Object.keys(initialValues).map((key) => {
-              const splitItems = capitalizeFirstLetter(key).match(/[A-Z][a-z]+/g);
+              const splitItems = capitalizeFirstLetter(key).match(/[A-Z][a-z]+/g)
               if (splitItems) {
                 const label = splitItems.join(" ")
                 return <FormItem key={key} label={label} field={key} labelWidth={3} placeHolder={getPlaceHolder(key)} />

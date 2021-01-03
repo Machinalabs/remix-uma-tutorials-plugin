@@ -16,20 +16,24 @@ interface Props extends ButtonProps {
 }
 
 export const Button: React.FC<Props> = ({ isLoading, loadingText, text, show = true, ...props }) => {
-  return show ? <StyledButton {...props}>
-    {isLoading && (
-      <React.Fragment>
-        <Spinner
-          style={{ marginRight: "5px" }}
-          as="span"
-          animation="border"
-          size="sm"
-          role="status"
-          aria-hidden="true"
-        />
-        <span>{loadingText}</span>
-      </React.Fragment>
-    )}
-    {!isLoading && <span>{text}</span>}
-  </StyledButton> : <React.Fragment></React.Fragment>
+  return show ? (
+    <StyledButton {...props}>
+      {isLoading && (
+        <React.Fragment>
+          <Spinner
+            style={{ marginRight: "5px" }}
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+          />
+          <span>{loadingText}</span>
+        </React.Fragment>
+      )}
+      {!isLoading && <span>{text}</span>}
+    </StyledButton>
+  ) : (
+    <React.Fragment></React.Fragment>
+  )
 }

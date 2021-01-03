@@ -1,17 +1,17 @@
-import { FormikErrors } from "formik";
+import { FormikErrors } from "formik"
 
 export function getValidatorFunction<T>(typeItem: T) {
-    const errors: FormikErrors<T> = {}
+  const errors: FormikErrors<T> = {}
 
-    return (values: T) => {
-        const keys = Object.keys(typeItem)
+  return (values: T) => {
+    const keys = Object.keys(typeItem)
 
-        keys.forEach((key) => {
-            if (!values[key]) {
-                errors[key] = "Required"
-            }
-        })
+    keys.forEach((key) => {
+      if (!values[key]) {
+        errors[key] = "Required"
+      }
+    })
 
-        return errors
-    }
+    return errors
+  }
 }

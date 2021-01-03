@@ -25,12 +25,16 @@ export const NavMenu: React.FC = () => {
             activeStyle={{
               opacity: 1,
               fontWeight: 500,
-              fontSize: "0.9em"
+              fontSize: "0.9em",
             }}
           >
             <Nav.Link as={StyledDiv} key={currentStepDefinition.key} href={currentStepDefinition.route} disabled={true}>
               <NumberContainer>
-                {currentStep.order > currentStepDefinition.order ? <CompletedIcon /> : <span>{currentStepDefinition.order}</span>}
+                {currentStep.order > currentStepDefinition.order ? (
+                  <CompletedIcon />
+                ) : (
+                  <span>{currentStepDefinition.order}</span>
+                )}
               </NumberContainer>
               {text}
             </Nav.Link>
@@ -42,9 +46,18 @@ export const NavMenu: React.FC = () => {
 }
 
 const CompletedIcon: React.FC = () => {
-  return (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-check2" viewBox="0 0 16 16">
-    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
-  </svg>)
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="white"
+      className="bi bi-check2"
+      viewBox="0 0 16 16"
+    >
+      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+    </svg>
+  )
 }
 
 const NumberContainer = styled.div`
@@ -58,7 +71,7 @@ const NumberContainer = styled.div`
   color: white;
   font-size: 0.8em;
   align-items: center;
-  justify-content: center
+  justify-content: center;
 `
 
 const StyledNavLink = styled(NavLink)`

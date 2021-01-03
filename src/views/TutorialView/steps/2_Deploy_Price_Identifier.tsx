@@ -1,6 +1,6 @@
 import React from "react"
 import { Formik, Form } from "formik"
-import Alert from 'react-bootstrap/Alert'
+import Alert from "react-bootstrap/Alert"
 
 import { useRemix } from "../../../hooks"
 import { Button } from "../../../components"
@@ -56,20 +56,19 @@ export const DeployPriceIdentifier: React.FC = () => {
         setSubmitting(false)
         setCurrentStepCompleted()
       })
-    }, 2000);
+    }, 2000)
   }
 
   return (
     <React.Fragment>
       <h4>Deploy price identifier</h4>
       <p>This is important to ensure that the UMA DVM can resolve any disputes for these synthethic tokens.</p>
-      <Formik
-        initialValues={initialValues}
-        validate={getValidatorFunction}
-        onSubmit={handleSubmit}>
+      <Formik initialValues={initialValues} validate={getValidatorFunction} onSubmit={handleSubmit}>
         {({ isSubmitting }) => (
           <Form>
-            <FormItem label="Price Identifier" field="priceIdentifier"
+            <FormItem
+              label="Price Identifier"
+              field="priceIdentifier"
               placeHolder="i.e ETH/BTC"
               readOnly={isCurrentStepCompleted}
             />
@@ -87,7 +86,7 @@ export const DeployPriceIdentifier: React.FC = () => {
 
             <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted}>
               You have successfully deployed the price identifier.
-              </Alert>
+            </Alert>
           </Form>
         )}
       </Formik>

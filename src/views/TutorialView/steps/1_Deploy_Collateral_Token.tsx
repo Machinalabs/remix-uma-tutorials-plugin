@@ -1,6 +1,6 @@
 import React from "react"
 import { Formik, FormikErrors, Form } from "formik"
-import Alert from 'react-bootstrap/Alert'
+import Alert from "react-bootstrap/Alert"
 
 import { AddressWhitelistInstanceCreator, TestnetErc20InstanceCreator } from "../../../extras/uma-ethers"
 import { debug, defaultTransactionValues } from "../../../utils"
@@ -49,10 +49,9 @@ export const DeployCollateralToken: React.FC = () => {
 
       const address = getContractAddress("IdentifierWhitelist")
       const collateralCurrencyWhitelist = new AddressWhitelistInstanceCreator().interface
-      const addToWhitelistEncodedData = collateralCurrencyWhitelist.encodeFunctionData(
-        "addToWhitelist",
-        [TestnetErc20Address]
-      )
+      const addToWhitelistEncodedData = collateralCurrencyWhitelist.encodeFunctionData("addToWhitelist", [
+        TestnetErc20Address,
+      ])
       await clientInstance.udapp.sendTransaction({
         ...defaultTransactionValues,
         data: addToWhitelistEncodedData,
@@ -67,36 +66,44 @@ export const DeployCollateralToken: React.FC = () => {
         setSubmitting(false)
         setCurrentStepCompleted()
       })
-    }, 2000);
+    }, 2000)
   }
 
   return (
     <React.Fragment>
       <h4>Deploy collateral token</h4>
-      <p>The first step is to deploy the collateral token. This is the token that will serve as collateral for the synthethic token.</p>
+      <p>
+        The first step is to deploy the collateral token. This is the token that will serve as collateral for the
+        synthethic token.
+      </p>
       <p>
         We will deploy it and give permission to the expiring multiparty creator to spend the collateral tokens on our
         behalf.
       </p>
       <Formik
         initialValues={initialValues}
-        validate={isCurrentStepCompleted ? undefined : (values) => {
-          const errors: FormikErrors<FormProps> = {}
-          if (!values.name) {
-            errors.name = "Required"
-          }
-          if (!values.symbol) {
-            errors.symbol = "Required"
-          }
-          if (!values.decimals) {
-            errors.decimals = "Required"
-          } else if (values.decimals > 255) {
-            errors.decimals = "Max value is 255"
-          }
+        validate={
+          isCurrentStepCompleted
+            ? undefined
+            : (values) => {
+                const errors: FormikErrors<FormProps> = {}
+                if (!values.name) {
+                  errors.name = "Required"
+                }
+                if (!values.symbol) {
+                  errors.symbol = "Required"
+                }
+                if (!values.decimals) {
+                  errors.decimals = "Required"
+                } else if (values.decimals > 255) {
+                  errors.decimals = "Max value is 255"
+                }
 
-          return errors
-        }}
-        onSubmit={handleSubmit}>
+                return errors
+              }
+        }
+        onSubmit={handleSubmit}
+      >
         {({ isSubmitting }) => (
           <Form>
             <FormItem label="Name" field="name" readOnly={isCurrentStepCompleted} />
@@ -117,7 +124,7 @@ export const DeployCollateralToken: React.FC = () => {
 
             <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted}>
               You have successfully deployed the collateral token.
-              </Alert>
+            </Alert>
           </Form>
         )}
       </Formik>

@@ -53,7 +53,7 @@ describe("useContract tests", () => {
       name: "WETH",
       symbol: "WETH",
       decimals: 18,
-      totalSupply: BigNumber.from("10000000")
+      totalSupply: BigNumber.from("10000000"),
     }
 
     expect(result.current.collateralTokens.length).toEqual(0)
@@ -76,7 +76,7 @@ describe("useContract tests", () => {
       name: "SNT",
       symbol: "SNT",
       decimals: 18,
-      totalSupply: BigNumber.from("10000000")
+      totalSupply: BigNumber.from("10000000"),
     }
 
     expect(result.current.syntheticTokens.length).toEqual(0)
@@ -91,5 +91,4 @@ describe("useContract tests", () => {
     expect(syntheticTokens.length).toEqual(1)
     expect(syntheticTokens[0]).toEqual(newToken)
   })
-
 })
