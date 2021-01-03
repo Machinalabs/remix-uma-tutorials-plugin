@@ -10,9 +10,10 @@ interface Props {
   labelWidth?: number
   placeHolder?: string
   readOnly?: boolean
+  type?: string
 }
 
-export const FormItem: React.FC<Props> = ({ label, field, labelWidth = 2, placeHolder, readOnly = false }) => {
+export const FormItem: React.FC<Props> = ({ label, field, labelWidth = 2, placeHolder, readOnly = false, type = "text" }) => {
   return (
     <BootstrapForm.Group as={Row}>
       <BootstrapForm.Label column={true} sm={labelWidth}>
@@ -24,6 +25,7 @@ export const FormItem: React.FC<Props> = ({ label, field, labelWidth = 2, placeH
           as={CustomInputComponent}
           placeholder={placeHolder || label.toLowerCase()}
           readOnly={readOnly}
+          type={type}
         />
         <ErrorMessage className="red" name={field} component="div" />
       </Col>
