@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useContext, useState } from "react"
+import React, { PropsWithChildren, useContext, useEffect, useState } from "react"
 
 export interface StepDefinition {
   route: string
@@ -64,6 +64,8 @@ interface IStepProvider {
   isLastStep: () => boolean
   goNextStep: () => void
   goStepBefore: () => void
+  isCurrentStepCompleted: boolean
+  setCurrentStepCompleted: () => void
 }
 
 /* tslint:disable */
@@ -74,13 +76,16 @@ const StepContext = React.createContext<IStepProvider>({
   currentStep: STEPS[DEFAULT_STEP],
   getStepBefore: () => STEPS[DEFAULT_STEP],
   isLastStep: () => false,
-  goNextStep: () => {},
-  goStepBefore: () => {},
+  goNextStep: () => { },
+  goStepBefore: () => { },
+  isCurrentStepCompleted: false,
+  setCurrentStepCompleted: () => { }
 })
 /* tslint:enable */
 
 export const StepProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const [currentStep, setCurrentStep] = useState(STEPS[DEFAULT_STEP])
+  const [isCurrentStepCompleted, setIsCurrentStepCompleted] = useState(false)
 
   const getNextStep = () => {
     const result = getNextStepInternal()
@@ -137,6 +142,14 @@ export const StepProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     return allSteps.find((s) => s.order === nextStepOrder)
   }
 
+  const setCurrentStepCompleted = () => {
+    setIsCurrentStepCompleted(true)
+  }
+
+  useEffect(() => {
+    setIsCurrentStepCompleted(false)
+  }, [currentStep])
+
   return (
     <StepContext.Provider
       value={{
@@ -147,6 +160,8 @@ export const StepProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
         isLastStep,
         goNextStep,
         goStepBefore,
+        setCurrentStepCompleted,
+        isCurrentStepCompleted
       }}
     >
       {children}

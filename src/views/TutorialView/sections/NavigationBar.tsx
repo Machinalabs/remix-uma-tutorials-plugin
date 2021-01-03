@@ -7,7 +7,7 @@ import { StyledButton } from "../../../components"
 import { useStep } from "../hooks"
 
 export const NavigationBar: React.FC = () => {
-  const { isLastStep, getNextStep, goNextStep } = useStep()
+  const { isLastStep, getNextStep, goNextStep, isCurrentStepCompleted } = useStep()
   const history = useHistory()
 
   const handleOnNextClick = () => {
@@ -24,7 +24,7 @@ export const NavigationBar: React.FC = () => {
         <StyledButton variant="danger">End</StyledButton>
       </Link>
       {!isLastStep() && (
-        <StyledButton variant="primary" onClick={handleOnNextClick}>
+        <StyledButton disabled={!isCurrentStepCompleted} variant="primary" onClick={handleOnNextClick}>
           Next
         </StyledButton>
       )}

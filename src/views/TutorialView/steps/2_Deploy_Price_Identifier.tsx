@@ -12,6 +12,7 @@ import { useContract } from "../hooks/useContract"
 import { IdentifierWhitelistInterfaceInstanceCreator } from "../../../extras/uma-ethers"
 import { FormItem } from "../components"
 import { getValidatorFunction } from "../../../utils/form"
+import { useStep } from "../hooks"
 
 interface FormProps {
   priceIdentifier: string
@@ -24,8 +25,9 @@ const initialValues: FormProps = {
 export const DeployPriceIdentifier: React.FC = () => {
   const { getContractAddress } = useContract()
   const { clientInstance } = useRemix()
+  const { setCurrentStepCompleted } = useStep()
 
-  const handleSubmit = async (values: FormProps, { setSubmitting }) => {
+  const handleSubmit = (values: FormProps, { setSubmitting }) => {
     debug("Deploying price identifier", values)
 
     const sendTx = async () => {
@@ -52,9 +54,12 @@ export const DeployPriceIdentifier: React.FC = () => {
       console.log("Sent")
     }
 
-    sendTx().then(() => {
-      setSubmitting(false)
-    })
+    setTimeout(() => {
+      sendTx().then(() => {
+        setSubmitting(false)
+        setCurrentStepCompleted()
+      })
+    }, 2000);
   }
 
   return (
@@ -64,18 +69,10 @@ export const DeployPriceIdentifier: React.FC = () => {
       <Formik
         initialValues={initialValues}
         validate={getValidatorFunction<FormProps>(initialValues)}
-        //   const errors: FormikErrors<FormProps> = {}
-        //   if (!values.priceIdentifier) {
-        //     errors.priceIdentifier = "Required"
-        //   }
-
-        //   return errors
-        // }}
-        onSubmit={handleSubmit}
-      >
+        onSubmit={handleSubmit}>
         {({ isSubmitting }) => (
           <Form>
-            <FormItem label="Price Identifier" field="priceIdentifier" />
+            <FormItem label="Price Identifier" field="priceIdentifier" placeHolder="i.e ETH/BTC" />
 
             <Button
               variant="primary"

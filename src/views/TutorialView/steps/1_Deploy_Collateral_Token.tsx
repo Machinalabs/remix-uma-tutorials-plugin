@@ -6,7 +6,7 @@ import { debug, defaultTransactionValues } from "../../../utils"
 import { useRemix } from "../../../hooks"
 import { Button } from "../../../components"
 
-import { useContract } from "../hooks"
+import { useContract, useStep } from "../hooks"
 import { FormItem } from "../components"
 
 interface FormProps {
@@ -25,10 +25,10 @@ export const DeployCollateralToken: React.FC = () => {
   const { clientInstance } = useRemix()
   const { getContractAddress } = useContract()
   const [isSendingTransaction, setIsSendingTransaction] = useState(false)
+  const { setCurrentStepCompleted } = useStep()
 
-  const handleSubmit = async (values: FormProps, { setSubmitting }) => {
+  const handleSubmit = (values: FormProps, { setSubmitting }) => {
     debug("Deploying collateral token", values)
-
     const sendTx = async () => {
       const { data: collateralTokenDeployData } = new TestnetErc20InstanceCreator().getDeployTransaction(
         values.name,
@@ -62,15 +62,18 @@ export const DeployCollateralToken: React.FC = () => {
       debug("Collateral added to whitelist")
     }
 
-    sendTx().then(() => {
-      setSubmitting(false)
-    })
+    setTimeout(() => {
+      sendTx().then(() => {
+        setSubmitting(false)
+        setCurrentStepCompleted()
+      })
+    }, 2000);
   }
 
   return (
     <React.Fragment>
       <h4>Deploy collateral token</h4>
-      <p>This is the token that will serve as collateral for the synthethic token.</p>
+      <p>The first step is to deploy the collateral token. This is the token that will serve as collateral for the synthethic token.</p>
       <p>
         We will deploy it and give permission to the expiring multiparty creator to spend the collateral tokens on our
         behalf.
@@ -100,7 +103,7 @@ export const DeployCollateralToken: React.FC = () => {
 
             <FormItem label="Symbol" field="symbol" />
 
-            <FormItem label="Decimals" field="decimals" />
+            <FormItem label="Decimals" field="decimals" placeHolder="i.e 18" />
 
             <Button
               variant="primary"
