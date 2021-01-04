@@ -88,7 +88,7 @@ export const DeployCollateralToken: React.FC = () => {
         The first step is to deploy the collateral token. This is the token that will serve as collateral for the
         synthethic token.
       </p>
-      <p>
+      <p style={{ marginBottom: "0" }}>
         We will deploy it and give permission to the expiring multiparty creator to spend the collateral tokens on our
         behalf.
       </p>
@@ -98,21 +98,21 @@ export const DeployCollateralToken: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.name) {
-                  errors.name = "Required"
-                }
-                if (!values.symbol) {
-                  errors.symbol = "Required"
-                }
-                if (!values.decimals) {
-                  errors.decimals = "Required"
-                } else if (parseInt(values.decimals, 10) > 255) {
-                  errors.decimals = "Max value is 255"
-                }
-
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.name) {
+                errors.name = "Required"
               }
+              if (!values.symbol) {
+                errors.symbol = "Required"
+              }
+              if (!values.decimals) {
+                errors.decimals = "Required"
+              } else if (parseInt(values.decimals, 10) > 255) {
+                errors.decimals = "Max value is 255"
+              }
+
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >
