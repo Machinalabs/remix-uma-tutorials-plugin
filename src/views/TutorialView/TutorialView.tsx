@@ -14,7 +14,7 @@ export const TutorialView: React.FC = () => {
         <h2>{TITLE}</h2>
         <Container fluid={true} style={{ paddingTop: "2em" }}>
           <Row style={{ height: "90%" }}>
-            <Col xs={2}>
+            <Col md="auto" style={{ marginRight: "2em" }}>
               <NavMenu />
             </Col>
             <Col xs={6}>
