@@ -21,7 +21,7 @@ const initialValues: FormProps = {
 }
 
 export const DeployPriceIdentifier: React.FC = () => {
-  const { getContractAddress } = useContract()
+  const { getContractAddress, addPriceIdentifier } = useContract()
   const { clientInstance } = useRemix()
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
 
@@ -49,6 +49,8 @@ export const DeployPriceIdentifier: React.FC = () => {
         from: accounts[0],
         to: address,
       })
+
+      addPriceIdentifier(values.priceIdentifier)
     }
 
     setTimeout(() => {
