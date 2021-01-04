@@ -1,3 +1,6 @@
+html {
+    zoom: 88%;
+}
 body, html, #root, .container-fluid, .row.full-height {
     height: 100%;
 }
@@ -5,4 +8,20 @@ body, html, #root, .container-fluid, .row.full-height {
 div.red {
     color: red;
     font-size: 0.75em;
+}
+
+input.form-control.form-control-sm::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: gray;
+}
+
+input.form-control.form-control-sm::-moz-placeholder { /* Firefox 19+ */
+    color: gray;
+}
+
+input.form-control.form-control-sm:-ms-input-placeholder { /* IE 10+ */
+    color: gray;
+}
+ 
+input.form-control.form-control-sm:-moz-placeholder { /* Firefox 18- */
+    color: gray;
 }
