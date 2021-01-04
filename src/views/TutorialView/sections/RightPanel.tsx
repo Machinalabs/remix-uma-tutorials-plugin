@@ -52,18 +52,19 @@ export const RightPanel: React.FC = () => {
               <Header>
                 <span>Total supply</span>
               </Header>
-              {collateralTokens && collateralTokens.map((item: Token, index: number) => (
-                <AccordionContentBody key={index}>
-                  <Image>{item.name.charAt(0)}</Image>
-                  <Description>
-                    <span>{item.name}</span>
-                    <span className="subtitle">{item.symbol}</span>
-                  </Description>
-                  <Supply>
-                    <span>{item.totalSupply.toString()}</span>
-                  </Supply>
-                </AccordionContentBody>
-              ))}
+              {collateralTokens &&
+                collateralTokens.map((item: Token, index: number) => (
+                  <AccordionContentBody key={index}>
+                    <Image>{item.name.charAt(0)}</Image>
+                    <Description>
+                      <span>{item.name}</span>
+                      <span className="subtitle">{item.symbol}</span>
+                    </Description>
+                    <Supply>
+                      <span>{item.totalSupply.toString()}</span>
+                    </Supply>
+                  </AccordionContentBody>
+                ))}
             </React.Fragment>
           </Accordion.Collapse>
         </Card>
@@ -74,14 +75,15 @@ export const RightPanel: React.FC = () => {
           <Accordion.Collapse eventKey="1">
             {/* <Card.Body> */}
             <React.Fragment>
-              {priceIdentifiers && priceIdentifiers.map((item: string, index: number) => (
-                <AccordionContentBody key={index}>
-                  <Image>{item.charAt(0)}</Image>
-                  <Description style={{ justifyContent: "center" }}>
-                    <span>{item}</span>
-                  </Description>
-                </AccordionContentBody>
-              ))}
+              {priceIdentifiers &&
+                priceIdentifiers.map((item: string, index: number) => (
+                  <AccordionContentBody key={index}>
+                    <Image>{item.charAt(0)}</Image>
+                    <Description style={{ justifyContent: "center" }}>
+                      <span>{item}</span>
+                    </Description>
+                  </AccordionContentBody>
+                ))}
             </React.Fragment>
 
             {/* </Card.Body> */}
@@ -140,24 +142,24 @@ const Header = styled.div`
   padding-right: 2.2em;
 `
 const AccordionContentBody = styled.div`
-  display:flex;
+  display: flex;
   padding: 0.5em 1em;
 `
 
 const Image = styled.div`
-  display:flex;
+  display: flex;
   background-color: #007bff;
   width: 36px;
   height: 36px;
   border-radius: 50%;
   justify-content: center;
   align-items: center;
-  color: white; 
+  color: white;
   margin-right: 1em;
 `
 
 const Description = styled.div`
-  display:flex;
+  display: flex;
   width: 55%;
   flex-direction: column;
   font-weight: 400;
@@ -168,13 +170,12 @@ const Description = styled.div`
 `
 
 const Supply = styled.div`
-  display:flex;
+  display: flex;
 
-   flex-direction: column;
+  flex-direction: column;
   font-weight: 400;
   span.subtitle {
     font-size: 0.85em;
     font-weight: 300;
   }
 `
-

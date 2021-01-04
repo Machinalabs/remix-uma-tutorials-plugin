@@ -34,7 +34,7 @@ export const DeployCollateralToken: React.FC = () => {
       const newToken = {
         name: values.name,
         symbol: values.symbol,
-        decimals: parseInt(values.decimals, 10)
+        decimals: parseInt(values.decimals, 10),
       }
       const { data: collateralTokenDeployData } = new TestnetErc20InstanceCreator().getDeployTransaction(
         newToken.name,
@@ -69,7 +69,7 @@ export const DeployCollateralToken: React.FC = () => {
 
       addCollateralToken({
         ...newToken,
-        totalSupply: BigNumber.from("1000000")
+        totalSupply: BigNumber.from("1000000"),
       })
     }
 
@@ -98,21 +98,21 @@ export const DeployCollateralToken: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-              const errors: FormikErrors<FormProps> = {}
-              if (!values.name) {
-                errors.name = "Required"
-              }
-              if (!values.symbol) {
-                errors.symbol = "Required"
-              }
-              if (!values.decimals) {
-                errors.decimals = "Required"
-              } else if (parseInt(values.decimals, 10) > 255) {
-                errors.decimals = "Max value is 255"
-              }
+                const errors: FormikErrors<FormProps> = {}
+                if (!values.name) {
+                  errors.name = "Required"
+                }
+                if (!values.symbol) {
+                  errors.symbol = "Required"
+                }
+                if (!values.decimals) {
+                  errors.decimals = "Required"
+                } else if (parseInt(values.decimals, 10) > 255) {
+                  errors.decimals = "Max value is 255"
+                }
 
-              return errors
-            }
+                return errors
+              }
         }
         onSubmit={handleSubmit}
       >
@@ -122,7 +122,13 @@ export const DeployCollateralToken: React.FC = () => {
 
             <FormItem label="Symbol" field="symbol" readOnly={isCurrentStepCompleted} />
 
-            <FormItem label="Decimals" field="decimals" placeHolder="i.e 18" readOnly={isCurrentStepCompleted} type="number" />
+            <FormItem
+              label="Decimals"
+              field="decimals"
+              placeHolder="i.e 18"
+              readOnly={isCurrentStepCompleted}
+              type="number"
+            />
 
             <Button
               variant="primary"

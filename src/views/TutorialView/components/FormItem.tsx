@@ -13,7 +13,14 @@ interface Props {
   type?: string
 }
 
-export const FormItem: React.FC<Props> = ({ label, field, labelWidth = 2, placeHolder, readOnly = false, type = "text" }) => {
+export const FormItem: React.FC<Props> = ({
+  label,
+  field,
+  labelWidth = 2,
+  placeHolder,
+  readOnly = false,
+  type = "text",
+}) => {
   return (
     <BootstrapForm.Group as={Row}>
       <BootstrapForm.Label column={true} sm={labelWidth}>
