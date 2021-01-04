@@ -25,7 +25,7 @@ export const NavMenu: React.FC = () => {
             activeStyle={{
               opacity: 1,
               fontWeight: 500,
-              fontSize: "0.9em",
+              fontSize: "0.9em"
             }}
           >
             <Nav.Link as={StyledDiv} key={currentStepDefinition.key} href={currentStepDefinition.route} disabled={true}>
@@ -33,8 +33,8 @@ export const NavMenu: React.FC = () => {
                 {currentStep.order > currentStepDefinition.order ? (
                   <CompletedIcon />
                 ) : (
-                  <span>{currentStepDefinition.order}</span>
-                )}
+                    <span>{currentStepDefinition.order}</span>
+                  )}
               </NumberContainer>
               {text}
             </Nav.Link>
@@ -81,6 +81,7 @@ const StyledNavLink = styled(NavLink)`
     text-decoration: none;
     cursor: text;
   }
+  text-decoration: none;
 `
 
 const StyledDiv = styled.div`
