@@ -9,6 +9,7 @@ import { Button } from "../../../components"
 
 import { useContract, useStep } from "../hooks"
 import { FormItem } from "../components"
+import { BigNumber } from "ethers"
 
 interface FormProps {
   name: string
@@ -24,17 +25,23 @@ const initialValues: FormProps = {
 
 export const DeployCollateralToken: React.FC = () => {
   const { clientInstance } = useRemix()
-  const { getContractAddress } = useContract()
+  const { getContractAddress, addCollateralToken } = useContract()
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
 
   const handleSubmit = (values: FormProps, { setSubmitting }) => {
     debug("Deploying collateral token", values)
     const sendTx = async () => {
+      const newToken = {
+        name: values.name,
+        symbol: values.symbol,
+        decimals: parseInt(values.decimals, 10)
+      }
       const { data: collateralTokenDeployData } = new TestnetErc20InstanceCreator().getDeployTransaction(
-        values.name,
-        values.symbol,
-        parseInt(values.decimals as any, 10)
+        newToken.name,
+        newToken.symbol,
+        newToken.decimals
       )
+
       debug("collateralTokenDeployData", collateralTokenDeployData)
 
       const accounts = await clientInstance.udapp.getAccounts()
@@ -59,6 +66,11 @@ export const DeployCollateralToken: React.FC = () => {
         to: address,
       })
       debug("Collateral added to whitelist")
+
+      addCollateralToken({
+        ...newToken,
+        totalSupply: BigNumber.from("1000000")
+      })
     }
 
     setTimeout(() => {
