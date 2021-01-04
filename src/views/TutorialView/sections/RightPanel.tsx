@@ -3,6 +3,8 @@ import Accordion from "react-bootstrap/Accordion"
 import Card from "react-bootstrap/Card"
 import { useRemix } from "../../../hooks"
 import { debug } from "../../../utils"
+import styled from "styled-components"
+import { useContract, Token } from "../hooks"
 
 export const RightPanel: React.FC = () => {
   const { clientInstance } = useRemix()
@@ -10,6 +12,7 @@ export const RightPanel: React.FC = () => {
   const [account, setAccount] = useState("")
   const [collateralBalance, setCollateralBalance] = useState(0) // eslint-disable-line
   const [syntheticBalance, setSyntheticBalance] = useState(0) // eslint-disable-line
+  const { collateralTokens, priceIdentifiers } = useContract()
 
   useEffect(() => {
     const getData = async () => {
@@ -24,6 +27,7 @@ export const RightPanel: React.FC = () => {
     getData()
   }, [clientInstance])
 
+  console.log("collateralTokens", collateralTokens)
   return (
     <React.Fragment>
       <p style={{ fontSize: "0.9em" }}>
@@ -44,7 +48,23 @@ export const RightPanel: React.FC = () => {
             Collateral tokens
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="0">
-            <Card.Body>{/* TODO */}</Card.Body>
+            <React.Fragment>
+              <Header>
+                <span>Total supply</span>
+              </Header>
+              {collateralTokens && collateralTokens.map((item: Token, index: number) => (
+                <AccordionContentBody key={index}>
+                  <Image>{item.name.charAt(0)}</Image>
+                  <Description>
+                    <span>{item.name}</span>
+                    <span className="subtitle">{item.symbol}</span>
+                  </Description>
+                  <Supply>
+                    <span>{item.totalSupply.toString()}</span>
+                  </Supply>
+                </AccordionContentBody>
+              ))}
+            </React.Fragment>
           </Accordion.Collapse>
         </Card>
         <Card>
@@ -52,7 +72,19 @@ export const RightPanel: React.FC = () => {
             Price identifiers
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="1">
-            <Card.Body>{/* TODO */}</Card.Body>
+            {/* <Card.Body> */}
+            <React.Fragment>
+              {priceIdentifiers && priceIdentifiers.map((item: string, index: number) => (
+                <AccordionContentBody key={index}>
+                  <Image>{item.charAt(0)}</Image>
+                  <Description style={{ justifyContent: "center" }}>
+                    <span>{item}</span>
+                  </Description>
+                </AccordionContentBody>
+              ))}
+            </React.Fragment>
+
+            {/* </Card.Body> */}
           </Accordion.Collapse>
         </Card>
         <Card>
@@ -99,3 +131,50 @@ export const RightPanel: React.FC = () => {
     </React.Fragment>
   )
 }
+
+const Header = styled.div`
+  width: 100%;
+  display: flex;
+  font-size: 0.8em;
+  justify-content: flex-end;
+  padding-right: 2.2em;
+`
+const AccordionContentBody = styled.div`
+  display:flex;
+  padding: 0.5em 1em;
+`
+
+const Image = styled.div`
+  display:flex;
+  background-color: #007bff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  color: white; 
+  margin-right: 1em;
+`
+
+const Description = styled.div`
+  display:flex;
+  width: 55%;
+  flex-direction: column;
+  font-weight: 400;
+  span.subtitle {
+    font-size: 0.85em;
+    font-weight: 300;
+  }
+`
+
+const Supply = styled.div`
+  display:flex;
+
+   flex-direction: column;
+  font-weight: 400;
+  span.subtitle {
+    font-size: 0.85em;
+    font-weight: 300;
+  }
+`
+
