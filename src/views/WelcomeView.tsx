@@ -54,9 +54,13 @@ export const WelcomeView: React.FC = () => {
         <li>How to create and manage a token sponsor position</li>
       </StyledUL>
       <h5>Getting Started</h5>
-      <p>This interactive tutorial is designed to allow users to deploy the whole UMA protocol in the Remix environment. <br />
-      Be aware that you will need to deploy each element of the UMA protocol. It means you will need to deploy a test collateral token and a price identifier. <br />
-      Are you ready?</p>
+      <p>
+        This interactive tutorial is designed to allow users to deploy the whole UMA protocol in the Remix environment.{" "}
+        <br />
+        Be aware that you will need to deploy each element of the UMA protocol. It means you will need to deploy a test
+        collateral token and a price identifier. <br />
+        Are you ready?
+      </p>
       <StyledButton onClick={handleOnClick} variant="primary">
         {isStarting && (
           <React.Fragment>

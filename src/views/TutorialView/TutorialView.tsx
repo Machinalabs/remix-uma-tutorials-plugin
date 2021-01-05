@@ -20,7 +20,6 @@ export const TutorialView: React.FC = () => {
             <Col xs={6} lg={4} style={{ display: "flex", flexDirection: "column" }}>
               <Stepmanager />
               <NavigationBar />
-
             </Col>
             <Col xs={3} md={3} lg={2} style={{ paddingLeft: "0", paddingRight: "0" }}>
               <RightPanel />

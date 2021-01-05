@@ -23,7 +23,7 @@ const initialValues: FormProps = {
   name: "",
   symbol: "",
   decimals: "",
-  totalSupply: ""
+  totalSupply: "",
 }
 
 export const DeployCollateralToken: React.FC = () => {
@@ -39,7 +39,7 @@ export const DeployCollateralToken: React.FC = () => {
         name: values.name,
         symbol: values.symbol,
         decimals: parseInt(values.decimals, 10),
-        totalSupply: values.totalSupply
+        totalSupply: values.totalSupply,
       }
       const { data: collateralTokenDeployData } = new TestnetErc20InstanceCreator().getDeployTransaction(
         newToken.name,
@@ -105,25 +105,25 @@ export const DeployCollateralToken: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-              const errors: FormikErrors<FormProps> = {}
-              if (!values.name) {
-                errors.name = "Required"
-              }
-              if (!values.symbol) {
-                errors.symbol = "Required"
-              }
-              if (!values.decimals) {
-                errors.decimals = "Required"
-              } else if (parseInt(values.decimals, 10) > 255) {
-                errors.decimals = "Max value is 255"
-              }
+                const errors: FormikErrors<FormProps> = {}
+                if (!values.name) {
+                  errors.name = "Required"
+                }
+                if (!values.symbol) {
+                  errors.symbol = "Required"
+                }
+                if (!values.decimals) {
+                  errors.decimals = "Required"
+                } else if (parseInt(values.decimals, 10) > 255) {
+                  errors.decimals = "Max value is 255"
+                }
 
-              if (!values.totalSupply) {
-                errors.totalSupply = "Required"
-              }
+                if (!values.totalSupply) {
+                  errors.totalSupply = "Required"
+                }
 
-              return errors
-            }
+                return errors
+              }
         }
         onSubmit={handleSubmit}
       >
@@ -143,7 +143,9 @@ export const DeployCollateralToken: React.FC = () => {
               helpText="The number of decimals used by this token"
             />
 
-            <FormItem label="Initial Supply" field="totalSupply"
+            <FormItem
+              label="Initial Supply"
+              field="totalSupply"
               readOnly={isCurrentStepCompleted}
               showHelp={true}
               helpText="The initial number of collateral tokens that are going to be minted and assigned to you"

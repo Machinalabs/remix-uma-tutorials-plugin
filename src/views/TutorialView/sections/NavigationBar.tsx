@@ -26,16 +26,17 @@ export const NavigationBar: React.FC = () => {
         </StyledButton>
       )}
       <Link to="/">
-        <StyledButton variant="danger" style={{ marginRight: "10px" }}>End</StyledButton>
+        <StyledButton variant="danger" style={{ marginRight: "10px" }}>
+          End
+        </StyledButton>
       </Link>
-
     </Wrapper>
   )
 }
 
 const Wrapper = styled.div<{ isCurrentStepCompleted: boolean }>`
   display: flex;
-  justify-content: ${(props) => props.isCurrentStepCompleted ? 'space-between' : 'flex-end'};
+  justify-content: ${(props) => (props.isCurrentStepCompleted ? "space-between" : "flex-end")};
   width: 100%;
   margin-top: auto;
 `

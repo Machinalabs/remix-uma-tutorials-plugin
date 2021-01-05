@@ -64,16 +64,21 @@ export const DeployPriceIdentifier: React.FC = () => {
     <React.Fragment>
       <h4>Deploy price identifier</h4>
       <p>This is important to ensure that the UMA DVM can resolve any disputes for these synthethic tokens.</p>
-      <Formik initialValues={initialValues}
-        validate={isCurrentStepCompleted ? undefined :
-          (values) => {
-            const errors: FormikErrors<FormProps> = {}
-            if (!values.priceIdentifier) {
-              errors.priceIdentifier = "Required"
-            }
-            return errors
-          }
-        } onSubmit={handleSubmit}>
+      <Formik
+        initialValues={initialValues}
+        validate={
+          isCurrentStepCompleted
+            ? undefined
+            : (values) => {
+                const errors: FormikErrors<FormProps> = {}
+                if (!values.priceIdentifier) {
+                  errors.priceIdentifier = "Required"
+                }
+                return errors
+              }
+        }
+        onSubmit={handleSubmit}
+      >
         {({ isSubmitting }) => (
           <Form>
             <FormItem
