@@ -9,7 +9,6 @@ import { utils } from "ethers"
 import { useContract } from "../hooks/useContract"
 import { IdentifierWhitelistInterfaceInstanceCreator } from "../../../extras/uma-ethers"
 import { FormItem } from "../components"
-import { getValidatorFunction } from "../../../utils/form"
 import { useStep } from "../hooks"
 
 interface FormProps {
