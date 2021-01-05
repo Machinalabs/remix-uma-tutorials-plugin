@@ -1,6 +1,6 @@
 import React from "react"
 import { Formik, Form } from "formik"
-import Datetime from 'react-datetime';
+// import Datetime from 'react-datetime';
 
 import { getValidatorFunction } from "../../../utils/form"
 
@@ -32,7 +32,7 @@ const initialValues: FormProps = {
 }
 
 export const CreateExpiringMultiParty: React.FC = () => {
-  const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
+  const { isCurrentStepCompleted } = useStep()
 
   const handleSubmit = (values: FormProps, { setSubmitting }) => {
     // TODO
