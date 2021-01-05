@@ -76,10 +76,10 @@ const StepContext = React.createContext<IStepProvider>({
   currentStep: STEPS[DEFAULT_STEP],
   getStepBefore: () => STEPS[DEFAULT_STEP],
   isLastStep: () => false,
-  goNextStep: () => {},
-  goStepBefore: () => {},
+  goNextStep: () => { },
+  goStepBefore: () => { },
   isCurrentStepCompleted: false,
-  setCurrentStepCompleted: () => {},
+  setCurrentStepCompleted: () => { },
 })
 /* tslint:enable */
 

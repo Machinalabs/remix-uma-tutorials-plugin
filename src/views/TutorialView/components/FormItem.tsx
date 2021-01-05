@@ -12,7 +12,7 @@ interface Props {
   labelWidth?: number
   placeHolder?: string
   readOnly?: boolean
-  type?: string
+  type?: "text" | "number"
   showHelp?: boolean
   helpText?: string
 }

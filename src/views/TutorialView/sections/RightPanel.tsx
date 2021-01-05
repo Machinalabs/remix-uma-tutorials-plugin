@@ -151,14 +151,3 @@ const Description = styled.div`
     font-weight: 300;
   }
 `
-
-const Supply = styled.div`
-  display: flex;
-
-  flex-direction: column;
-  font-weight: 400;
-  span.subtitle {
-    font-size: 0.85em;
-    font-weight: 300;
-  }
-`
