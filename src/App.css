@@ -25,3 +25,11 @@ input.form-control.form-control-sm:-ms-input-placeholder { /* IE 10+ */
 input.form-control.form-control-sm:-moz-placeholder { /* Firefox 18- */
     color: gray;
 }
+
+.borderBottomExceptLast{
+    border-bottom: 1px solid rgba(236, 233, 233, 0.125)
+}
+
+.borderBottomExceptLast:last-child{
+    border-bottom: none;
+}

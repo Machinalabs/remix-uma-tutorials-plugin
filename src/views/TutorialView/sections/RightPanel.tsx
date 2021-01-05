@@ -8,7 +8,6 @@ import { useContract, Token } from "../hooks"
 
 export const RightPanel: React.FC = () => {
   const { clientInstance } = useRemix()
-
   const [account, setAccount] = useState("")
   const [collateralBalance, setCollateralBalance] = useState(0) // eslint-disable-line
   const [syntheticBalance, setSyntheticBalance] = useState(0) // eslint-disable-line
@@ -49,20 +48,13 @@ export const RightPanel: React.FC = () => {
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="0">
             <React.Fragment>
-              <Header>
-                <span>Total supply</span>
-              </Header>
               {collateralTokens &&
                 collateralTokens.map((item: Token, index: number) => (
-                  <AccordionContentBody key={index}>
-                    <Image>{item.name.charAt(0)}</Image>
-                    <Description>
-                      <span>{item.name}</span>
-                      <span className="subtitle">{item.symbol}</span>
-                    </Description>
-                    <Supply>
-                      <span>{item.totalSupply.toString()}</span>
-                    </Supply>
+                  <AccordionContentBody key={index} className="borderBottomExceptLast">
+                    <p style={{ fontWeight: "bold" }}>Name: <span style={{ fontWeight: "lighter" }}>{item.name}</span></p>
+                    <p>Symbol: <span>{item.symbol}</span></p>
+                    <p>Total supply: <span>{item.totalSupply.toNumber()}</span></p>
+                    <p>Address: <span style={{ fontSize: "0.8em" }}>0x5B38Da6a701c568545dCfcB03FcB875f56beddC4</span></p>
                   </AccordionContentBody>
                 ))}
             </React.Fragment>
@@ -73,11 +65,10 @@ export const RightPanel: React.FC = () => {
             Price identifiers
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="1">
-            {/* <Card.Body> */}
             <React.Fragment>
               {priceIdentifiers &&
                 priceIdentifiers.map((item: string, index: number) => (
-                  <AccordionContentBody key={index}>
+                  <AccordionContentBody key={index} direction="horizontal">
                     <Image>{item.charAt(0)}</Image>
                     <Description style={{ justifyContent: "center" }}>
                       <span>{item}</span>
@@ -85,8 +76,6 @@ export const RightPanel: React.FC = () => {
                   </AccordionContentBody>
                 ))}
             </React.Fragment>
-
-            {/* </Card.Body> */}
           </Accordion.Collapse>
         </Card>
         <Card>
@@ -134,16 +123,10 @@ export const RightPanel: React.FC = () => {
   )
 }
 
-const Header = styled.div`
-  width: 100%;
-  display: flex;
-  font-size: 0.8em;
-  justify-content: flex-end;
-  padding-right: 2.2em;
-`
-const AccordionContentBody = styled.div`
+const AccordionContentBody = styled.div<{ direction?: string }>`
   display: flex;
   padding: 0.5em 1em;
+  flex-direction: ${(props) => props.direction || "column"};
 `
 
 const Image = styled.div`
@@ -160,7 +143,7 @@ const Image = styled.div`
 
 const Description = styled.div`
   display: flex;
-  width: 55%;
+  width: 70%;
   flex-direction: column;
   font-weight: 400;
   span.subtitle {

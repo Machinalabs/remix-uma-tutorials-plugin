@@ -37,7 +37,7 @@ export const FormItem: React.FC<Props> = ({
         >
           {label}
         </BootstrapForm.Label>
-        <Col sm={4} style={{ paddingLeft: "0" }}>
+        <Col sm={12} xl={6} style={{ paddingLeft: "0" }}>
           <Field
             name={field}
             as={CustomInputComponent}
