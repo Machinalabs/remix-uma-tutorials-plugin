@@ -70,12 +70,12 @@ export const DeployPriceIdentifier: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-              const errors: FormikErrors<FormProps> = {}
-              if (!values.priceIdentifier) {
-                errors.priceIdentifier = "Required"
+                const errors: FormikErrors<FormProps> = {}
+                if (!values.priceIdentifier) {
+                  errors.priceIdentifier = "Required"
+                }
+                return errors
               }
-              return errors
-            }
         }
         onSubmit={handleSubmit}
       >

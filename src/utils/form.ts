@@ -1,7 +1,6 @@
 import { FormikErrors } from "formik"
 
 export function getValidatorFunction<T>(typeItem: T) {
-
   return (values: T) => {
     const errors: FormikErrors<T> = {}
 

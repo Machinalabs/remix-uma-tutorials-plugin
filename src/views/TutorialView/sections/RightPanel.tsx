@@ -51,10 +51,18 @@ export const RightPanel: React.FC = () => {
               {collateralTokens &&
                 collateralTokens.map((item: Token, index: number) => (
                   <AccordionContentBody key={index} className="borderBottomExceptLast">
-                    <p style={{ fontWeight: "bold" }}>Name: <span style={{ fontWeight: "lighter" }}>{item.name}</span></p>
-                    <p>Symbol: <span>{item.symbol}</span></p>
-                    <p>Total supply: <span>{item.totalSupply.toNumber()}</span></p>
-                    <p>Address: <span style={{ fontSize: "0.8em" }}>0x5B38Da6a701c568545dCfcB03FcB875f56beddC4</span></p>
+                    <p style={{ fontWeight: "bold" }}>
+                      Name: <span style={{ fontWeight: "lighter" }}>{item.name}</span>
+                    </p>
+                    <p>
+                      Symbol: <span>{item.symbol}</span>
+                    </p>
+                    <p>
+                      Total supply: <span>{item.totalSupply.toNumber()}</span>
+                    </p>
+                    <p>
+                      Address: <span style={{ fontSize: "0.8em" }}>0x5B38Da6a701c568545dCfcB03FcB875f56beddC4</span>
+                    </p>
                   </AccordionContentBody>
                 ))}
             </React.Fragment>
