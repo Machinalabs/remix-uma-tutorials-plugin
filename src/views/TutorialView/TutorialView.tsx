@@ -12,21 +12,18 @@ export const TutorialView: React.FC = () => {
     <React.Fragment>
       <StepProvider>
         <h2>{TITLE}</h2>
-        <Container fluid={true} style={{ paddingTop: "2em" }}>
-          <Row style={{ height: "90%" }}>
-            <Col md="auto" style={{ marginRight: "2em" }}>
+        <Container fluid={true} style={{ padding: "2em 0" }}>
+          <Row>
+            <Col md="auto" style={{ paddingLeft: "0", paddingRight: "0" }}>
               <NavMenu />
             </Col>
-            <Col xs={6}>
+            <Col xs={6} lg={4} style={{ display: "flex", flexDirection: "column" }}>
               <Stepmanager />
-            </Col>
-            <Col xs={2}>
-              <RightPanel />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={10}>
               <NavigationBar />
+
+            </Col>
+            <Col xs={3} md={3} lg={2} style={{ paddingLeft: "0", paddingRight: "0" }}>
+              <RightPanel />
             </Col>
           </Row>
         </Container>

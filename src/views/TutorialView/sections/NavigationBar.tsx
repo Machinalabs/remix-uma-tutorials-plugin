@@ -19,21 +19,23 @@ export const NavigationBar: React.FC = () => {
   }
 
   return (
-    <Wrapper>
-      <Link to="/">
-        <StyledButton variant="danger">End</StyledButton>
-      </Link>
-      {!isLastStep() && (
-        <StyledButton disabled={!isCurrentStepCompleted} variant="primary" onClick={handleOnNextClick}>
+    <Wrapper isCurrentStepCompleted={isCurrentStepCompleted}>
+      {!isLastStep() && isCurrentStepCompleted && (
+        <StyledButton disabled={!isCurrentStepCompleted} variant="success" onClick={handleOnNextClick}>
           Next
         </StyledButton>
       )}
+      <Link to="/">
+        <StyledButton variant="danger" style={{ marginRight: "10px" }}>End</StyledButton>
+      </Link>
+
     </Wrapper>
   )
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ isCurrentStepCompleted: boolean }>`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${(props) => props.isCurrentStepCompleted ? 'space-between' : 'flex-end'};
   width: 100%;
+  margin-top: auto;
 `

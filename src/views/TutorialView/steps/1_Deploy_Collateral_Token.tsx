@@ -10,23 +10,27 @@ import { Button } from "../../../components"
 import { useContract, useStep } from "../hooks"
 import { FormItem } from "../components"
 import { BigNumber } from "ethers"
+import { useState } from "react"
 
 interface FormProps {
   name: string
   symbol: string
   decimals: string
+  totalSupply: string
 }
 
 const initialValues: FormProps = {
   name: "",
   symbol: "",
   decimals: "",
+  totalSupply: ""
 }
 
 export const DeployCollateralToken: React.FC = () => {
   const { clientInstance } = useRemix()
   const { getContractAddress, addCollateralToken } = useContract()
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
+  const [newCollateralTokenAddress, setNewCollateralTokenAddress] = useState<string | undefined>(undefined)
 
   const handleSubmit = (values: FormProps, { setSubmitting }) => {
     debug("Deploying collateral token", values)
@@ -35,6 +39,7 @@ export const DeployCollateralToken: React.FC = () => {
         name: values.name,
         symbol: values.symbol,
         decimals: parseInt(values.decimals, 10),
+        totalSupply: values.totalSupply
       }
       const { data: collateralTokenDeployData } = new TestnetErc20InstanceCreator().getDeployTransaction(
         newToken.name,
@@ -69,8 +74,10 @@ export const DeployCollateralToken: React.FC = () => {
 
       addCollateralToken({
         ...newToken,
-        totalSupply: BigNumber.from("1000000"),
+        totalSupply: BigNumber.from(newToken.totalSupply),
       })
+
+      setNewCollateralTokenAddress(TestnetErc20Address as string)
     }
 
     setTimeout(() => {
@@ -111,6 +118,10 @@ export const DeployCollateralToken: React.FC = () => {
                 errors.decimals = "Max value is 255"
               }
 
+              if (!values.totalSupply) {
+                errors.totalSupply = "Required"
+              }
+
               return errors
             }
         }
@@ -118,16 +129,24 @@ export const DeployCollateralToken: React.FC = () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <FormItem label="Name" field="name" readOnly={isCurrentStepCompleted} />
+            <FormItem label="Name" field="name" readOnly={isCurrentStepCompleted} placeHolder="WETH" />
 
-            <FormItem label="Symbol" field="symbol" readOnly={isCurrentStepCompleted} />
+            <FormItem label="Symbol" field="symbol" readOnly={isCurrentStepCompleted} placeHolder="WETH" />
 
             <FormItem
               label="Decimals"
               field="decimals"
-              placeHolder="i.e 18"
+              placeHolder="18"
               readOnly={isCurrentStepCompleted}
               type="number"
+              showHelp={true}
+              helpText="The number of decimals used by this token"
+            />
+
+            <FormItem label="Initial Supply" field="totalSupply"
+              readOnly={isCurrentStepCompleted}
+              showHelp={true}
+              helpText="The initial number of collateral tokens that are going to be minted and assigned to you"
             />
 
             <Button
@@ -142,7 +161,7 @@ export const DeployCollateralToken: React.FC = () => {
             />
 
             <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted} transition={false}>
-              You have successfully deployed the collateral token.
+              You have successfully deployed the collateral token at {newCollateralTokenAddress}
             </Alert>
           </Form>
         )}

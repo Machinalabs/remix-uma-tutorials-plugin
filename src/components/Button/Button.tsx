@@ -6,6 +6,8 @@ import styled from "styled-components"
 export const StyledButton = styled(BootstrapButton)`
   padding-left: 1.5em;
   padding-right: 1.5em;
+  padding-top: 6px;
+  padding-bottom: 6px;
 `
 
 interface Props extends ButtonProps {
@@ -34,6 +36,6 @@ export const Button: React.FC<Props> = ({ isLoading, loadingText, text, show = t
       {!isLoading && <span>{text}</span>}
     </StyledButton>
   ) : (
-    <React.Fragment />
-  )
+      <React.Fragment />
+    )
 }
