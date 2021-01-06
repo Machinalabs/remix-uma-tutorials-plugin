@@ -1,6 +1,7 @@
 import React from "react"
-import { ErrorMessage, Field } from "formik"
+import { ErrorMessage, Field, useField } from "formik"
 import BootstrapForm from "react-bootstrap/Form"
+import Datetime from 'react-datetime';
 import Col from "react-bootstrap/Col"
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 import Tooltip from "react-bootstrap/Tooltip"
@@ -13,8 +14,9 @@ interface Props {
   placeHolder?: string
   readOnly?: boolean
   type?: "text" | "number"
-  showHelp?: boolean
-  helpText?: string
+  showhelp?: boolean
+  helptext?: string
+  isDate?: boolean
 }
 
 export const FormItem: React.FC<Props> = ({
@@ -24,8 +26,9 @@ export const FormItem: React.FC<Props> = ({
   placeHolder,
   readOnly = false,
   type = "text",
-  showHelp = false,
-  helpText = "",
+  showhelp,
+  helptext = "",
+  isDate
 }) => {
   const { themeType } = useRemix()
   return (
@@ -40,12 +43,12 @@ export const FormItem: React.FC<Props> = ({
         <Col sm={12} xl={6} style={{ paddingLeft: "0" }}>
           <Field
             name={field}
-            as={CustomInputComponent}
+            as={isDate ? DateComponent : CustomInputComponent}
             placeholder={placeHolder || label.toLowerCase()}
             readOnly={readOnly}
             type={type}
-            showHelp={showHelp}
-            helpText={helpText}
+            showhelp={showhelp}
+            helptext={helptext}
           />
           <ErrorMessage className="red" name={field} component="div" />
         </Col>
@@ -54,9 +57,23 @@ export const FormItem: React.FC<Props> = ({
   )
 }
 
-const CustomInputComponent = (props: Props) => {
-  const popover = <Tooltip id={props.label}>{props.helpText}</Tooltip>
+const DateComponent = (props) => {
+  const [helpers] = useField(props.name);
 
+  const { setValue } = helpers;
+
+  const handleOnChange = (e) => {
+    console.log("e", e.unix())
+    setValue(e.unix())
+  }
+
+  return (
+    <Datetime onChange={handleOnChange} />
+  )
+}
+
+const CustomInputComponent = (props: Props) => {
+  const popover = <Tooltip id={props.label}>{props.helptext}</Tooltip>
   return (
     <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
       <BootstrapForm.Control
@@ -67,7 +84,7 @@ const CustomInputComponent = (props: Props) => {
         {...props}
         style={{ marginRight: "10px" }}
       />
-      {props.showHelp && (
+      {props.showhelp && (
         <OverlayTrigger placement="right" overlay={popover}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
