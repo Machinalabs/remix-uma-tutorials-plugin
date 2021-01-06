@@ -104,6 +104,9 @@ export interface ExpiringMultiPartyCreator extends Contract {
         sponsorDisputeRewardPct: { rawValue: BigNumberish }
         disputerDisputeRewardPct: { rawValue: BigNumberish }
         minSponsorTokens: { rawValue: BigNumberish }
+        withdrawalLiveness: number
+        liquidationLiveness: number
+        excessTokenBeneficiary: string
       },
       overrides?: Overrides
     ): Promise<ContractTransaction>
@@ -154,6 +157,9 @@ export interface ExpiringMultiPartyCreator extends Contract {
       sponsorDisputeRewardPct: { rawValue: BigNumberish }
       disputerDisputeRewardPct: { rawValue: BigNumberish }
       minSponsorTokens: { rawValue: BigNumberish }
+      withdrawalLiveness: number
+      liquidationLiveness: number
+      excessTokenBeneficiary: string
     },
     overrides?: Overrides
   ): Promise<ContractTransaction>
