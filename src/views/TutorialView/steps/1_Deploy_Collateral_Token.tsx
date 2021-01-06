@@ -75,7 +75,7 @@ export const DeployCollateralToken: React.FC = () => {
       addCollateralToken({
         ...newToken,
         totalSupply: BigNumber.from(newToken.totalSupply),
-        address: TestnetErc20Address
+        address: TestnetErc20Address,
       })
 
       setNewCollateralTokenAddress(TestnetErc20Address as string)
@@ -106,25 +106,25 @@ export const DeployCollateralToken: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-              const errors: FormikErrors<FormProps> = {}
-              if (!values.name) {
-                errors.name = "Required"
-              }
-              if (!values.symbol) {
-                errors.symbol = "Required"
-              }
-              if (!values.decimals) {
-                errors.decimals = "Required"
-              } else if (parseInt(values.decimals, 10) > 255) {
-                errors.decimals = "Max value is 255"
-              }
+                const errors: FormikErrors<FormProps> = {}
+                if (!values.name) {
+                  errors.name = "Required"
+                }
+                if (!values.symbol) {
+                  errors.symbol = "Required"
+                }
+                if (!values.decimals) {
+                  errors.decimals = "Required"
+                } else if (parseInt(values.decimals, 10) > 255) {
+                  errors.decimals = "Max value is 255"
+                }
 
-              if (!values.totalSupply) {
-                errors.totalSupply = "Required"
-              }
+                if (!values.totalSupply) {
+                  errors.totalSupply = "Required"
+                }
 
-              return errors
-            }
+                return errors
+              }
         }
         onSubmit={handleSubmit}
       >

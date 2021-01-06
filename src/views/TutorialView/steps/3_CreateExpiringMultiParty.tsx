@@ -1,7 +1,7 @@
 import React from "react"
 import { Formik, Form, FormikErrors } from "formik"
 import { BigNumber, ethers, utils } from "ethers"
-import { hexToAscii, numberToHex,, toWei } from "web3-utils"
+import { hexToAscii, numberToHex, toWei } from "web3-utils"
 import "react-datetime/css/react-datetime.css"
 
 import { ExpiringMultiPartyCreatorInstanceCreator, TestnetErc20InstanceCreator } from "../../../extras/uma-ethers"

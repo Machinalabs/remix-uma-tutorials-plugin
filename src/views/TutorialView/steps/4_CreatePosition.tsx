@@ -15,7 +15,7 @@ interface FormProps {
 
 const initialValues: FormProps = {
   syntheticTokens: 0,
-  collateralAmount: 0
+  collateralAmount: 0,
 }
 
 export const CreatePosition: React.FC = () => {
@@ -41,38 +41,42 @@ export const CreatePosition: React.FC = () => {
         setCurrentStepCompleted()
       })
     }, 2000)
-
   }
   return (
     <React.Fragment>
       <h4>CreatePosition</h4>
 
-      <p>We can now create a synthetic token position. We will deposit X units of collateral to create Y units of synthetic tokens.</p>
-
+      <p>
+        We can now create a synthetic token position. We will deposit X units of collateral to create Y units of
+        synthetic tokens.
+      </p>
 
       {/* await emp.create({ rawValue: web3.utils.toWei("150") }, 
       
       { rawValue: web3.utils.toWei("100") }) */}
 
-
       <Formik
         initialValues={initialValues}
-        validate={isCurrentStepCompleted ? undefined : (values) => {
-          const errors: FormikErrors<FormProps> = {}
-          if (!values.collateralAmount) {
-            errors.collateralAmount = "Required"
-          }
+        validate={
+          isCurrentStepCompleted
+            ? undefined
+            : (values) => {
+                const errors: FormikErrors<FormProps> = {}
+                if (!values.collateralAmount) {
+                  errors.collateralAmount = "Required"
+                }
 
-          if (!values.syntheticTokens) {
-            errors.syntheticTokens = "Required"
-          }
+                if (!values.syntheticTokens) {
+                  errors.syntheticTokens = "Required"
+                }
 
-          return errors
-        }}
-        onSubmit={handleSubmit}>
+                return errors
+              }
+        }
+        onSubmit={handleSubmit}
+      >
         {({ isSubmitting }) => (
           <Form>
-
             <FormItem
               key="syntheticTokens"
               label="Synthetic tokens"
@@ -106,7 +110,6 @@ export const CreatePosition: React.FC = () => {
           </Form>
         )}
       </Formik>
-
     </React.Fragment>
   )
 }

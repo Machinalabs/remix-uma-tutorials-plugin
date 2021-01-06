@@ -1,7 +1,7 @@
 import React from "react"
 import { ErrorMessage, Field, useField } from "formik"
 import BootstrapForm from "react-bootstrap/Form"
-import Datetime from 'react-datetime';
+import Datetime from "react-datetime"
 import Col from "react-bootstrap/Col"
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 import Tooltip from "react-bootstrap/Tooltip"
@@ -28,7 +28,7 @@ export const FormItem: React.FC<Props> = ({
   type = "text",
   showhelp,
   helptext = "",
-  isDate
+  isDate,
 }) => {
   const { themeType } = useRemix()
   return (
@@ -58,18 +58,16 @@ export const FormItem: React.FC<Props> = ({
 }
 
 const DateComponent = (props) => {
-  const [helpers] = useField(props.name);
+  const [helpers] = useField(props.name)
 
-  const { setValue } = helpers;
+  const { setValue } = helpers
 
   const handleOnChange = (e) => {
     console.log("e", e.unix())
     setValue(e.unix())
   }
 
-  return (
-    <Datetime onChange={handleOnChange} />
-  )
+  return <Datetime onChange={handleOnChange} />
 }
 
 const CustomInputComponent = (props: Props) => {
