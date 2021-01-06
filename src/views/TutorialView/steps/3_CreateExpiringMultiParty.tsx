@@ -33,8 +33,6 @@ const initialValues: FormProps = {
   liquidationLiveness: "",
 }
 
-
-
 export const CreateExpiringMultiParty: React.FC = () => {
   const { getContractAddress, collateralTokens, priceIdentifiers } = useContract()
   const { clientInstance } = useRemix()
@@ -46,10 +44,11 @@ export const CreateExpiringMultiParty: React.FC = () => {
 
       const web3Provider = {
         sendAsync(payload, callback) {
-          clientInstance.call('web3Provider' as any, 'sendAsync', payload)
-            .then(result => callback(null, result))
-            .catch(e => callback(e))
-        }
+          clientInstance
+            .call("web3Provider" as any, "sendAsync", payload)
+            .then((result) => callback(null, result))
+            .catch((e) => callback(e))
+        },
       }
 
       const provider = new ethers.providers.Web3Provider(web3Provider)
@@ -63,45 +62,53 @@ export const CreateExpiringMultiParty: React.FC = () => {
 
       const collateralTokenAddress = collateralTokens[0].address as string
 
-      const balance = await new TestnetErc20InstanceCreator(signer).attach(collateralTokenAddress).balanceOf(accounts[0], { from: accounts[0] })
+      const balance = await new TestnetErc20InstanceCreator(signer)
+        .attach(collateralTokenAddress)
+        .balanceOf(accounts[0], { from: accounts[0] })
       debug("Balance", balance.toNumber())
 
       const dateTimestamp = values.expirationTimestamp
 
-      const expiringMultiPartyCreatorAddress = getContractAddress('ExpiringMultiPartyCreator')
+      const expiringMultiPartyCreatorAddress = getContractAddress("ExpiringMultiPartyCreator")
       const identifierBytes = utils.formatBytes32String(priceIdentifiers[0])
-      let txn;
+      let txn
       try {
-        const expiringMultipartyCreator = ExpiringMultiPartyCreatorInstanceCreator.connect(expiringMultiPartyCreatorAddress, signer)//.getInterface(ExpiringMultiPartyCreatorInstanceCreator.getAbi())
-        txn = await expiringMultipartyCreator.createExpiringMultiParty({
-          expirationTimestamp: numberToHex(1706780800),
-          collateralAddress: collateralTokenAddress,
-          priceFeedIdentifier: identifierBytes,
-          syntheticName: values.syntheticName,
-          syntheticSymbol: values.syntheticSymbol,
-          collateralRequirement: {
-            rawValue: BigNumber.from(values.collateralRequirement),
+        const expiringMultipartyCreator = ExpiringMultiPartyCreatorInstanceCreator.connect(
+          expiringMultiPartyCreatorAddress,
+          signer
+        ) // .getInterface(ExpiringMultiPartyCreatorInstanceCreator.getAbi())
+        txn = await expiringMultipartyCreator.createExpiringMultiParty(
+          {
+            expirationTimestamp: numberToHex(1706780800),
+            collateralAddress: collateralTokenAddress,
+            priceFeedIdentifier: identifierBytes,
+            syntheticName: values.syntheticName,
+            syntheticSymbol: values.syntheticSymbol,
+            collateralRequirement: {
+              rawValue: BigNumber.from(values.collateralRequirement),
+            },
+            disputeBondPct: {
+              rawValue: toWei("0.1"),
+            },
+            sponsorDisputeRewardPct: {
+              rawValue: toWei("0.1"),
+            },
+            disputerDisputeRewardPct: {
+              rawValue: toWei("0.1"),
+            },
+            minSponsorTokens: {
+              rawValue: values.minSponsorTokens,
+            },
+            withdrawalLiveness: 0,
+            liquidationLiveness: 0,
+            excessTokenBeneficiary: "0x00",
+            // timerAddress: getContractAddress('Timer')
           },
-          disputeBondPct: {
-            rawValue: toWei('0.1')
-          },
-          sponsorDisputeRewardPct: {
-            rawValue: toWei('0.1')
-          },
-          disputerDisputeRewardPct: {
-            rawValue: toWei('0.1')
-          },
-          minSponsorTokens: {
-            rawValue: values.minSponsorTokens
-          },
-          withdrawalLiveness: 0,
-          liquidationLiveness: 0,
-          excessTokenBeneficiary: "0x00"
-          // timerAddress: getContractAddress('Timer')
-        }, {
-          gasLimit: BigNumber.from("600000000000"),
-          gasPrice: BigNumber.from("100000000")
-        })
+          {
+            gasLimit: BigNumber.from("600000000000"),
+            gasPrice: BigNumber.from("100000000"),
+          }
+        )
 
         await txn.wait()
         debug("Receipt", txn)
@@ -109,16 +116,13 @@ export const CreateExpiringMultiParty: React.FC = () => {
         console.log("Error", error)
 
         console.log("tx hash", txn)
-        const traces = await clientInstance
-          .call("debugger" as any, "getTrace", txn.hash)
-          .catch((err) => {
-            console.log("error", err)
-          });
+        const traces = await clientInstance.call("debugger" as any, "getTrace", txn.hash).catch((err) => {
+          console.log("error", err)
+        })
         console.log("traces", traces)
         const humanReadableError = traces.structLogs[traces.structLogs.length - 1]
         console.log(hexToAscii(`0x${humanReadableError.memory.join("")}`))
       }
-
 
       // const { createdAddress: ExpiringMultiPartyAddress } = await clientInstance.udapp.sendTransaction({
       //   ...defaultTransactionValues,
@@ -157,7 +161,6 @@ export const CreateExpiringMultiParty: React.FC = () => {
     // const txResult = await empCreator.createExpiringMultiParty(constructorParams)
     // const emp = await ExpiringMultiParty.at(txResult.logs[0].args.expiringMultiPartyAddress)
 
-
     setTimeout(() => {
       sendTx().then(() => {
         setSubmitting(false)
@@ -173,42 +176,46 @@ export const CreateExpiringMultiParty: React.FC = () => {
       <p>Now, we can create a new expiring multiparty synthetic token.</p>
       <Formik
         initialValues={initialValues}
-        validate={isCurrentStepCompleted ? undefined : (values) => {
-          const errors: FormikErrors<FormProps> = {}
-          // if (!values.expirationTimestamp) {
-          //   errors.expirationTimestamp = "Required"
-          // }
+        validate={
+          isCurrentStepCompleted
+            ? undefined
+            : (values) => {
+                const errors: FormikErrors<FormProps> = {}
+                // if (!values.expirationTimestamp) {
+                //   errors.expirationTimestamp = "Required"
+                // }
 
-          if (!values.syntheticName) {
-            errors.syntheticName = "Required"
-          }
+                if (!values.syntheticName) {
+                  errors.syntheticName = "Required"
+                }
 
-          if (!values.syntheticSymbol) {
-            errors.syntheticSymbol = "Required"
-          }
+                if (!values.syntheticSymbol) {
+                  errors.syntheticSymbol = "Required"
+                }
 
-          if (!values.collateralRequirement) {
-            errors.collateralRequirement = "Required"
-          }
+                if (!values.collateralRequirement) {
+                  errors.collateralRequirement = "Required"
+                }
 
-          if (!values.disputeBond) {
-            errors.disputeBond = "Required"
-          }
+                if (!values.disputeBond) {
+                  errors.disputeBond = "Required"
+                }
 
-          if (!values.minSponsorTokens) {
-            errors.minSponsorTokens = "Required"
-          }
+                if (!values.minSponsorTokens) {
+                  errors.minSponsorTokens = "Required"
+                }
 
-          if (!values.withdrawalLiveness) {
-            errors.withdrawalLiveness = "Required"
-          }
+                if (!values.withdrawalLiveness) {
+                  errors.withdrawalLiveness = "Required"
+                }
 
-          if (!values.liquidationLiveness) {
-            errors.liquidationLiveness = "Required"
-          }
+                if (!values.liquidationLiveness) {
+                  errors.liquidationLiveness = "Required"
+                }
 
-          return errors
-        }}
+                return errors
+              }
+        }
         onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => (
@@ -308,5 +315,3 @@ export const CreateExpiringMultiParty: React.FC = () => {
     </React.Fragment>
   )
 }
-
-
