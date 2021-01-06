@@ -21,9 +21,12 @@ import {
   Weth9InstanceCreator,
 } from "../uma-ethers"
 
+import VotingArtifact from "@uma/core/build/contracts/Voting.json"
+// bytecode
 export type Bytes20 = string
 export type EthereumAddress = Bytes20
 
+console.log("VotingArtifact", VotingArtifact)
 export interface Result {
   error?: Error
   success: boolean
@@ -84,6 +87,7 @@ export type UMAContractName =
   | "TokenFactory"
   | "AddressWhitelist"
   | "ExpiringMultiPartyCreator"
+  | "TestnetErc20Address"
 
 export class UMADeployer implements IDeployer {
   async deploy(options: Options) {
@@ -416,8 +420,6 @@ export class UMADeployer implements IDeployer {
     debug("ExpiringMultiPartyCreator added to registry")
 
     // 13) Deploy local WETH
-
-    // Then deploy expiring multi party creator (library)
     const { data: wethData } = new Weth9InstanceCreator().getDeployTransaction()
     const { createdAddress: WethAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
