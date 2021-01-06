@@ -58,7 +58,7 @@ export const FormItem: React.FC<Props> = ({
 }
 
 const DateComponent = (props) => {
-  const [helpers] = useField(props.name)
+  const [, , helpers] = useField(props.name)
 
   const { setValue } = helpers
 
