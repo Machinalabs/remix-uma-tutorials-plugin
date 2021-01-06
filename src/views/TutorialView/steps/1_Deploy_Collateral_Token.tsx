@@ -75,6 +75,7 @@ export const DeployCollateralToken: React.FC = () => {
       addCollateralToken({
         ...newToken,
         totalSupply: BigNumber.from(newToken.totalSupply),
+        address: TestnetErc20Address
       })
 
       setNewCollateralTokenAddress(TestnetErc20Address as string)
@@ -105,25 +106,25 @@ export const DeployCollateralToken: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.name) {
-                  errors.name = "Required"
-                }
-                if (!values.symbol) {
-                  errors.symbol = "Required"
-                }
-                if (!values.decimals) {
-                  errors.decimals = "Required"
-                } else if (parseInt(values.decimals, 10) > 255) {
-                  errors.decimals = "Max value is 255"
-                }
-
-                if (!values.totalSupply) {
-                  errors.totalSupply = "Required"
-                }
-
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.name) {
+                errors.name = "Required"
               }
+              if (!values.symbol) {
+                errors.symbol = "Required"
+              }
+              if (!values.decimals) {
+                errors.decimals = "Required"
+              } else if (parseInt(values.decimals, 10) > 255) {
+                errors.decimals = "Max value is 255"
+              }
+
+              if (!values.totalSupply) {
+                errors.totalSupply = "Required"
+              }
+
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -139,16 +140,16 @@ export const DeployCollateralToken: React.FC = () => {
               placeHolder="18"
               readOnly={isCurrentStepCompleted}
               type="number"
-              showHelp={true}
-              helpText="The number of decimals used by this token"
+              showhelp={true}
+              helptext="The number of decimals used by this token"
             />
 
             <FormItem
               label="Initial Supply"
               field="totalSupply"
               readOnly={isCurrentStepCompleted}
-              showHelp={true}
-              helpText="The initial number of collateral tokens that are going to be minted and assigned to you"
+              showhelp={true}
+              helptext="The initial number of collateral tokens that are going to be minted and assigned to you"
             />
 
             <Button
