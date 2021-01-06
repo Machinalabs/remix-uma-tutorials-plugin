@@ -29,6 +29,10 @@ export class TestnetErc20InstanceCreator extends ContractFactory {
   static connect(address: string, signerOrProvider: Signer | Provider): TestnetErc20 {
     return new Contract(address, _abi, signerOrProvider) as TestnetErc20
   }
+
+  static getABI() {
+    return _abi
+  }
 }
 
 const _abi = [
