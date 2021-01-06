@@ -110,22 +110,6 @@ export const RightPanel: React.FC = () => {
             <Card.Body>{/* TODO */}</Card.Body>
           </Accordion.Collapse>
         </Card>
-        <Card>
-          <Accordion.Toggle as={Card.Header} eventKey="5">
-            Liquidations
-          </Accordion.Toggle>
-          <Accordion.Collapse eventKey="5">
-            <Card.Body>{/* TODO */}</Card.Body>
-          </Accordion.Collapse>
-        </Card>
-        <Card>
-          <Accordion.Toggle as={Card.Header} eventKey="6">
-            Disputes
-          </Accordion.Toggle>
-          <Accordion.Collapse eventKey="6">
-            <Card.Body>{/* TODO */}</Card.Body>
-          </Accordion.Collapse>
-        </Card>
       </Accordion>
     </React.Fragment>
   )
