@@ -63,6 +63,7 @@ export const DeployCollateralToken: React.FC = () => {
       debug("Signer", signer)
 
       const accounts = await provider.listAccounts()
+      debug("accounts", accounts)
 
       const testnetERC20Factory = new ethers.ContractFactory(TestnetERC20Artifact.abi, TestnetERC20Artifact.bytecode, signer)
       const txn = await testnetERC20Factory.deploy(
@@ -75,7 +76,8 @@ export const DeployCollateralToken: React.FC = () => {
       const TestnetErc20Address = txn.address
       debug("collateral token deployed", TestnetErc20Address)
 
-      const address = getContractAddress("IdentifierWhitelist")
+      const address = getContractAddress("AddressWhitelist")
+      debug("AddressWhitelist address", address)
 
       const whitelistInterface = new ethers.utils.Interface(AddressWhitelistArtifact.abi)
       const addToWhitelistEncodedData = whitelistInterface.encodeFunctionData("addToWhitelist", [
