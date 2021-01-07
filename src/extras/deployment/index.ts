@@ -13,6 +13,11 @@ import FinancialContractsAdminArtifact from "@uma/core/build/contracts/Financial
 import StoreArtifact from "@uma/core/build/contracts/Store.json"
 import ExpiringMultiPartyCreatorArtifact from "@uma/core/build/contracts/ExpiringMultiPartyCreator.json"
 import GovernorArtifact from "@uma/core/build/contracts/Governor.json"
+import DesignatedVotingArtifact from "@uma/core/build/contracts/DesignatedVoting.json"
+import DesignatedVotingFactoryArtifact from "@uma/core/build/contracts/DesignatedVotingFactory.json"
+import TokenFactoryArtifact from "@uma/core/build/contracts/TokenFactory.json"
+import AddressWhitelistArtifact from "@uma/core/build/contracts/AddressWhitelist.json"
+import ExpiringMultiPartyLibArtifact from "@uma/core/build/contracts/ExpiringMultiPartyLib.json"
 
 export type Bytes20 = string
 export type EthereumAddress = Bytes20
@@ -104,114 +109,148 @@ export class UMADeployer implements IDeployer {
     const signer = provider.getSigner()
     debug("Signer", signer)
 
+    const address = await signer.getAddress()
+    debug("address", address)
+
     const accounts = await provider.listAccounts()
     console.log("Accounts", accounts[0])
 
     const fromAddress = accounts[0]
+
     // 1) Deploy finder
     const finderFactory = new ethers.ContractFactory(FinderArtifact.abi, FinderArtifact.bytecode, signer)
-    const finderContract = await finderFactory.deploy();
-    const FinderInstanceAddres = finderContract.address
-    await finderContract.deployTransaction.wait()
-
-    console.log("finderContract", finderContract)
+    const finderInstanceCreator = finderFactory.getDeployTransaction();
+    const { createdAddress: FinderInstanceAddres } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: finderInstanceCreator.data as string,
+    })
     assert(FinderInstanceAddres).isDefined()
     assert(FinderInstanceAddres).isString()
     debug("Finder deployed", FinderInstanceAddres)
+    addresses.set("Finder", FinderInstanceAddres as string)
 
-    addresses.set("Finder", FinderInstanceAddres)
+    const finderInterface = finderFactory.interface;
 
     // 2) Deploy timer
     const timerFactory = new ethers.ContractFactory(TimerArtifact.abi, TimerArtifact.bytecode, signer)
-    const timerContract = await timerFactory.deploy();
-    const TimerInstanceAddress = timerContract.address
-    timerContract.deployTransaction.wait()
-
+    const timerInstanceCreator = timerFactory.getDeployTransaction();
+    const { createdAddress: TimerInstanceAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: timerInstanceCreator.data as string,
+    })
     assert(TimerInstanceAddress).isDefined()
     assert(TimerInstanceAddress).isString()
     debug("Timer deployed", TimerInstanceAddress)
-    addresses.set("Timer", TimerInstanceAddress)
+    addresses.set("Timer", TimerInstanceAddress as string)
 
     // 3) Deploy voting token
     const votingTokenFactory = new ethers.ContractFactory(VotingTokenArtifact.abi, VotingTokenArtifact.bytecode, signer)
-    const votingTokenContract = await votingTokenFactory.deploy();
-    const VotingTokenInstanceAddress = votingTokenContract.address
-    votingTokenContract.deployTransaction.wait()
-
+    const votingTokenInstanceCreator = votingTokenFactory.getDeployTransaction();
+    const { createdAddress: VotingTokenInstanceAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: votingTokenInstanceCreator.data as string,
+    })
     assert(VotingTokenInstanceAddress).isDefined()
     assert(VotingTokenInstanceAddress).isString()
-    debug("Voting Token deployed", VotingTokenInstanceAddress)
-    addresses.set("VotingToken", VotingTokenInstanceAddress)
+    debug("Voting token deployed", VotingTokenInstanceAddress)
+    addresses.set("VotingToken", VotingTokenInstanceAddress as string)
 
     // voting token setup
     const minterRoleEnumValue = 1
     const signerAddress = fromAddress
+    const votingTokenInterface = votingTokenFactory.interface
 
     // add Member
-    await votingTokenContract.addMember(minterRoleEnumValue, signerAddress)
-    debug("Member added")
+    const addMemberEncodedData = votingTokenInterface.encodeFunctionData("addMember", [
+      minterRoleEnumValue,
+      signerAddress,
+    ])
+    await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      data: addMemberEncodedData,
+      from: fromAddress,
+    })
 
     // mint tokens
-    await votingTokenContract.mint(signerAddress, toWei("100000000"))
-    debug("Tokens minted")
+    const mintEncodedData = votingTokenInterface.encodeFunctionData("mint", [signerAddress, toWei("100000000")])
+    await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      data: mintEncodedData,
+      from: fromAddress,
+    })
 
     // remove member
-    await votingTokenContract.removeMember(minterRoleEnumValue, signerAddress)
-    debug("Member removed")
+    const removeMemberEncodedData = votingTokenInterface.encodeFunctionData("removeMember", [
+      minterRoleEnumValue,
+      signerAddress,
+    ])
+    await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      data: removeMemberEncodedData,
+      from: fromAddress,
+    })
 
     // 4) Deploy identifier white list
     const identifierWhiteListFactory = new ethers.ContractFactory(IdentifierWhiteListArtifact.abi, IdentifierWhiteListArtifact.bytecode, signer)
-    const identifierWhiteListContract = await identifierWhiteListFactory.deploy();
-    const IdentifierWhiteListInstanceAddress = identifierWhiteListContract.address
+    const identifierWhiteListInstanceCreator = identifierWhiteListFactory.getDeployTransaction()
+    const { createdAddress: IdentifierWhiteListAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: identifierWhiteListInstanceCreator.data as string,
+    })
+    assert(IdentifierWhiteListAddress).isDefined()
+    assert(IdentifierWhiteListAddress).isString()
+    debug("Price identifier whitelist deployed", IdentifierWhiteListAddress)
+    addresses.set("IdentifierWhitelist", IdentifierWhiteListAddress as string)
 
-    assert(IdentifierWhiteListInstanceAddress).isDefined()
-    assert(IdentifierWhiteListInstanceAddress).isString()
-    debug("IdentifierWhiteList deployed", IdentifierWhiteListInstanceAddress)
-    addresses.set("IdentifierWhitelist", IdentifierWhiteListInstanceAddress)
-    identifierWhiteListContract.deployTransaction.wait()
-
-    // Set the GAT percentage to 5%
+    // // Set the GAT percentage to 5%
     const gatPercentage = { rawValue: toWei("0.05", "ether") }
-    // Set the inflation rate.
+    // // Set the inflation rate.
     const inflationRate = { rawValue: toWei("0.0005", "ether") }
-    // Set the rewards expiration timeout.
+    // // Set the rewards expiration timeout.
     const rewardsExpirationTimeout = 60 * 60 * 24 * 14 // Two weeks.
-    // Set phase length to one day.
+    // // Set phase length to one day.
     const secondsPerDay = "86400"
 
     // 5) Deploy voting
     const votingFactory = new ethers.ContractFactory(VotingArtifact.abi, VotingArtifact.bytecode, signer)
-    const votingContract = await votingFactory.deploy(
+    const votingInstanceCreator = votingFactory.getDeployTransaction(
       secondsPerDay,
       gatPercentage,
       inflationRate,
       rewardsExpirationTimeout,
-      VotingTokenInstanceAddress,
-      FinderInstanceAddres,
-      TimerInstanceAddress
-    );
-    const VotingInstanceAddress = votingContract.address
-    votingContract.deployTransaction.wait()
-
+      VotingTokenInstanceAddress as string,
+      FinderInstanceAddres as string,
+      TimerInstanceAddress as string
+    )
+    const { createdAddress: VotingInstanceAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: votingInstanceCreator.data as string,
+    })
     assert(VotingInstanceAddress).isDefined()
     assert(VotingInstanceAddress).isString()
-    debug("Voting deployed", VotingInstanceAddress)
-    addresses.set("Voting", VotingInstanceAddress)
+    debug("Voting instance deployed", VotingInstanceAddress)
+    addresses.set("Voting", VotingInstanceAddress as string)
 
     // 6) Deploy registry
     const registryFactory = new ethers.ContractFactory(RegistryArtifact.abi, RegistryArtifact.bytecode, signer)
-    const registryContract = await registryFactory.deploy();
-    const RegistryInstanceAddress = registryContract.address
-    registryContract.deployTransaction.wait()
-
+    const registryInstanceCreator = registryFactory.getDeployTransaction()
+    const { createdAddress: RegistryInstanceAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: registryInstanceCreator.data as string,
+    })
     assert(RegistryInstanceAddress).isDefined()
     assert(RegistryInstanceAddress).isString()
     debug("Registry instance deployed", RegistryInstanceAddress)
-    addresses.set("Registry", RegistryInstanceAddress)
+    addresses.set("Registry", RegistryInstanceAddress as string)
 
     // update implementation on the Finder
-    const finderInstanceInterface = finderContract.interface
-    const changeImplementationAddressEncodedData = finderInstanceInterface.encodeFunctionData(
+    const changeImplementationAddressEncodedData = finderInterface.encodeFunctionData(
       "changeImplementationAddress",
       [utils.formatBytes32String(InterfaceName.Registry), RegistryInstanceAddress]
     )
@@ -224,17 +263,19 @@ export class UMADeployer implements IDeployer {
 
     // 6) Deploy financial contracts admin
     const financialContractFactory = new ethers.ContractFactory(FinancialContractsAdminArtifact.abi, FinancialContractsAdminArtifact.bytecode, signer)
-    const financialContract = await financialContractFactory.deploy();
-    const FinancialContractsAdminAddress = financialContract.address
-    financialContract.deployTransaction.wait()
-
+    const financialContractsAdminInstanceCreator = financialContractFactory.getDeployTransaction()
+    const { createdAddress: FinancialContractsAdminAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: financialContractsAdminInstanceCreator.data as string,
+    })
     assert(FinancialContractsAdminAddress).isDefined()
     assert(FinancialContractsAdminAddress).isString()
     debug("FinancialContractAdmin deployed", FinancialContractsAdminAddress)
-    addresses.set("FinancialContractAdmin", FinancialContractsAdminAddress)
+    addresses.set("FinancialContractAdmin", FinancialContractsAdminAddress as string)
 
     // update implementation on the Finder
-    const changeImplementationAddressEncodedDataForFinancialContract = finderInstanceInterface.encodeFunctionData(
+    const changeImplementationAddressEncodedDataForFinancialContract = finderInterface.encodeFunctionData(
       "changeImplementationAddress",
       [utils.formatBytes32String(InterfaceName.FinancialContractsAdmin), FinancialContractsAdminAddress]
     )
@@ -248,22 +289,25 @@ export class UMADeployer implements IDeployer {
     // 7) Deploy store
     const initialFixedOracleFeePerSecondPerPfc = { rawValue: "0" }
     const initialWeeklyDelayFeePerSecondPerPfc = { rawValue: "0" }
+
     const storeFactory = new ethers.ContractFactory(StoreArtifact.abi, StoreArtifact.bytecode, signer)
-    const storeContract = await storeFactory.deploy(
+    const storeInstanceCreator = storeFactory.getDeployTransaction(
       initialFixedOracleFeePerSecondPerPfc,
       initialWeeklyDelayFeePerSecondPerPfc,
-      TimerInstanceAddress
-    );
-    const StoreAddress = storeContract.address
-    storeContract.deployTransaction.wait()
-
+      TimerInstanceAddress as string
+    )
+    const { createdAddress: StoreAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: storeInstanceCreator.data as string,
+    })
     assert(StoreAddress).isDefined()
     assert(StoreAddress).isString()
     debug("Store deployed", StoreAddress)
     addresses.set("Store", StoreAddress as string)
 
     // update implementation on the Finder
-    const changeImplementationAddressEncodedDataForStore = finderInstanceInterface.encodeFunctionData(
+    const changeImplementationAddressEncodedDataForStore = finderInterface.encodeFunctionData(
       "changeImplementationAddress",
       [utils.formatBytes32String(InterfaceName.Store), StoreAddress]
     )
@@ -277,134 +321,152 @@ export class UMADeployer implements IDeployer {
     // 8) Deploy governor
     const startingId = "0"
     const governorFactory = new ethers.ContractFactory(GovernorArtifact.abi, GovernorArtifact.bytecode, signer)
-    const governorContract = await governorFactory.deploy(
-      FinderInstanceAddres,
+    const governorInstanceCreator = governorFactory.getDeployTransaction(
+      FinderInstanceAddres as string,
       startingId,
-      TimerInstanceAddress
-    );
-    const GovernorAddress = governorContract.address
-    governorContract.deployTransaction.wait()
-
-    assert(GovernorAddress).isDefined()
-    assert(GovernorAddress).isString()
+      TimerInstanceAddress as string
+    )
+    const { createdAddress: GovernorAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: governorInstanceCreator.data as string,
+    })
+    assert(StoreAddress).isDefined()
+    assert(StoreAddress).isString()
     debug("Governor deployed", GovernorAddress)
-    addresses.set("Governor", GovernorAddress)
+    addresses.set("Governor", GovernorAddress as string)
 
-    // // Add governor to registry so it can send price requests.
-    // const registryInstanceInterface = new RegistryInstanceCreator().interface
-    // const registryAddMemberEncodedData = registryInstanceInterface.encodeFunctionData("addMember", [
-    //   RegistryRoles.CONTRACT_CREATOR,
-    //   signerAddress,
-    // ])
-    // await clientInstance.udapp.sendTransaction({
-    //   ...defaultTransactionValues,
-    //   data: registryAddMemberEncodedData,
-    //   from: fromAddress,
-    // })
-    // debug("Governor added to registry")
+    // Add governor to registry so it can send price requests.
+    const registryInstanceInterface = registryFactory.interface
+    const registryAddMemberEncodedData = registryInstanceInterface.encodeFunctionData("addMember", [
+      RegistryRoles.CONTRACT_CREATOR,
+      signerAddress,
+    ])
+    await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      data: registryAddMemberEncodedData,
+      from: fromAddress,
+    })
+    debug("Governor added to registry")
 
-    // const registryRegisterContractEncodedData = registryInstanceInterface.encodeFunctionData("registerContract", [
-    //   [],
-    //   GovernorAddress,
-    // ])
-    // await clientInstance.udapp.sendTransaction({
-    //   ...defaultTransactionValues,
-    //   data: registryRegisterContractEncodedData,
-    //   from: fromAddress,
-    // })
-    // debug("Registered Governor Contract in the registry")
+    const registryRegisterContractEncodedData = registryInstanceInterface.encodeFunctionData("registerContract", [
+      [],
+      GovernorAddress,
+    ])
+    await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      data: registryRegisterContractEncodedData,
+      from: fromAddress,
+    })
+    debug("Registered Governor Contract in the registry")
 
-    // const registryRemoveMemberEncodedData = registryInstanceInterface.encodeFunctionData("removeMember", [
-    //   RegistryRoles.CONTRACT_CREATOR,
-    //   signerAddress,
-    // ])
-    // await clientInstance.udapp.sendTransaction({
-    //   ...defaultTransactionValues,
-    //   data: registryRemoveMemberEncodedData,
-    //   from: fromAddress,
-    // })
-    // debug("Removed member")
+    const registryRemoveMemberEncodedData = registryInstanceInterface.encodeFunctionData("removeMember", [
+      RegistryRoles.CONTRACT_CREATOR,
+      signerAddress,
+    ])
+    await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      data: registryRemoveMemberEncodedData,
+      from: fromAddress,
+    })
+    debug("Removed member")
 
-    // // 9) Deploy designated voting factory
-    // const designatedVotingInstanceCreator = new DesignatedVotingFactoryInstanceCreator().getDeployTransaction(
-    //   FinderInstanceAddres as string
-    // )
-    // const { createdAddress: DesignatedVotingFactoryAddress } = await clientInstance.udapp.sendTransaction({
-    //   ...defaultTransactionValues,
-    //   from: fromAddress,
-    //   data: designatedVotingInstanceCreator.data as string,
-    // })
-    // assert(DesignatedVotingFactoryAddress).isDefined()
-    // assert(DesignatedVotingFactoryAddress).isString()
-    // debug("DesignatedVotingFactory deployed", DesignatedVotingFactoryAddress)
-    // addresses.set("DesignatedVotingFactory", DesignatedVotingFactoryAddress as string)
+    // 9) Deploy designated voting factory
+    const designatedVotingFactoryFactory = new ethers.ContractFactory(DesignatedVotingFactoryArtifact.abi, DesignatedVotingFactoryArtifact.bytecode, signer)
+    const designatedVotingInstanceCreator = designatedVotingFactoryFactory.getDeployTransaction(
+      FinderInstanceAddres as string
+    )
+    const { createdAddress: DesignatedVotingFactoryAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: designatedVotingInstanceCreator.data as string,
+    })
+    assert(DesignatedVotingFactoryAddress).isDefined()
+    assert(DesignatedVotingFactoryAddress).isString()
+    debug("DesignatedVotingFactory deployed", DesignatedVotingFactoryAddress)
+    addresses.set("DesignatedVotingFactory", DesignatedVotingFactoryAddress as string)
 
-    // const tokenFactoryInstanceCreator = new TokenFactoryInstanceCreator().getDeployTransaction()
-    // const { createdAddress: TokenFactoryAddress } = await clientInstance.udapp.sendTransaction({
-    //   ...defaultTransactionValues,
-    //   from: fromAddress,
-    //   data: tokenFactoryInstanceCreator.data as string,
-    // })
-    // assert(TokenFactoryAddress).isDefined()
-    // assert(TokenFactoryAddress).isString()
-    // debug("TokenFactory deployed", TokenFactoryAddress)
-    // addresses.set("TokenFactory", TokenFactoryAddress as string)
+    const tokenFactoryFactory = new ethers.ContractFactory(TokenFactoryArtifact.abi, TokenFactoryArtifact.bytecode, signer)
+    const tokenFactoryInstanceCreator = tokenFactoryFactory.getDeployTransaction()
+    const { createdAddress: TokenFactoryAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: tokenFactoryInstanceCreator.data as string,
+    })
+    assert(TokenFactoryAddress).isDefined()
+    assert(TokenFactoryAddress).isString()
+    debug("TokenFactory deployed", TokenFactoryAddress)
+    addresses.set("TokenFactory", TokenFactoryAddress as string)
 
-    // // Deploy AddressWhitelist
-    // const addressWhitelistInstanceCreator = new AddressWhitelistInstanceCreator().getDeployTransaction()
-    // const { createdAddress: AddressWhitelistAddress } = await clientInstance.udapp.sendTransaction({
-    //   ...defaultTransactionValues,
-    //   from: fromAddress,
-    //   data: addressWhitelistInstanceCreator.data as string,
-    // })
-    // assert(AddressWhitelistAddress).isDefined()
-    // assert(AddressWhitelistAddress).isString()
-    // debug("AddressWhitelist deployed", AddressWhitelistAddress)
-    // addresses.set("AddressWhitelist", AddressWhitelistAddress as string)
+    // Deploy AddressWhitelist
+    const addressWhitelistFactory = new ethers.ContractFactory(AddressWhitelistArtifact.abi, AddressWhitelistArtifact.bytecode, signer)
+    const addressWhitelistInstanceCreator = addressWhitelistFactory.getDeployTransaction()
+    const { createdAddress: AddressWhitelistAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: addressWhitelistInstanceCreator.data as string,
+    })
+    assert(AddressWhitelistAddress).isDefined()
+    assert(AddressWhitelistAddress).isString()
+    debug("AddressWhitelist deployed", AddressWhitelistAddress)
+    addresses.set("AddressWhitelist", AddressWhitelistAddress as string)
 
-    // // Then deploy expiring multi party creator (library)
-    // const { data: multiPartyLibraryData } = new ExpiringMultiPartyLibFactoryLibrary().getDeployTransaction()
-    // const { createdAddress: MultipartyLibraryAddress } = await clientInstance.udapp.sendTransaction({
-    //   ...defaultTransactionValues,
-    //   from: fromAddress,
-    //   data: multiPartyLibraryData as string,
-    // })
-    // assert(MultipartyLibraryAddress).isDefined()
-    // assert(MultipartyLibraryAddress).isString()
-    // debug("MultipartyLibrary deployed", MultipartyLibraryAddress)
+    // Then deploy expiring multi party creator (library)
+    const expiringMultiPartyLibFactory = new ethers.ContractFactory(ExpiringMultiPartyLibArtifact.abi, ExpiringMultiPartyLibArtifact.bytecode, signer)
+    const { data: multiPartyLibraryData } = expiringMultiPartyLibFactory.getDeployTransaction()
+    const { createdAddress: MultipartyLibraryAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: multiPartyLibraryData as string,
+    })
+    assert(MultipartyLibraryAddress).isDefined()
+    assert(MultipartyLibraryAddress).isString()
+    debug("MultipartyLibrary deployed", MultipartyLibraryAddress)
 
-    // // Then deploy expiring multi party creator (contract)
-    // const { data: ExpiringMultiPartyCreatorData } = new ExpiringMultiPartyCreatorInstanceCreator({
-    //   ExpiringMultiPartyLib: MultipartyLibraryAddress as string,
-    // }).getDeployTransaction(
-    //   FinderInstanceAddres as string,
-    //   AddressWhitelistAddress as string,
-    //   TokenFactoryAddress as string,
-    //   TimerInstanceAddress as string
-    // )
-    // const { createdAddress: ExpiringMultiPartyCreatorAddress } = await clientInstance.udapp.sendTransaction({
-    //   ...defaultTransactionValues,
-    //   from: fromAddress,
-    //   data: ExpiringMultiPartyCreatorData as string,
-    // })
-    // assert(ExpiringMultiPartyCreatorAddress).isDefined()
-    // assert(ExpiringMultiPartyCreatorAddress).isString()
-    // debug("ExpiringMultiPartyCreator deployed", ExpiringMultiPartyCreatorAddress)
-    // addresses.set("ExpiringMultiPartyCreator", ExpiringMultiPartyCreatorAddress as string)
+    // Then deploy expiring multi party creator (contract)
+    const linkBytecode = (bytecode, linkLibraryAddresses): string => {
+      let linkedBytecode = bytecode
 
-    // const registryAddMemberEncodedDataForEMP = registryInstanceInterface.encodeFunctionData("addMember", [
-    //   RegistryRoles.CONTRACT_CREATOR,
-    //   ExpiringMultiPartyCreatorAddress as string,
-    // ])
+      linkedBytecode = linkedBytecode.replace(
+        "__ExpiringMultiPartyLib_________________",
+        linkLibraryAddresses.replace(/^0x/, "").toLowerCase()
+      )
+      console.log("bytecode", bytecode)
 
-    // await clientInstance.udapp.sendTransaction({
-    //   ...defaultTransactionValues,
-    //   data: registryAddMemberEncodedDataForEMP,
-    //   from: fromAddress,
-    // })
-    // debug("ExpiringMultiPartyCreator added to registry")
+      return linkedBytecode
+    }
+
+
+    const expiringMultiPartyCreatorFactory = new ethers.ContractFactory(ExpiringMultiPartyCreatorArtifact.abi, linkBytecode(ExpiringMultiPartyCreatorArtifact.bytecode, MultipartyLibraryAddress), signer)
+    const { data: ExpiringMultiPartyCreatorData } = expiringMultiPartyCreatorFactory.getDeployTransaction(
+      FinderInstanceAddres as string,
+      TokenFactoryAddress as string,
+      TimerInstanceAddress as string
+    )
+    const { createdAddress: ExpiringMultiPartyCreatorAddress } = await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      from: fromAddress,
+      data: ExpiringMultiPartyCreatorData as string,
+    })
+    assert(ExpiringMultiPartyCreatorAddress).isDefined()
+    assert(ExpiringMultiPartyCreatorAddress).isString()
+    debug("ExpiringMultiPartyCreator deployed", ExpiringMultiPartyCreatorAddress)
+    addresses.set("ExpiringMultiPartyCreator", ExpiringMultiPartyCreatorAddress as string)
+
+    const registryAddMemberEncodedDataForEMP = registryInstanceInterface.encodeFunctionData("addMember", [
+      RegistryRoles.CONTRACT_CREATOR,
+      ExpiringMultiPartyCreatorAddress as string,
+    ])
+
+    await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      data: registryAddMemberEncodedDataForEMP,
+      from: fromAddress,
+    })
+    debug("ExpiringMultiPartyCreator added to registry")
 
     // // 13) Deploy local WETH
+
     // const { data: wethData } = new Weth9InstanceCreator().getDeployTransaction()
     // const { createdAddress: WethAddress } = await clientInstance.udapp.sendTransaction({
     //   ...defaultTransactionValues,
