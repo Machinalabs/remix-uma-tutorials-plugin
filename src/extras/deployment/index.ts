@@ -1,4 +1,4 @@
-import { asciiToHex, toHex, toWei } from "web3-utils"
+import { asciiToHex, toHex, toWei, utf8ToHex } from "web3-utils"
 import { BigNumber, ethers, utils } from "ethers"
 import { RemixClientInstanceType } from "../../hooks"
 import { debug, defaultTransactionValues } from "../../utils"
@@ -36,12 +36,13 @@ export interface IDeployer {
   deploy: (options: Options) => Promise<Map<UMAContractName, EthereumAddress>> // TODO Review why it is compiling even if classes are not implementing the interface
 }
 
-enum InterfaceName {
+export enum InterfaceName {
   FinancialContractsAdmin = "FinancialContractsAdmin",
   Oracle = "Oracle",
   Registry = "Registry",
   Store = "Store",
   IdentifierWhitelist = "IdentifierWhitelist",
+  CollateralWhitelist = "CollateralWhitelist"
 }
 
 enum RegistryRoles {
@@ -206,6 +207,19 @@ export class UMADeployer implements IDeployer {
     debug("Price identifier whitelist deployed", IdentifierWhiteListAddress)
     addresses.set("IdentifierWhitelist", IdentifierWhiteListAddress as string)
 
+    // update implementation on the Finder
+    const changeImplementationAddressEncodedDataForIdentifierWhitelist = finderInterface.encodeFunctionData(
+      "changeImplementationAddress",
+      [utils.formatBytes32String(InterfaceName.IdentifierWhitelist), IdentifierWhiteListAddress]
+    )
+    await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      data: changeImplementationAddressEncodedDataForIdentifierWhitelist,
+      from: fromAddress,
+      to: FinderInstanceAddres
+    })
+    debug("Changed Registry Implementation for IdentifierWhitelist", utils.formatBytes32String(InterfaceName.IdentifierWhitelist))
+
     // // Set the GAT percentage to 5%
     const gatPercentage = { rawValue: toWei("0.05", "ether") }
     // // Set the inflation rate.
@@ -252,14 +266,15 @@ export class UMADeployer implements IDeployer {
     // update implementation on the Finder
     const changeImplementationAddressEncodedData = finderInterface.encodeFunctionData(
       "changeImplementationAddress",
-      [utils.formatBytes32String(InterfaceName.Registry), RegistryInstanceAddress]
+      [utils.formatBytes32String("Registry"), RegistryInstanceAddress]
     )
     await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       data: changeImplementationAddressEncodedData,
       from: fromAddress,
+      to: FinderInstanceAddres
     })
-    debug("Changed Registry Implementation")
+    debug("Changed Registry Implementation", utils.formatBytes32String("Registry"))
 
     // 6) Deploy financial contracts admin
     const financialContractFactory = new ethers.ContractFactory(FinancialContractsAdminArtifact.abi, FinancialContractsAdminArtifact.bytecode, signer)
@@ -283,6 +298,7 @@ export class UMADeployer implements IDeployer {
       ...defaultTransactionValues,
       data: changeImplementationAddressEncodedDataForFinancialContract,
       from: fromAddress,
+      to: FinderInstanceAddres
     })
     debug("Changed FinancialContract Admin Implementation")
 
@@ -315,6 +331,7 @@ export class UMADeployer implements IDeployer {
       ...defaultTransactionValues,
       data: changeImplementationAddressEncodedDataForStore,
       from: fromAddress,
+      to: FinderInstanceAddres
     })
     debug("Changed Store Implementation")
 
@@ -346,6 +363,7 @@ export class UMADeployer implements IDeployer {
       ...defaultTransactionValues,
       data: registryAddMemberEncodedData,
       from: fromAddress,
+      to: RegistryInstanceAddress
     })
     debug("Governor added to registry")
 
@@ -357,6 +375,7 @@ export class UMADeployer implements IDeployer {
       ...defaultTransactionValues,
       data: registryRegisterContractEncodedData,
       from: fromAddress,
+      to: RegistryInstanceAddress
     })
     debug("Registered Governor Contract in the registry")
 
@@ -368,6 +387,7 @@ export class UMADeployer implements IDeployer {
       ...defaultTransactionValues,
       data: registryRemoveMemberEncodedData,
       from: fromAddress,
+      to: RegistryInstanceAddress
     })
     debug("Removed member")
 
@@ -411,6 +431,19 @@ export class UMADeployer implements IDeployer {
     debug("AddressWhitelist deployed", AddressWhitelistAddress)
     addresses.set("AddressWhitelist", AddressWhitelistAddress as string)
 
+    // Add CollateralWhitelist to finder
+    const changeImplementationAddressEncodedDataForCollateralWhitelist = finderInterface.encodeFunctionData(
+      "changeImplementationAddress",
+      [utils.formatBytes32String(InterfaceName.CollateralWhitelist), AddressWhitelistAddress]
+    )
+    await clientInstance.udapp.sendTransaction({
+      ...defaultTransactionValues,
+      data: changeImplementationAddressEncodedDataForCollateralWhitelist,
+      from: fromAddress,
+      to: FinderInstanceAddres
+    })
+    debug("Changed AddressWhitelist Implementation", utils.formatBytes32String(InterfaceName.CollateralWhitelist))
+
     // Then deploy expiring multi party creator (library)
     const expiringMultiPartyLibFactory = new ethers.ContractFactory(ExpiringMultiPartyLibArtifact.abi, ExpiringMultiPartyLibArtifact.bytecode, signer)
     const { data: multiPartyLibraryData } = expiringMultiPartyLibFactory.getDeployTransaction()
@@ -431,7 +464,6 @@ export class UMADeployer implements IDeployer {
         "__ExpiringMultiPartyLib_________________",
         linkLibraryAddresses.replace(/^0x/, "").toLowerCase()
       )
-      console.log("bytecode", bytecode)
 
       return linkedBytecode
     }
@@ -462,6 +494,7 @@ export class UMADeployer implements IDeployer {
       ...defaultTransactionValues,
       data: registryAddMemberEncodedDataForEMP,
       from: fromAddress,
+      to: RegistryInstanceAddress
     })
     debug("ExpiringMultiPartyCreator added to registry")
 
