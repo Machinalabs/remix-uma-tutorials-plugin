@@ -5,9 +5,9 @@ import Alert from "react-bootstrap/Alert"
 import { useRemix } from "../../../hooks"
 import { Button } from "../../../components"
 import { debug, defaultTransactionValues } from "../../../utils"
-import { utils } from "ethers"
+import { ethers, utils } from "ethers"
 import { useContract } from "../hooks/useContract"
-import { IdentifierWhitelistInterfaceInstanceCreator } from "../../../extras/uma-ethers"
+import IdentifierWhitelistArtifact from "@uma/core/build/contracts/IdentifierWhitelist.json"
 import { FormItem } from "../components"
 import { useStep } from "../hooks"
 
@@ -36,8 +36,8 @@ export const DeployPriceIdentifier: React.FC = () => {
 
       const identifierBytes = utils.formatBytes32String(values.priceIdentifier)
 
-      const identifierWhiteListInterface = new IdentifierWhitelistInterfaceInstanceCreator().interface
-      const addSupportedIdentifierEncodedData = identifierWhiteListInterface.encodeFunctionData(
+      const identifierWhitelistInterface = new ethers.utils.Interface(IdentifierWhitelistArtifact.abi)
+      const addSupportedIdentifierEncodedData = identifierWhitelistInterface.encodeFunctionData(
         "addSupportedIdentifier",
         [identifierBytes]
       )
@@ -48,6 +48,8 @@ export const DeployPriceIdentifier: React.FC = () => {
         from: accounts[0],
         to: address,
       })
+
+      debug("Added supported identifier")
 
       addPriceIdentifier(values.priceIdentifier)
     }
@@ -70,12 +72,12 @@ export const DeployPriceIdentifier: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.priceIdentifier) {
-                  errors.priceIdentifier = "Required"
-                }
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.priceIdentifier) {
+                errors.priceIdentifier = "Required"
               }
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >
