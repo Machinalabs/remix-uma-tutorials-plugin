@@ -26,6 +26,7 @@ export const WelcomeView: React.FC = () => {
         const accounts = await clientInstance.udapp.getAccounts()
         debug("Accounts", accounts)
 
+        // if snapshot.. do X, otherwise Y
         const umaDeployer = new UMADeployer()
         const addresses = await umaDeployer.deploy({
           clientInstance,
