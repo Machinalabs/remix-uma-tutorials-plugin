@@ -4,7 +4,10 @@ import { BigNumber, ethers, utils } from "ethers"
 import { hexToAscii, numberToHex, toWei } from "web3-utils"
 import "react-datetime/css/react-datetime.css"
 
-import { ExpiringMultiPartyCreatorInstanceCreator, TestnetErc20InstanceCreator } from "../../../extras/uma-ethers"
+import TestnetERC20Artifact from "@uma/core/build/contracts/TestnetERC20.json"
+import ExpiringMultiPartyCreatorArtifact from "@uma/core/build/contracts/ExpiringMultiPartyCreator.json"
+
+// import { ExpiringMultiPartyCreatorInstanceCreator, TestnetErc20InstanceCreator } from "../../../extras/uma-ethers"
 import { debug } from "../../../utils"
 import { useContract, useStep } from "../hooks"
 import { Button } from "../../../components"
@@ -60,9 +63,10 @@ export const CreateExpiringMultiParty: React.FC = () => {
       const accounts = await provider.listAccounts()
       console.log("Accounts", accounts[0])
 
+      const storeAddress = getContractAddress('Store')
       const collateralTokenAddress = collateralTokens[0].address as string
-
-      const balance = await new TestnetErc20InstanceCreator(signer)
+      const collateralTokenInterface = new ethers.utils.Interface(TestnetERC20Artifact.abi)
+      const balance = await new ethers.Contract(collateralTokenAddress, collateralTokenInterface, signer)
         .attach(collateralTokenAddress)
         .balanceOf(accounts[0], { from: accounts[0] })
       debug("Balance", balance.toNumber())
@@ -70,13 +74,12 @@ export const CreateExpiringMultiParty: React.FC = () => {
       const dateTimestamp = values.expirationTimestamp
 
       const expiringMultiPartyCreatorAddress = getContractAddress("ExpiringMultiPartyCreator")
+      console.log("expiringMultiPartyCreatorAddress", expiringMultiPartyCreatorAddress)
       const identifierBytes = utils.formatBytes32String(priceIdentifiers[0])
       let txn
       try {
-        const expiringMultipartyCreator = ExpiringMultiPartyCreatorInstanceCreator.connect(
-          expiringMultiPartyCreatorAddress,
-          signer
-        ) // .getInterface(ExpiringMultiPartyCreatorInstanceCreator.getAbi())
+        const expiringMultipartyCreatorInterface = new ethers.utils.Interface(ExpiringMultiPartyCreatorArtifact.abi)
+        const expiringMultipartyCreator = new ethers.Contract(expiringMultiPartyCreatorAddress, expiringMultipartyCreatorInterface, signer)
         txn = await expiringMultipartyCreator.createExpiringMultiParty(
           {
             expirationTimestamp: numberToHex(1706780800),
@@ -99,10 +102,9 @@ export const CreateExpiringMultiParty: React.FC = () => {
             minSponsorTokens: {
               rawValue: values.minSponsorTokens,
             },
-            withdrawalLiveness: 0,
-            liquidationLiveness: 0,
-            excessTokenBeneficiary: "0x00",
-            // timerAddress: getContractAddress('Timer')
+            withdrawalLiveness: values.withdrawalLiveness,
+            liquidationLiveness: values.liquidationLiveness,
+            excessTokenBeneficiary: storeAddress,
           },
           {
             gasLimit: BigNumber.from("600000000000"),
@@ -110,7 +112,7 @@ export const CreateExpiringMultiParty: React.FC = () => {
           }
         )
 
-        await txn.wait()
+        await txn.deployed()
         debug("Receipt", txn)
       } catch (error) {
         console.log("Error", error)
@@ -180,41 +182,41 @@ export const CreateExpiringMultiParty: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                // if (!values.expirationTimestamp) {
-                //   errors.expirationTimestamp = "Required"
-                // }
+              const errors: FormikErrors<FormProps> = {}
+              // if (!values.expirationTimestamp) {
+              //   errors.expirationTimestamp = "Required"
+              // }
 
-                if (!values.syntheticName) {
-                  errors.syntheticName = "Required"
-                }
-
-                if (!values.syntheticSymbol) {
-                  errors.syntheticSymbol = "Required"
-                }
-
-                if (!values.collateralRequirement) {
-                  errors.collateralRequirement = "Required"
-                }
-
-                if (!values.disputeBond) {
-                  errors.disputeBond = "Required"
-                }
-
-                if (!values.minSponsorTokens) {
-                  errors.minSponsorTokens = "Required"
-                }
-
-                if (!values.withdrawalLiveness) {
-                  errors.withdrawalLiveness = "Required"
-                }
-
-                if (!values.liquidationLiveness) {
-                  errors.liquidationLiveness = "Required"
-                }
-
-                return errors
+              if (!values.syntheticName) {
+                errors.syntheticName = "Required"
               }
+
+              if (!values.syntheticSymbol) {
+                errors.syntheticSymbol = "Required"
+              }
+
+              if (!values.collateralRequirement) {
+                errors.collateralRequirement = "Required"
+              }
+
+              if (!values.disputeBond) {
+                errors.disputeBond = "Required"
+              }
+
+              if (!values.minSponsorTokens) {
+                errors.minSponsorTokens = "Required"
+              }
+
+              if (!values.withdrawalLiveness) {
+                errors.withdrawalLiveness = "Required"
+              }
+
+              if (!values.liquidationLiveness) {
+                errors.liquidationLiveness = "Required"
+              }
+
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >
