@@ -2,15 +2,17 @@ import React from "react"
 import { Formik, FormikErrors, Form } from "formik"
 import Alert from "react-bootstrap/Alert"
 
-import { AddressWhitelistInstanceCreator, TestnetErc20InstanceCreator } from "../../../extras/uma-ethers"
+// import { AddressWhitelistInstanceCreator, TestnetErc20InstanceCreator } from "../../../extras/uma-ethers"
 import { debug, defaultTransactionValues } from "../../../utils"
 import { useRemix } from "../../../hooks"
 import { Button } from "../../../components"
 
 import { useContract, useStep } from "../hooks"
 import { FormItem } from "../components"
-import { BigNumber } from "ethers"
+import { BigNumber, ContractFactory, ethers } from "ethers"
 import { useState } from "react"
+import TestnetERC20Artifact from "@uma/core/build/contracts/TestnetERC20.json"
+import AddressWhitelistArtifact from "@uma/core/build/contracts/AddressWhitelist.json"
 
 interface FormProps {
   name: string
@@ -41,27 +43,42 @@ export const DeployCollateralToken: React.FC = () => {
         decimals: parseInt(values.decimals, 10),
         totalSupply: values.totalSupply,
       }
-      const { data: collateralTokenDeployData } = new TestnetErc20InstanceCreator().getDeployTransaction(
+
+      const web3Provider = {
+        sendAsync(payload, callback) {
+          clientInstance
+            .call("web3Provider" as any, "sendAsync", payload)
+            .then((result) => callback(null, result))
+            .catch((e) => {
+              // console.log("Here is the error", e)
+              callback(e)
+            })
+        },
+      }
+
+      const provider = new ethers.providers.Web3Provider(web3Provider)
+      debug("Provider", provider)
+
+      const signer = provider.getSigner()
+      debug("Signer", signer)
+
+      const accounts = await provider.listAccounts()
+
+      const testnetERC20Factory = new ethers.ContractFactory(TestnetERC20Artifact.abi, TestnetERC20Artifact.bytecode, signer)
+      const txn = await testnetERC20Factory.deploy(
         newToken.name,
         newToken.symbol,
         newToken.decimals
       )
 
-      debug("collateralTokenDeployData", collateralTokenDeployData)
-
-      const accounts = await clientInstance.udapp.getAccounts()
-      debug("Accounts", accounts)
-
-      const { createdAddress: TestnetErc20Address } = await clientInstance.udapp.sendTransaction({
-        ...defaultTransactionValues,
-        from: accounts[0],
-        data: collateralTokenDeployData as string,
-      })
-      debug("TestnetErc20Address", TestnetErc20Address)
+      await txn.deployTransaction.wait()
+      const TestnetErc20Address = txn.address
+      debug("collateral token deployed", TestnetErc20Address)
 
       const address = getContractAddress("IdentifierWhitelist")
-      const collateralCurrencyWhitelist = new AddressWhitelistInstanceCreator().interface
-      const addToWhitelistEncodedData = collateralCurrencyWhitelist.encodeFunctionData("addToWhitelist", [
+
+      const whitelistInterface = new ethers.utils.Interface(AddressWhitelistArtifact.abi)
+      const addToWhitelistEncodedData = whitelistInterface.encodeFunctionData("addToWhitelist", [
         TestnetErc20Address,
       ])
       await clientInstance.udapp.sendTransaction({
@@ -106,25 +123,25 @@ export const DeployCollateralToken: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.name) {
-                  errors.name = "Required"
-                }
-                if (!values.symbol) {
-                  errors.symbol = "Required"
-                }
-                if (!values.decimals) {
-                  errors.decimals = "Required"
-                } else if (parseInt(values.decimals, 10) > 255) {
-                  errors.decimals = "Max value is 255"
-                }
-
-                if (!values.totalSupply) {
-                  errors.totalSupply = "Required"
-                }
-
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.name) {
+                errors.name = "Required"
               }
+              if (!values.symbol) {
+                errors.symbol = "Required"
+              }
+              if (!values.decimals) {
+                errors.decimals = "Required"
+              } else if (parseInt(values.decimals, 10) > 255) {
+                errors.decimals = "Max value is 255"
+              }
+
+              if (!values.totalSupply) {
+                errors.totalSupply = "Required"
+              }
+
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >
