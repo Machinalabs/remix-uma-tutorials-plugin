@@ -49,7 +49,7 @@ export const DeployPriceIdentifier: React.FC = () => {
         to: address,
       })
 
-      debug("Added supported identifier")
+      debug("Added supported identifier", identifierBytes)
 
       addPriceIdentifier(values.priceIdentifier)
     }
