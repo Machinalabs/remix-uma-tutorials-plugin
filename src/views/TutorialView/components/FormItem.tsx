@@ -63,8 +63,9 @@ const DateComponent = (props) => {
   const { setValue } = helpers
 
   const handleOnChange = (e) => {
-    console.log("e", e.unix())
-    setValue(e.unix())
+    if (e.unix) {
+      setValue(e.unix())
+    }
   }
 
   return <Datetime onChange={handleOnChange} />
