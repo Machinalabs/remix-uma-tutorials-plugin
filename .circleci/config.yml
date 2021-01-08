@@ -24,6 +24,8 @@ jobs:
           name: Install Dependencies
           command: |
             echo 'Installing dependencies'
+            sudo apt-get -y update
+            sudo apt-get -y install libudev-dev libusb-1.0-0-dev
             yarn --frozen-lockfile
       - save_cache: 
           name: Save Yarn Package Cache
