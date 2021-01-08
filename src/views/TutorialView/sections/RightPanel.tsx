@@ -1,32 +1,18 @@
 import React, { useEffect, useState } from "react"
 import Accordion from "react-bootstrap/Accordion"
 import Card from "react-bootstrap/Card"
+import styled from "styled-components"
+
 import { useRemix } from "../../../hooks"
 import { debug } from "../../../utils"
-import styled from "styled-components"
+
 import { useContract, Token } from "../hooks"
 
 export const RightPanel: React.FC = () => {
   const { clientInstance } = useRemix()
   const [account, setAccount] = useState("")
-  const [collateralBalance, setCollateralBalance] = useState(0) // eslint-disable-line
-  const [syntheticBalance, setSyntheticBalance] = useState(0) // eslint-disable-line
-  const { collateralTokens, priceIdentifiers } = useContract()
+  const { collateralTokens, priceIdentifiers, collateralBalance, syntheticBalance } = useContract()
 
-  useEffect(() => {
-    const getData = async () => {
-      const accounts = await clientInstance.udapp.getAccounts()
-      debug("Accounts", accounts)
-      setAccount(accounts[0])
-
-      // TODO
-      // Get balances
-    }
-
-    getData()
-  }, [clientInstance])
-
-  console.log("collateralTokens", collateralTokens)
   return (
     <React.Fragment>
       <p style={{ fontSize: "0.9em" }}>
