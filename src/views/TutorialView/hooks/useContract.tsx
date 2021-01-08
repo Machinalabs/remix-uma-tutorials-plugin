@@ -1,6 +1,8 @@
-import { BigNumber } from "ethers"
+import { BigNumber, ethers } from "ethers"
 import React, { PropsWithChildren, useContext, useEffect, useState } from "react"
 import { EthereumAddress, UMAContractName } from "../../../extras/deployment"
+
+import TestnetERC20Artifact from "@uma/core/build/contracts/TestnetERC20.json"
 
 export interface Token {
   name: string
@@ -13,6 +15,7 @@ export interface Token {
 interface IContractProvider {
   setContracts: (contractsMap: Map<UMAContractName, EthereumAddress>) => void
   getContractAddress: (contractName: UMAContractName) => string
+  addContractAddress: (contractName: UMAContractName, address: EthereumAddress) => void
   contracts: Map<UMAContractName, EthereumAddress>
   priceIdentifiers: string[]
   addPriceIdentifier: (newPriceIdentifier: string) => string[]
@@ -20,11 +23,14 @@ interface IContractProvider {
   addCollateralToken: (newToken: Token) => Token[]
   syntheticTokens: Token[]
   addSyntheticToken: (newToken: Token) => Token[]
+  cleanData: () => void
+  collateralBalance: string
+  syntheticBalance: string
+  updateBalances: (signer: any, account: string) => Promise<void>
   // expiringMultiParty
   // positions
   // liquidations
   // disputes
-  cleanData: () => void
 }
 
 /* tslint:disable */
@@ -34,6 +40,7 @@ const ContractContext = React.createContext<IContractProvider>({
   getContractAddress: (contractName: UMAContractName) => {
     return ""
   },
+  addContractAddress: (contractName: UMAContractName, address: EthereumAddress) => { },
   contracts: new Map<UMAContractName, EthereumAddress>(),
   priceIdentifiers: ["ETH/BTC"],
   addPriceIdentifier: (newPriceIdentifier: string) => {
@@ -47,7 +54,10 @@ const ContractContext = React.createContext<IContractProvider>({
   addSyntheticToken: (newToken: Token) => [
     { name: "SNT", symbol: "SNT", decimals: 18, totalSupply: BigNumber.from("10000000") },
   ],
-  cleanData: () => { }
+  cleanData: () => { },
+  collateralBalance: "0",
+  syntheticBalance: "0",
+  updateBalances: (signer: any, account: string) => { return Promise.resolve() },
 })
 /* tslint:enable */
 
@@ -56,6 +66,8 @@ export const ContractProvider: React.FC<PropsWithChildren<{}>> = ({ children }) 
   const [priceIdentifiers, setPriceIdentifiers] = useState<string[]>([])
   const [collateralTokens, setCollateralTokens] = useState<Token[]>([])
   const [syntheticTokens, setSyntheticTokens] = useState<Token[]>([])
+  const [collateralBalance, setCollateralBalance] = useState("0")
+  const [syntheticBalance, setSyntheticBalance] = useState("0")
 
   const getContractAddress = (contractName: UMAContractName) => {
     return contracts.get(contractName) as string
@@ -85,6 +97,20 @@ export const ContractProvider: React.FC<PropsWithChildren<{}>> = ({ children }) 
 
     const resetedPriceIdentifiers = []
     setPriceIdentifiers(resetedPriceIdentifiers)
+
+    setCollateralBalance("0")
+  }
+
+  const updateBalances = async (signer: any, account: string) => {
+    const testnetERC20Contract = new ethers.Contract(getContractAddress('TestnetErc20Address'), TestnetERC20Artifact.abi, signer)
+    const balance: BigNumber = await testnetERC20Contract.balanceOf(account)
+
+    setCollateralBalance(`${balance.toString()}`)
+    console.log("Balance", balance)
+  }
+
+  const addContractAddress = (contractName: UMAContractName, address: EthereumAddress) => {
+    setContracts(new Map(contracts.set(contractName, address)))
   }
 
   useEffect(() => {
@@ -117,7 +143,11 @@ export const ContractProvider: React.FC<PropsWithChildren<{}>> = ({ children }) 
         addPriceIdentifier,
         addCollateralToken,
         addSyntheticToken,
-        cleanData
+        cleanData,
+        collateralBalance,
+        syntheticBalance,
+        updateBalances,
+        addContractAddress
       }}
     >
       {children}
