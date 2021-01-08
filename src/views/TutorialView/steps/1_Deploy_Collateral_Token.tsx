@@ -1,18 +1,19 @@
-import React from "react"
+import React, { useState } from "react"
 import { Formik, FormikErrors, Form } from "formik"
 import Alert from "react-bootstrap/Alert"
 
-// import { AddressWhitelistInstanceCreator, TestnetErc20InstanceCreator } from "../../../extras/uma-ethers"
+import { BigNumber, ethers } from "ethers"
+import { toWei } from "web3-utils"
+
+import TestnetERC20Artifact from "@uma/core/build/contracts/TestnetERC20.json"
+import AddressWhitelistArtifact from "@uma/core/build/contracts/AddressWhitelist.json"
+
 import { debug, defaultTransactionValues } from "../../../utils"
 import { useRemix } from "../../../hooks"
 import { Button } from "../../../components"
 
 import { useContract, useStep } from "../hooks"
 import { FormItem } from "../components"
-import { BigNumber, ContractFactory, ethers } from "ethers"
-import { useState } from "react"
-import TestnetERC20Artifact from "@uma/core/build/contracts/TestnetERC20.json"
-import AddressWhitelistArtifact from "@uma/core/build/contracts/AddressWhitelist.json"
 
 interface FormProps {
   name: string
@@ -29,8 +30,8 @@ const initialValues: FormProps = {
 }
 
 export const DeployCollateralToken: React.FC = () => {
-  const { clientInstance } = useRemix()
-  const { getContractAddress, addCollateralToken } = useContract()
+  const { clientInstance, web3Provider } = useRemix()
+  const { getContractAddress, addCollateralToken, addContractAddress, updateBalances } = useContract()
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
   const [newCollateralTokenAddress, setNewCollateralTokenAddress] = useState<string | undefined>(undefined)
 
@@ -44,18 +45,6 @@ export const DeployCollateralToken: React.FC = () => {
         totalSupply: values.totalSupply,
       }
 
-      const web3Provider = {
-        sendAsync(payload, callback) {
-          clientInstance
-            .call("web3Provider" as any, "sendAsync", payload)
-            .then((result) => callback(null, result))
-            .catch((e) => {
-              // console.log("Here is the error", e)
-              callback(e)
-            })
-        },
-      }
-
       const provider = new ethers.providers.Web3Provider(web3Provider)
       debug("Provider", provider)
 
@@ -66,15 +55,18 @@ export const DeployCollateralToken: React.FC = () => {
       debug("accounts", accounts)
 
       const testnetERC20Factory = new ethers.ContractFactory(TestnetERC20Artifact.abi, TestnetERC20Artifact.bytecode, signer)
-      const txn = await testnetERC20Factory.deploy(
+      const collateralTokenContract = await testnetERC20Factory.deploy(
         newToken.name,
         newToken.symbol,
         newToken.decimals
       )
 
-      await txn.deployTransaction.wait()
-      const TestnetErc20Address = txn.address
+      await collateralTokenContract.deployTransaction.wait()
+      const TestnetErc20Address = collateralTokenContract.address
+
       debug("collateral token deployed", TestnetErc20Address)
+
+      addContractAddress('TestnetErc20Address', TestnetErc20Address)
 
       const address = getContractAddress("AddressWhitelist")
       debug("AddressWhitelist address", address)
@@ -98,6 +90,10 @@ export const DeployCollateralToken: React.FC = () => {
       })
 
       setNewCollateralTokenAddress(TestnetErc20Address as string)
+
+      await collateralTokenContract.allocateTo(accounts[0], toWei("1200"));
+
+      await updateBalances(signer, accounts[0])
     }
 
     setTimeout(() => {
