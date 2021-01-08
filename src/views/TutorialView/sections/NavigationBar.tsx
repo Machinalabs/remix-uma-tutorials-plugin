@@ -4,10 +4,11 @@ import styled from "styled-components"
 
 import { StyledButton } from "../../../components"
 
-import { useStep } from "../hooks"
+import { useContract, useStep } from "../hooks"
 
 export const NavigationBar: React.FC = () => {
   const { isLastStep, getNextStep, goNextStep, isCurrentStepCompleted } = useStep()
+  const { cleanData } = useContract()
   const history = useHistory()
 
   const handleOnNextClick = () => {
@@ -18,6 +19,11 @@ export const NavigationBar: React.FC = () => {
     }
   }
 
+  const handleOnEndClick = () => {
+    cleanData()
+    history.push("/")
+  }
+
   return (
     <Wrapper isCurrentStepCompleted={isCurrentStepCompleted}>
       {!isLastStep() && isCurrentStepCompleted && (
@@ -25,11 +31,9 @@ export const NavigationBar: React.FC = () => {
           Next
         </StyledButton>
       )}
-      <Link to="/">
-        <StyledButton variant="danger" style={{ marginRight: "10px" }}>
-          End
+      <StyledButton variant="danger" style={{ marginRight: "10px" }} onClick={handleOnEndClick}>
+        End
         </StyledButton>
-      </Link>
     </Wrapper>
   )
 }

@@ -23,19 +23,19 @@ export const WelcomeView: React.FC = () => {
   useEffect(() => {
     if (isStarting && clientInstance) {
       const deployUMAContracts = async () => {
-        const accounts = await clientInstance.udapp.getAccounts()
-        debug("Accounts", accounts)
+        // const accounts = await clientInstance.udapp.getAccounts()
+        // debug("Accounts", accounts)
 
-        // if snapshot.. do X, otherwise Y
-        const umaDeployer = new UMADeployer()
-        const addresses = await umaDeployer.deploy({
-          clientInstance,
-          from: accounts[0],
-        })
+        // // if snapshot.. do X, otherwise Y
+        // const umaDeployer = new UMADeployer()
+        // const addresses = await umaDeployer.deploy({
+        //   clientInstance,
+        //   from: accounts[0],
+        // })
 
-        setContracts(addresses)
+        // setContracts(addresses)
 
-        debug("Addresses", addresses)
+        // debug("Addresses", addresses)
 
         history.push(`${TUTORIAL_ROUTE}/${currentStep.route}`)
       }

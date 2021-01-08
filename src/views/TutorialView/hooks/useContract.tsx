@@ -24,6 +24,7 @@ interface IContractProvider {
   // positions
   // liquidations
   // disputes
+  cleanData: () => void
 }
 
 /* tslint:disable */
@@ -46,6 +47,7 @@ const ContractContext = React.createContext<IContractProvider>({
   addSyntheticToken: (newToken: Token) => [
     { name: "SNT", symbol: "SNT", decimals: 18, totalSupply: BigNumber.from("10000000") },
   ],
+  cleanData: () => { }
 })
 /* tslint:enable */
 
@@ -77,6 +79,14 @@ export const ContractProvider: React.FC<PropsWithChildren<{}>> = ({ children }) 
     return newItems
   }
 
+  const cleanData = () => {
+    const resetedCollateralToken = []
+    setCollateralTokens(resetedCollateralToken)
+
+    const resetedPriceIdentifiers = []
+    setPriceIdentifiers(resetedPriceIdentifiers)
+  }
+
   useEffect(() => {
     const addresses = new Map<UMAContractName, EthereumAddress>()
     addresses.set("Finder", "0x0CE79bD134ad8b1559e70315955FeBD0585Bd61c")
@@ -92,7 +102,7 @@ export const ContractProvider: React.FC<PropsWithChildren<{}>> = ({ children }) 
     addresses.set("TokenFactory", "0x514CF025Df0f69b306f14B921639881435783434")
     addresses.set("AddressWhitelist", "0xDFA95Ac05203120470a694e54cF983c4190642E7")
     addresses.set("ExpiringMultiPartyCreator", "0xA73c47D7619be70893ebf2E6d2d4401fcDE7aA26")
-    // setContracts(addresses)
+    setContracts(addresses)
   }, [])
 
   return (
@@ -107,6 +117,7 @@ export const ContractProvider: React.FC<PropsWithChildren<{}>> = ({ children }) 
         addPriceIdentifier,
         addCollateralToken,
         addSyntheticToken,
+        cleanData
       }}
     >
       {children}

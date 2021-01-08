@@ -21,7 +21,7 @@ export const TutorialView: React.FC = () => {
               <Stepmanager />
               <NavigationBar />
             </Col>
-            <Col xs={3} md={3} lg={2} style={{ paddingLeft: "0", paddingRight: "0" }}>
+            <Col xs={3} md={3} lg={3} style={{ paddingLeft: "0", paddingRight: "0" }}>
               <RightPanel />
             </Col>
           </Row>
