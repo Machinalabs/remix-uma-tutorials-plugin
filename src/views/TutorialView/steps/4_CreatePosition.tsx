@@ -2,11 +2,15 @@ import React from "react"
 import { Formik, Form, FormikErrors } from "formik"
 import Alert from "react-bootstrap/Alert"
 
+import ExpiringMultiPartyArtifact from "@uma/core/build/contracts/ExpiringMultiParty.json"
+
 import { Button } from "../../../components"
 import { useRemix } from "../../../hooks"
 import { debug } from "../../../utils"
 import { useContract, useStep } from "../hooks"
 import { FormItem } from "../components"
+import { ethers } from "ethers"
+import { toWei } from "web3-utils"
 
 interface FormProps {
   syntheticTokens: number
@@ -19,20 +23,32 @@ const initialValues: FormProps = {
 }
 
 export const CreatePosition: React.FC = () => {
-  const { getContractAddress, collateralTokens, priceIdentifiers } = useContract()
-  const { clientInstance } = useRemix()
+  const { getContractAddress, updateBalances } = useContract()
+  const { web3Provider } = useRemix()
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
 
   const handleSubmit = (values: FormProps, { setSubmitting }) => {
     const sendTx = async () => {
       debug("Creating position", values)
 
-      // await clientInstance.udapp.sendTransaction({
-      //   ...defaultTransactionValues,
-      //   data: addSupportedIdentifierEncodedData,
-      //   from: accounts[0],
-      //   to: address,
-      // })
+      const provider = new ethers.providers.Web3Provider(web3Provider)
+      debug("Provider", provider)
+
+      const signer = provider.getSigner()
+      debug("Signer", signer)
+
+      const accounts = await provider.listAccounts()
+      debug("accounts", accounts)
+
+      const contract = new ethers.Contract(getContractAddress('ExpiringMultiParty'), ExpiringMultiPartyArtifact.abi, signer);
+
+      debug("params", { rawValue: toWei(`${values.collateralAmount}`) }, { rawValue: toWei(`${values.syntheticTokens}`) });
+
+      const receipt = await contract.create({ rawValue: toWei(`${values.collateralAmount}`) }, { rawValue: toWei(`${values.syntheticTokens}`) })
+
+      debug("Receipt", await receipt.wait());
+
+      updateBalances(signer, accounts[0])
     }
 
     setTimeout(() => {
@@ -51,27 +67,27 @@ export const CreatePosition: React.FC = () => {
         synthetic tokens.
       </p>
 
-      {/* await emp.create({ rawValue: web3.utils.toWei("150") }, 
-      
-      { rawValue: web3.utils.toWei("100") }) */}
-
       <Formik
         initialValues={initialValues}
         validate={
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.collateralAmount) {
-                  errors.collateralAmount = "Required"
-                }
-
-                if (!values.syntheticTokens) {
-                  errors.syntheticTokens = "Required"
-                }
-
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.collateralAmount) {
+                errors.collateralAmount = "Required"
               }
+
+              if (!values.syntheticTokens) {
+                errors.syntheticTokens = "Required"
+              } else if (values.syntheticTokens < 100) {
+                errors.syntheticTokens = "Value should be higher than 100" // TO BE CONFIGURED via call to get the value..
+              }
+
+              // valiadate the collateral requirement
+
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -106,6 +122,7 @@ export const CreatePosition: React.FC = () => {
 
             <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted} transition={false}>
               You have successfully created a position.
+              {/* Created ${argv.tokens} tokens (backed by ${argv.collateral} collateral) */}
             </Alert>
           </Form>
         )}

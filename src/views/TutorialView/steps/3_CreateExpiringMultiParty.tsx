@@ -9,6 +9,8 @@ import TestnetERC20Artifact from "@uma/core/build/contracts/TestnetERC20.json"
 import ExpiringMultiPartyCreatorArtifact from "@uma/core/build/contracts/ExpiringMultiPartyCreator.json"
 import MockOracleArtifact from "@uma/core/build/contracts/MockOracle.json"
 import FinderArtifact from "@uma/core/build/contracts/Finder.json"
+import ExpiringMultiPartyArtifact from "@uma/core/build/contracts/ExpiringMultiParty.json"
+import ExpandedIERC20Artifact from '@uma/core/build/contracts/ExpandedERC20.json'
 
 import { debug } from "../../../utils"
 import { useContract, useStep } from "../hooks"
@@ -40,7 +42,7 @@ const initialValues: FormProps = {
 }
 
 export const CreateExpiringMultiParty: React.FC = () => {
-  const { getContractAddress, collateralTokens, priceIdentifiers } = useContract()
+  const { getContractAddress, collateralTokens, priceIdentifiers, addContractAddress, addSyntheticToken } = useContract()
   const { clientInstance, web3Provider } = useRemix()
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
   const [newEMPAddress, setNewEMPAddress] = useState<string | undefined>(undefined)
@@ -130,6 +132,7 @@ export const CreateExpiringMultiParty: React.FC = () => {
         const expiringMultiPartyAddress = await expiringMultipartyCreator.callStatic.createExpiringMultiParty(params)
         debug("ExpiringMultiPartyAddress", expiringMultiPartyAddress)
         setNewEMPAddress(expiringMultiPartyAddress)
+        addContractAddress("ExpiringMultiParty", expiringMultiPartyAddress)
         txn = await expiringMultipartyCreator.createExpiringMultiParty(params)
         debug("transaction", txn)
 
@@ -144,6 +147,25 @@ export const CreateExpiringMultiParty: React.FC = () => {
         console.log("Total supply", await collateralToken.totalSupply())
         await collateralToken.approve(expiringMultiPartyAddress, await collateralToken.totalSupply())
         debug("Approved EMP allowance on collateral")
+
+        const empContract = new ethers.Contract(expiringMultiPartyAddress, ExpiringMultiPartyArtifact.abi, signer)
+        const syntheticTokenAddress = await empContract.tokenCurrency()
+        debug("syntheticTokenAddress", syntheticTokenAddress)
+
+        const syntheticContract = new ethers.Contract(syntheticTokenAddress, ExpandedIERC20Artifact.abi, signer)
+        debug("syntheticContract", syntheticContract)
+
+        // add synthetic token 
+        const syntheticToken = {
+          address: syntheticTokenAddress,
+          name: await syntheticContract.name(),
+          symbol: await syntheticContract.symbol(),
+          decimals: await syntheticContract.decimals(),
+          totalSupply: (await syntheticContract.totalSupply()).toString()
+        }
+        debug("syntheticToken", syntheticToken)
+        addSyntheticToken(syntheticToken)
+        addContractAddress("SynthethicToken", syntheticTokenAddress)
       } catch (error) {
         debug("Error", error)
         const traces = await clientInstance.call("debugger" as any, "getTrace", txn.hash).catch((err) => {
@@ -172,39 +194,39 @@ export const CreateExpiringMultiParty: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.expirationTimestamp) {
-                  errors.expirationTimestamp = "Required"
-                }
-
-                if (!values.syntheticName) {
-                  errors.syntheticName = "Required"
-                }
-
-                if (!values.syntheticSymbol) {
-                  errors.syntheticSymbol = "Required"
-                }
-
-                if (!values.collateralRequirement) {
-                  errors.collateralRequirement = "Required"
-                } else if (parseInt(values.collateralRequirement, 10) < 100) {
-                  errors.collateralRequirement = "Value should be higher than 100"
-                }
-
-                if (!values.minSponsorTokens) {
-                  errors.minSponsorTokens = "Required"
-                }
-
-                if (!values.withdrawalLiveness) {
-                  errors.withdrawalLiveness = "Required"
-                }
-
-                if (!values.liquidationLiveness) {
-                  errors.liquidationLiveness = "Required"
-                }
-
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.expirationTimestamp) {
+                errors.expirationTimestamp = "Required"
               }
+
+              if (!values.syntheticName) {
+                errors.syntheticName = "Required"
+              }
+
+              if (!values.syntheticSymbol) {
+                errors.syntheticSymbol = "Required"
+              }
+
+              if (!values.collateralRequirement) {
+                errors.collateralRequirement = "Required"
+              } else if (parseInt(values.collateralRequirement, 10) < 100) {
+                errors.collateralRequirement = "Value should be higher than 100"
+              }
+
+              if (!values.minSponsorTokens) {
+                errors.minSponsorTokens = "Required"
+              }
+
+              if (!values.withdrawalLiveness) {
+                errors.withdrawalLiveness = "Required"
+              }
+
+              if (!values.liquidationLiveness) {
+                errors.liquidationLiveness = "Required"
+              }
+
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -286,7 +308,8 @@ export const CreateExpiringMultiParty: React.FC = () => {
               disabled={isSubmitting}
               isLoading={isSubmitting}
               loadingText="Submitting..."
-              text="Submit"
+              text="Deploy"
+              show={!isCurrentStepCompleted}
             />
 
             <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted} transition={false}>
