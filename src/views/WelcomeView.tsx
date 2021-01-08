@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
 import styled from "styled-components"
 import Spinner from "react-bootstrap/Spinner"
+import Alert from "react-bootstrap/Alert"
+import YouTube from 'react-youtube';
 
 import { StyledButton } from "../components"
 import { useRemix } from "../hooks"
@@ -10,15 +12,42 @@ import { useStep } from "./TutorialView/hooks"
 
 const TUTORIAL_ROUTE = "/tutorial"
 
+
+const RenderVideo: React.FC = () => {
+  const opts: any = {
+    height: '390',
+    width: '640',
+    playerVars: {
+      // https://developers.google.com/youtube/player_parameters
+      autoplay: 0,
+    }
+  }
+
+  const onReady = (event) => {
+    event.target.pauseVideo();
+  }
+
+  return (
+    <YouTube videoId="RCVAkCrJDdw" opts={opts} onReady={onReady} />
+  )
+}
 export const WelcomeView: React.FC = () => {
   const { clientInstance } = useRemix()
   const { currentStep } = useStep()
   const [isStarting, setIsStarting] = useState(false)
   const history = useHistory()
+  const [error, setError] = useState<string | undefined>(undefined)
 
   useEffect(() => {
     if (isStarting && clientInstance) {
-      const deployUMAContracts = async () => {
+      const validateAndRedirectIfOk = async () => {
+        const provider = await clientInstance.call('network', 'getNetworkProvider')
+        if (provider === 'vm') {
+          setError("Invalid provider selected. Please be sure you are running the UMA snapshot docker image and the provider is correct.")
+          setIsStarting(false)
+          return;
+        }
+
         // const accounts = await clientInstance.udapp.getAccounts()
         // debug("Accounts", accounts)
         // if snapshot.. do X, otherwise Y
@@ -33,12 +62,13 @@ export const WelcomeView: React.FC = () => {
       }
 
       setTimeout(() => {
-        deployUMAContracts()
+        validateAndRedirectIfOk()
       }, 1000)
     }
   }, [isStarting, clientInstance, history]) // eslint-disable-line
 
   const handleOnClick = () => {
+    setError(undefined)
     setIsStarting(true)
   }
 
@@ -52,13 +82,22 @@ export const WelcomeView: React.FC = () => {
       </StyledUL>
       <h5>Getting Started</h5>
       <p>
-        This interactive tutorial is designed to allow users to deploy the whole UMA protocol in the Remix environment.{" "}
+        This interactive tutorial is designed to allow users to interact with the UMA protocol in the Remix environment.{" "}
         <br />
         Be aware that you will need to deploy each element of the UMA protocol. It means you will need to deploy a test
-        collateral token and a price identifier. <br />
-        Are you ready?
+        collateral token and a price identifier.
       </p>
-      <StyledButton onClick={handleOnClick} variant="primary">
+      <h5>Pre Requisites</h5>
+      <p>In order to complete this tutorial you need to have docker installed and run the following command: <br />
+        <code> $ docker run -it -p 8545:8545 defiacademy/uma-snapshot</code><br />
+        Now, you need to setup Remix to use the Web3 provider. <br />
+      Once you have completed that, we can start !
+      <br />
+        Are you ready? You can also watch <a href="https://www.youtube.com/watch?v=RCVAkCrJDdw" target="_blank">this step by step guide video.</a>
+      </p>
+      {/* <RenderVideo /> */}
+
+      <StyledButton onClick={handleOnClick} variant="primary" style={{ marginBottom: "2em" }}>
         {isStarting && (
           <React.Fragment>
             <Spinner
@@ -74,6 +113,11 @@ export const WelcomeView: React.FC = () => {
         )}
         {!isStarting && <span>Start Tutorial</span>}
       </StyledButton>
+
+      <Alert variant="danger" style={{ width: "85%" }} show={error !== undefined} transition={false}>
+        {error}
+      </Alert>
+
     </Wrapper>
   )
 }
