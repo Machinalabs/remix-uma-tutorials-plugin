@@ -3,6 +3,8 @@ import React, { PropsWithChildren, useContext, useEffect, useState } from "react
 import { EthereumAddress, UMAContractName } from "../../../extras/deployment"
 
 import TestnetERC20Artifact from "@uma/core/build/contracts/TestnetERC20.json"
+import ExpandedERC20Artifact from "@uma/core/build/contracts/ExpandedERC20.json"
+import { formatUnits } from "ethers/lib/utils"
 
 export interface Token {
   name: string
@@ -36,11 +38,11 @@ interface IContractProvider {
 /* tslint:disable */
 // Defaults
 const ContractContext = React.createContext<IContractProvider>({
-  setContracts: (contractsMap: Map<UMAContractName, EthereumAddress>) => {},
+  setContracts: (contractsMap: Map<UMAContractName, EthereumAddress>) => { },
   getContractAddress: (contractName: UMAContractName) => {
     return ""
   },
-  addContractAddress: (contractName: UMAContractName, address: EthereumAddress) => {},
+  addContractAddress: (contractName: UMAContractName, address: EthereumAddress) => { },
   contracts: new Map<UMAContractName, EthereumAddress>(),
   priceIdentifiers: ["ETH/BTC"],
   addPriceIdentifier: (newPriceIdentifier: string) => {
@@ -54,7 +56,7 @@ const ContractContext = React.createContext<IContractProvider>({
   addSyntheticToken: (newToken: Token) => [
     { name: "SNT", symbol: "SNT", decimals: 18, totalSupply: BigNumber.from("10000000") },
   ],
-  cleanData: () => {},
+  cleanData: () => { },
   collateralBalance: "0",
   syntheticBalance: "0",
   updateBalances: (signer: any, account: string) => {
@@ -101,6 +103,10 @@ export const ContractProvider: React.FC<PropsWithChildren<{}>> = ({ children }) 
     setPriceIdentifiers(resetedPriceIdentifiers)
 
     setCollateralBalance("0")
+    setSyntheticBalance("0")
+    addContractAddress("TestnetErc20Address", "")
+    addContractAddress("SynthethicToken", "")
+
   }
 
   const updateBalances = async (signer: any, account: string) => {
@@ -111,8 +117,19 @@ export const ContractProvider: React.FC<PropsWithChildren<{}>> = ({ children }) 
     )
     const balance: BigNumber = await testnetERC20Contract.balanceOf(account)
 
-    setCollateralBalance(`${balance.toString()}`)
+    setCollateralBalance(`${formatUnits(balance, 'ether').toString()}`)
     console.log("Balance", balance)
+
+    if (getContractAddress("SynthethicToken")) {
+      const syntheticContract = new ethers.Contract(
+        getContractAddress("SynthethicToken"),
+        ExpandedERC20Artifact.abi,
+        signer
+      )
+      const syntbalance: BigNumber = await syntheticContract.balanceOf(account)
+      setSyntheticBalance(`${formatUnits(syntbalance, 'ether').toString()}`)
+      console.log("syntbalance", syntbalance)
+    }
   }
 
   const addContractAddress = (contractName: UMAContractName, address: EthereumAddress) => {

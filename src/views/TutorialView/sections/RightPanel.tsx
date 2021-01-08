@@ -11,7 +11,7 @@ import { useContract, Token } from "../hooks"
 export const RightPanel: React.FC = () => {
   const { clientInstance } = useRemix()
   const [account, setAccount] = useState("")
-  const { collateralTokens, priceIdentifiers, collateralBalance, syntheticBalance } = useContract()
+  const { collateralTokens, priceIdentifiers, collateralBalance, syntheticBalance, syntheticTokens } = useContract()
 
   useEffect(() => {
     const getAccount = async () => {
@@ -55,7 +55,7 @@ export const RightPanel: React.FC = () => {
                       Symbol: <span>{item.symbol}</span>
                     </p>
                     <p>
-                      Total supply: <span>{item.totalSupply.toNumber()}</span>
+                      Total supply: <span>{item.totalSupply.toString()}</span>
                     </p>
                     <p>
                       Address: <span style={{ fontSize: "0.8em" }}>0x5B38Da6a701c568545dCfcB03FcB875f56beddC4</span>
@@ -104,7 +104,25 @@ export const RightPanel: React.FC = () => {
             Synthetic tokens
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="4">
-            <Card.Body>{/* TODO */}</Card.Body>
+            <React.Fragment>
+              {syntheticTokens &&
+                syntheticTokens.map((item: Token, index: number) => (
+                  <AccordionContentBody key={index} className="borderBottomExceptLast">
+                    <p style={{ fontWeight: "bold" }}>
+                      Name: <span style={{ fontWeight: "lighter" }}>{item.name}</span>
+                    </p>
+                    <p>
+                      Symbol: <span>{item.symbol}</span>
+                    </p>
+                    <p>
+                      Total supply: <span>{item.totalSupply.toString()}</span>
+                    </p>
+                    <p>
+                      Address: <span style={{ fontSize: "0.8em" }}>0x5B38Da6a701c568545dCfcB03FcB875f56beddC4</span>
+                    </p>
+                  </AccordionContentBody>
+                ))}
+            </React.Fragment>
           </Accordion.Collapse>
         </Card>
       </Accordion>

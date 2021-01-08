@@ -34,7 +34,7 @@ export const WelcomeView: React.FC = () => {
 
       setTimeout(() => {
         deployUMAContracts()
-      }, 3000)
+      }, 1000)
     }
   }, [isStarting, clientInstance, history]) // eslint-disable-line
 

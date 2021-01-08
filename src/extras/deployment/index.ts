@@ -84,6 +84,8 @@ export type UMAContractName =
   | "AddressWhitelist"
   | "ExpiringMultiPartyCreator"
   | "TestnetErc20Address"
+  | "ExpiringMultiParty"
+  | "SynthethicToken"
 
 export class UMADeployer implements IDeployer {
   async deploy(options: Options) {
