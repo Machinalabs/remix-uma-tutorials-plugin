@@ -1,7 +1,8 @@
-import React from "react"
+import React, { useState } from "react"
 import { Formik, Form, FormikErrors } from "formik"
 import { BigNumber, ethers, utils } from "ethers"
-import { hexToAscii, numberToHex, toWei, utf8ToHex } from "web3-utils"
+import { hexToAscii, toWei } from "web3-utils"
+import Alert from "react-bootstrap/Alert"
 import "react-datetime/css/react-datetime.css"
 
 import TestnetERC20Artifact from "@uma/core/build/contracts/TestnetERC20.json"
@@ -9,7 +10,7 @@ import ExpiringMultiPartyCreatorArtifact from "@uma/core/build/contracts/Expirin
 import MockOracleArtifact from "@uma/core/build/contracts/MockOracle.json"
 import FinderArtifact from "@uma/core/build/contracts/Finder.json"
 
-import { debug, defaultTransactionValues } from "../../../utils"
+import { debug } from "../../../utils"
 import { useContract, useStep } from "../hooks"
 import { Button } from "../../../components"
 import { FormItem } from "../components"
@@ -40,21 +41,13 @@ const initialValues: FormProps = {
 
 export const CreateExpiringMultiParty: React.FC = () => {
   const { getContractAddress, collateralTokens, priceIdentifiers } = useContract()
-  const { clientInstance } = useRemix()
+  const { clientInstance, web3Provider } = useRemix()
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
+  const [newEMPAddress, setNewEMPAddress] = useState<string | undefined>(undefined)
 
   const handleSubmit = (values: FormProps, { setSubmitting }) => {
     const sendTx = async () => {
       debug("Values", values)
-
-      const web3Provider = {
-        sendAsync(payload, callback) {
-          clientInstance
-            .call("web3Provider" as any, "sendAsync", payload)
-            .then((result) => callback(null, result))
-            .catch((e) => callback(e))
-        },
-      }
 
       const provider = new ethers.providers.Web3Provider(web3Provider)
       debug("Provider", provider)
@@ -68,66 +61,77 @@ export const CreateExpiringMultiParty: React.FC = () => {
       const storeAddress = getContractAddress('Store')
       const collateralTokenAddress = collateralTokens[0].address as string
       debug("Collateral address", collateralTokenAddress)
+
       const collateralTokenInterface = new ethers.utils.Interface(TestnetERC20Artifact.abi)
       const tokenContract = new ethers.Contract(collateralTokenAddress, collateralTokenInterface, signer)
+      debug("tokenContract", tokenContract)
+      const balance = await tokenContract.balanceOf(accounts[0], { from: await signer.getAddress() })
+      debug("Balance", balance)
+
       let txn
 
       try {
-        debug("tokenContract", tokenContract)
-
-        const balance = await tokenContract.balanceOf(accounts[0], { from: await signer.getAddress() })
-        debug("Balance", balance)
-
         const dateTimestamp = values.expirationTimestamp
-
         const expiringMultiPartyCreatorAddress = getContractAddress("ExpiringMultiPartyCreator")
         debug("expiringMultiPartyCreatorAddress", expiringMultiPartyCreatorAddress)
-        debug("price identifier", utils.formatBytes32String(priceIdentifiers[0]))
+
         const identifierBytes = utils.formatBytes32String(priceIdentifiers[0])
+        debug("price identifier", identifierBytes)
 
         const expiringMultipartyCreatorInterface = new ethers.utils.Interface(ExpiringMultiPartyCreatorArtifact.abi)
-        // const mockOracleFactory = new ethers.ContractFactory(MockOracleArtifact.abi, MockOracleArtifact.bytecode, signer)
-        // const mockOracleContract = await mockOracleFactory.deploy(getContractAddress('Finder'), getContractAddress('Timer'))
-        // await mockOracleContract.deployTransaction.wait()
-        // debug("Mock Oracle deployed")
+        const mockOracleFactory = new ethers.ContractFactory(MockOracleArtifact.abi, MockOracleArtifact.bytecode, signer)
+        const mockOracleContract = await mockOracleFactory.deploy(getContractAddress('Finder'), getContractAddress('Timer'))
+        await mockOracleContract.deployTransaction.wait()
+        debug("Mock Oracle deployed")
 
-        // const mockOracleInterfaceName = utils.formatBytes32String(InterfaceName.Oracle);
-        // const finderContract = new ethers.Contract(getContractAddress('Finder'), FinderArtifact.abi, signer)
-        // await finderContract.changeImplementationAddress(mockOracleInterfaceName, mockOracleContract.address);
-        // debug("Implementation updated")
+        const mockOracleInterfaceName = utils.formatBytes32String(InterfaceName.Oracle);
+        const finderContract = new ethers.Contract(getContractAddress('Finder'), FinderArtifact.abi, signer)
+        await finderContract.changeImplementationAddress(mockOracleInterfaceName, mockOracleContract.address);
+        debug("Implementation updated")
+
+        const params = {
+          expirationTimestamp: BigNumber.from(dateTimestamp),
+          collateralAddress: collateralTokenAddress,
+          priceFeedIdentifier: identifierBytes,
+          syntheticName: values.syntheticName,
+          syntheticSymbol: values.syntheticSymbol,
+          collateralRequirement: {
+            rawValue: toWei(`${parseInt(values.collateralRequirement, 10) / 100}`),
+          },
+          disputeBondPct: {
+            rawValue: toWei("0.1"),
+          },
+          sponsorDisputeRewardPct: {
+            rawValue: toWei("0.1"),
+          },
+          disputerDisputeRewardPct: {
+            rawValue: toWei("0.1"),
+          },
+          minSponsorTokens: {
+            rawValue: toWei(`${values.minSponsorTokens}`)
+          },
+          liquidationLiveness: BigNumber.from(values.liquidationLiveness),
+          withdrawalLiveness: BigNumber.from(values.withdrawalLiveness),
+          excessTokenBeneficiary: storeAddress
+        }
 
         const expiringMultipartyCreator = new ethers.Contract(expiringMultiPartyCreatorAddress, expiringMultipartyCreatorInterface, signer)
-
+        const expiringMultiPartyAddress = await expiringMultipartyCreator.callStatic.createExpiringMultiParty(params)
+        debug("ExpiringMultiPartyAddress", expiringMultiPartyAddress)
+        setNewEMPAddress(expiringMultiPartyAddress)
         txn = await expiringMultipartyCreator.createExpiringMultiParty(
-          {
-            expirationTimestamp: BigNumber.from(dateTimestamp),
-            collateralAddress: collateralTokenAddress,
-            priceFeedIdentifier: identifierBytes,
-            syntheticName: values.syntheticName,
-            syntheticSymbol: values.syntheticSymbol,
-            collateralRequirement: {
-              rawValue: toWei(`${parseInt(values.collateralRequirement, 10) / 100}`),
-            },
-            disputeBondPct: {
-              rawValue: toWei("0.1"),
-            },
-            sponsorDisputeRewardPct: {
-              rawValue: toWei("0.1"),
-            },
-            disputerDisputeRewardPct: {
-              rawValue: toWei("0.1"),
-            },
-            minSponsorTokens: {
-              rawValue: toWei(`${values.minSponsorTokens}`)
-            },
-            liquidationLiveness: BigNumber.from(values.liquidationLiveness),
-            withdrawalLiveness: BigNumber.from(values.withdrawalLiveness),
-            excessTokenBeneficiary: storeAddress
-          }
+          params
         )
         debug("transaction", txn)
+
         const receipt = await txn.wait()
         debug("Receipt", receipt)
+
+        const collateralToken = new ethers.Contract(getContractAddress('TestnetErc20Address'), TestnetERC20Artifact.abi, signer)
+        console.log("Total supply", await collateralToken.totalSupply())
+        await collateralToken.approve(expiringMultiPartyAddress, await collateralToken.totalSupply())
+        debug("Approved EMP allowance on collateral")
+
       } catch (error) {
         debug("Error", error)
         const traces = await clientInstance.call("debugger" as any, "getTrace", txn.hash).catch((err) => {
@@ -137,23 +141,6 @@ export const CreateExpiringMultiParty: React.FC = () => {
         const humanReadableError = traces.structLogs[traces.structLogs.length - 1]
         console.log(hexToAscii(`0x${humanReadableError.memory.join("")}`))
       }
-
-      // debug("ExpiringMultiPartyAddress", ExpiringMultiPartyAddress)
-
-      // // approve collateral using the emp newly created
-      // const collateralInterface = new TestnetErc20InstanceCreator().interface
-
-      // const approveEncodedData = collateralInterface.encodeFunctionData('approve', [ExpiringMultiPartyAddress, toWei(collateralTokens[0].totalSupply.toNumber())])
-
-      // const result = await clientInstance.udapp.sendTransaction({
-      //   ...defaultTransactionValues,
-      //   data: approveEncodedData,
-      //   from: accounts[0],
-      //   to: collateralTokens[0].address,
-      // })
-
-      // debug("Result", result)
-      // debug("Approved EMP allowance on collateral")
     }
     setTimeout(() => {
       sendTx().then(() => {
@@ -161,7 +148,7 @@ export const CreateExpiringMultiParty: React.FC = () => {
         setCurrentStepCompleted()
       })
     }, 500)
-    setSubmitting(false)
+
   }
 
   return (
@@ -190,11 +177,9 @@ export const CreateExpiringMultiParty: React.FC = () => {
 
               if (!values.collateralRequirement) {
                 errors.collateralRequirement = "Required"
+              } else if (parseInt(values.collateralRequirement, 10) < 100) {
+                errors.collateralRequirement = "Value should be higher than 100"
               }
-
-              // if (!values.disputeBond) {
-              //   errors.disputeBond = "Required"
-              // }
 
               if (!values.minSponsorTokens) {
                 errors.minSponsorTokens = "Required"
@@ -251,17 +236,6 @@ export const CreateExpiringMultiParty: React.FC = () => {
               type="number"
             />
 
-            {/* <FormItem
-              key="disputeBond"
-              label="Dispute bond (%)"
-              field="disputeBond"
-              labelWidth={3}
-              placeHolder="120"
-              type="number"
-              showhelp={true}
-              helptext="A prospective disputer must deposit a dispute bond that they can lose in the case of an unsuccessful dispute."
-            /> */}
-
             <FormItem
               key="minSponsorTokens"
               label="Minimum sponsor tokens"
@@ -304,6 +278,11 @@ export const CreateExpiringMultiParty: React.FC = () => {
               loadingText="Submitting..."
               text="Submit"
             />
+
+
+            <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted} transition={false}>
+              You have successfully deployed the expiring multiparty contract {newEMPAddress}
+            </Alert>
           </Form>
         )}
       </Formik>
