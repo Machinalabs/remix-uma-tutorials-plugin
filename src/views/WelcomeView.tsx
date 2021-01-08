@@ -21,11 +21,13 @@ export const WelcomeView: React.FC = () => {
   useEffect(() => {
     if (isStarting && clientInstance) {
       const validateAndRedirectIfOk = async () => {
-        const provider = await clientInstance.call('network', 'getNetworkProvider')
-        if (provider === 'vm') {
-          setError("Invalid provider selected. Please be sure you are running the UMA snapshot docker image and the provider is correct.")
+        const provider = await clientInstance.call("network", "getNetworkProvider")
+        if (provider === "vm") {
+          setError(
+            "Invalid provider selected. Please be sure you are running the UMA snapshot docker image and the provider is correct."
+          )
           setIsStarting(false)
-          return;
+          return
         }
 
         // const accounts = await clientInstance.udapp.getAccounts()
@@ -68,12 +70,17 @@ export const WelcomeView: React.FC = () => {
         collateral token and a price identifier.
       </p>
       <h5>Pre Requisites</h5>
-      <p>In order to complete this tutorial you need to have docker installed and run the following command: <br />
-        <code> $ docker run -it -p 8545:8545 defiacademy/uma-snapshot</code><br />
+      <p>
+        In order to complete this tutorial you need to have docker installed and run the following command: <br />
+        <code> $ docker run -it -p 8545:8545 defiacademy/uma-snapshot</code>
+        <br />
         Now, you need to setup Remix to use the Web3 provider. <br />
-      Once you have completed that, we can start !
-      <br />
-        Are you ready? You can also watch <a href="https://www.youtube.com/watch?v=RCVAkCrJDdw" target="_blank">this step by step guide video.</a>
+        Once you have completed that, we can start !
+        <br />
+        Are you ready? You can also watch{" "}
+        <a href="https://www.youtube.com/watch?v=RCVAkCrJDdw" target="_blank">
+          this step by step guide video.
+        </a>
       </p>
 
       <StyledButton onClick={handleOnClick} variant="primary" style={{ marginBottom: "2em" }}>
@@ -96,7 +103,6 @@ export const WelcomeView: React.FC = () => {
       <Alert variant="danger" style={{ width: "85%" }} show={error !== undefined} transition={false}>
         {error}
       </Alert>
-
     </Wrapper>
   )
 }

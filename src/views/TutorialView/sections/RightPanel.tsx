@@ -11,7 +11,15 @@ import { useContract, Token, ExpiringMultiParty, Position } from "../hooks"
 export const RightPanel: React.FC = () => {
   const { clientInstance } = useRemix()
   const [account, setAccount] = useState("")
-  const { collateralTokens, priceIdentifiers, collateralBalance, syntheticBalance, syntheticTokens, expiringMultiParties, positions } = useContract()
+  const {
+    collateralTokens,
+    priceIdentifiers,
+    collateralBalance,
+    syntheticBalance,
+    syntheticTokens,
+    expiringMultiParties,
+    positions,
+  } = useContract()
 
   useEffect(() => {
     const getAccount = async () => {

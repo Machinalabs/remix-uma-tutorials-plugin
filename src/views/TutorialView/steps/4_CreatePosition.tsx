@@ -63,7 +63,7 @@ export const CreatePosition: React.FC = () => {
 
       addPosition({
         collateralAmount: values.collateralAmount,
-        syntheticTokens: values.syntheticTokens
+        syntheticTokens: values.syntheticTokens,
       })
 
       await updateSyntheticTotalSupply(signer)
@@ -91,21 +91,21 @@ export const CreatePosition: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-              const errors: FormikErrors<FormProps> = {}
-              if (!values.collateralAmount) {
-                errors.collateralAmount = "Required"
+                const errors: FormikErrors<FormProps> = {}
+                if (!values.collateralAmount) {
+                  errors.collateralAmount = "Required"
+                }
+
+                if (!values.syntheticTokens) {
+                  errors.syntheticTokens = "Required"
+                } else if (values.syntheticTokens < 100) {
+                  errors.syntheticTokens = "Value should be higher than 100" // TO BE CONFIGURED via call to get the value..
+                }
+
+                // valiadate the collateral requirement
+
+                return errors
               }
-
-              if (!values.syntheticTokens) {
-                errors.syntheticTokens = "Required"
-              } else if (values.syntheticTokens < 100) {
-                errors.syntheticTokens = "Value should be higher than 100" // TO BE CONFIGURED via call to get the value..
-              }
-
-              // valiadate the collateral requirement
-
-              return errors
-            }
         }
         onSubmit={handleSubmit}
       >
