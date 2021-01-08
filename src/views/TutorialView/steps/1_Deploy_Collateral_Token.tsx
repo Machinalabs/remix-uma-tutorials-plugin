@@ -168,6 +168,7 @@ export const DeployCollateralToken: React.FC = () => {
               field="totalSupply"
               readOnly={isCurrentStepCompleted}
               showhelp={true}
+              type="number"
               helptext="The initial number of collateral tokens that are going to be minted and assigned to you"
             />
 

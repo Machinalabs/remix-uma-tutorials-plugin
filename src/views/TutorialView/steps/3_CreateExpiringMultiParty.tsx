@@ -9,12 +9,12 @@ import ExpiringMultiPartyCreatorArtifact from "@uma/core/build/contracts/Expirin
 import MockOracleArtifact from "@uma/core/build/contracts/MockOracle.json"
 import FinderArtifact from "@uma/core/build/contracts/Finder.json"
 
-// import { ExpiringMultiPartyCreatorInstanceCreator, TestnetErc20InstanceCreator } from "../../../extras/uma-ethers"
 import { debug, defaultTransactionValues } from "../../../utils"
 import { useContract, useStep } from "../hooks"
 import { Button } from "../../../components"
 import { FormItem } from "../components"
 import { useRemix } from "../../../hooks"
+import { InterfaceName } from "../../../extras/deployment"
 
 interface FormProps {
   expirationTimestamp: string
@@ -45,7 +45,7 @@ export const CreateExpiringMultiParty: React.FC = () => {
 
   const handleSubmit = (values: FormProps, { setSubmitting }) => {
     const sendTx = async () => {
-      console.log("Values", values)
+      debug("Values", values)
 
       const web3Provider = {
         sendAsync(payload, callback) {
@@ -63,11 +63,11 @@ export const CreateExpiringMultiParty: React.FC = () => {
       debug("Signer", signer)
 
       const accounts = await provider.listAccounts()
-      console.log("Accounts", accounts[0])
+      debug("Accounts", accounts[0])
 
       const storeAddress = getContractAddress('Store')
       const collateralTokenAddress = collateralTokens[0].address as string
-      console.log("Collateral address", collateralTokenAddress)
+      debug("Collateral address", collateralTokenAddress)
       const collateralTokenInterface = new ethers.utils.Interface(TestnetERC20Artifact.abi)
       const tokenContract = new ethers.Contract(collateralTokenAddress, collateralTokenInterface, signer)
       let txn
@@ -81,83 +81,32 @@ export const CreateExpiringMultiParty: React.FC = () => {
         const dateTimestamp = values.expirationTimestamp
 
         const expiringMultiPartyCreatorAddress = getContractAddress("ExpiringMultiPartyCreator")
-        console.log("expiringMultiPartyCreatorAddress", expiringMultiPartyCreatorAddress)
-        console.log("price identifier", utils.formatBytes32String(priceIdentifiers[0]))
+        debug("expiringMultiPartyCreatorAddress", expiringMultiPartyCreatorAddress)
+        debug("price identifier", utils.formatBytes32String(priceIdentifiers[0]))
         const identifierBytes = utils.formatBytes32String(priceIdentifiers[0])
 
         const expiringMultipartyCreatorInterface = new ethers.utils.Interface(ExpiringMultiPartyCreatorArtifact.abi)
-        // const createExpiringMultipartyEncodedData = expiringMultipartyCreatorInterface.encodeFunctionData("createExpiringMultiParty", [{
-        //   expirationTimestamp: numberToHex(1706780800),
-        //   collateralAddress: collateralTokenAddress,
-        //   priceFeedIdentifier: identifierBytes,
-        //   syntheticName: values.syntheticName,
-        //   syntheticSymbol: values.syntheticSymbol,
-        //   collateralRequirement: {
-        //     rawValue: BigNumber.from(values.collateralRequirement),
-        //   },
-        //   disputeBondPct: {
-        //     rawValue: toWei('0.1'),
-        //   },
-        //   sponsorDisputeRewardPct: {
-        //     rawValue: toWei('0.1'),
-        //   },
-        //   disputerDisputeRewardPct: {
-        //     rawValue: toWei("0.1"),
-        //   },
-        //   minSponsorTokens: {
-        //     rawValue: values.minSponsorTokens,
-        //   },
-        //   withdrawalLiveness: values.withdrawalLiveness,
-        //   liquidationLiveness: values.liquidationLiveness,
-        //   excessTokenBeneficiary: storeAddress
-        // }])
+        // const mockOracleFactory = new ethers.ContractFactory(MockOracleArtifact.abi, MockOracleArtifact.bytecode, signer)
+        // const mockOracleContract = await mockOracleFactory.deploy(getContractAddress('Finder'), getContractAddress('Timer'))
+        // await mockOracleContract.deployTransaction.wait()
+        // debug("Mock Oracle deployed")
 
-        // console.log("Encoded")
-        // const receipt = await clientInstance.udapp.sendTransaction({
-        //   ...defaultTransactionValues,
-        //   data: createExpiringMultipartyEncodedData,
-        //   from: accounts[0],
-        //   to: expiringMultiPartyCreatorAddress,
-        // })
-
-        // console.log("Receipt final", receipt.error)
-
-        // if (receipt.status as any == "0x0") {
-        //   const traces = await clientInstance.call("debugger" as any, "getTrace", receipt.transactionHash).catch((err) => {
-        //     console.log("error", err)
-        //   })
-        //   console.log("traces", traces)
-        //   const humanReadableError = traces.structLogs[traces.structLogs.length - 1]
-        //   console.log(hexToAscii(`0x${humanReadableError.memory.join("")}`))
-
-        //   // console.log(hexToAscii(`0x${humanReadableError.stack.join("")}`))
-        //   // humanReadableError.memory.forEach((item) => {
-        //   // console.log(hexToAscii(`0x${item}`))
-        //   // })
-        // }
-
-        const mockOracleFactory = new ethers.ContractFactory(MockOracleArtifact.abi, MockOracleArtifact.bytecode, signer)
-        const mockOracleContract = await mockOracleFactory.deploy(getContractAddress('Finder'), getContractAddress('Timer'))
-        await mockOracleContract.deployTransaction.wait()
-        console.log("Mock Oracle deployed")
-        // const mockOracle = await MockOracle.new(finder.address, Timer.address);
-        // console.log("Mock Oracle deployed:", mockOracle.address);
-        const mockOracleInterfaceName = utils.formatBytes32String("Oracle");
-        const finderContract = new ethers.Contract(getContractAddress('Finder'), FinderArtifact.abi, signer)
-        await finderContract.changeImplementationAddress(mockOracleInterfaceName, mockOracleContract.address);
-        console.log("Implementation updated")
+        // const mockOracleInterfaceName = utils.formatBytes32String(InterfaceName.Oracle);
+        // const finderContract = new ethers.Contract(getContractAddress('Finder'), FinderArtifact.abi, signer)
+        // await finderContract.changeImplementationAddress(mockOracleInterfaceName, mockOracleContract.address);
+        // debug("Implementation updated")
 
         const expiringMultipartyCreator = new ethers.Contract(expiringMultiPartyCreatorAddress, expiringMultipartyCreatorInterface, signer)
 
         txn = await expiringMultipartyCreator.createExpiringMultiParty(
           {
-            expirationTimestamp: "1917036000",
+            expirationTimestamp: BigNumber.from(dateTimestamp),
             collateralAddress: collateralTokenAddress,
             priceFeedIdentifier: identifierBytes,
-            syntheticName: "uUSDrBTC Synthetic Token Expiring 1 October 2020",
-            syntheticSymbol: "uUSDrBTC-OCT",
+            syntheticName: values.syntheticName,
+            syntheticSymbol: values.syntheticSymbol,
             collateralRequirement: {
-              rawValue: toWei("1.35"),
+              rawValue: toWei(`${parseInt(values.collateralRequirement, 10) / 100}`),
             },
             disputeBondPct: {
               rawValue: toWei("0.1"),
@@ -169,54 +118,22 @@ export const CreateExpiringMultiParty: React.FC = () => {
               rawValue: toWei("0.1"),
             },
             minSponsorTokens: {
-              rawValue: toWei("100")
+              rawValue: toWei(`${values.minSponsorTokens}`)
             },
-
-            // disputeBondPercentage: {
-            //   rawValue: toWei("0.1")
-            // },
-            // sponsorDisputeRewardPercentage: {
-            //   rawValue: toWei("0.05")
-            // },
-            // disputerDisputeRewardPercentage: {
-            //   rawValue: toWei("0.2")
-            // },
-            liquidationLiveness: 7200,
-            withdrawalLiveness: 7200,
-            excessTokenBeneficiary: storeAddress,
-
-
-
+            liquidationLiveness: BigNumber.from(values.liquidationLiveness),
+            withdrawalLiveness: BigNumber.from(values.withdrawalLiveness),
+            excessTokenBeneficiary: storeAddress
           }
         )
-        console.log("tx hash", txn)
-
-        // expirationTimestamp: "1917036000", // 09/30/2030 @ 10:00pm (UTC)
-        // collateralAddress: collateralToken.address,
-        // priceFeedIdentifier: priceFeedIdentifier,
-        // syntheticName: "uUSDrBTC Synthetic Token Expiring 1 October 2020",
-        // syntheticSymbol: "uUSDrBTC-OCT",
-        // collateralRequirement: { rawValue: toWei("1.35") },
-        // disputeBondPercentage: { rawValue: toWei("0.1") },
-
-
-        // sponsorDisputeRewardPercentage: { rawValue: toWei("0.05") },
-        // disputerDisputeRewardPercentage: { rawValue: toWei("0.2") },
-        // minSponsorTokens: { rawValue: toWei("100") },
-        // liquidationLiveness: 7200,
-        // withdrawalLiveness: 7200,
-        // excessTokenBeneficiary: store.address
-
-        await txn.wait()
-        debug("Receipt", await txn.wait())
+        debug("transaction", txn)
+        const receipt = await txn.wait()
+        debug("Receipt", receipt)
       } catch (error) {
-        console.log("Error", error)
-
-        console.log("tx hash", txn)
+        debug("Error", error)
         const traces = await clientInstance.call("debugger" as any, "getTrace", txn.hash).catch((err) => {
-          console.log("error", err)
+          debug("error", err)
         })
-        console.log("traces", traces)
+        debug("traces", traces)
         const humanReadableError = traces.structLogs[traces.structLogs.length - 1]
         console.log(hexToAscii(`0x${humanReadableError.memory.join("")}`))
       }
@@ -238,19 +155,6 @@ export const CreateExpiringMultiParty: React.FC = () => {
       // debug("Result", result)
       // debug("Approved EMP allowance on collateral")
     }
-    // expirationTimestamp: BigNumberish
-    // collateralAddress: string
-    // priceFeedIdentifier: BytesLike
-    // syntheticName: string
-    // syntheticSymbol: string
-    // collateralRequirement: { rawValue: BigNumberish }
-    // disputeBondPct: { rawValue: BigNumberish }
-    // sponsorDisputeRewardPct: { rawValue: BigNumberish }
-    // disputerDisputeRewardPct: { rawValue: BigNumberish }
-    // minSponsorTokens: { rawValue: BigNumberish }
-    // const txResult = await empCreator.createExpiringMultiParty(constructorParams)
-    // const emp = await ExpiringMultiParty.at(txResult.logs[0].args.expiringMultiPartyAddress)
-
     setTimeout(() => {
       sendTx().then(() => {
         setSubmitting(false)
@@ -272,37 +176,37 @@ export const CreateExpiringMultiParty: React.FC = () => {
             : (values) => {
 
               const errors: FormikErrors<FormProps> = {}
-              // if (!values.expirationTimestamp) {
-              //   errors.expirationTimestamp = "Required"
-              // }
+              if (!values.expirationTimestamp) {
+                errors.expirationTimestamp = "Required"
+              }
 
-              // if (!values.syntheticName) {
-              //   errors.syntheticName = "Required"
-              // }
+              if (!values.syntheticName) {
+                errors.syntheticName = "Required"
+              }
 
-              // if (!values.syntheticSymbol) {
-              //   errors.syntheticSymbol = "Required"
-              // }
+              if (!values.syntheticSymbol) {
+                errors.syntheticSymbol = "Required"
+              }
 
-              // if (!values.collateralRequirement) {
-              //   errors.collateralRequirement = "Required"
-              // }
+              if (!values.collateralRequirement) {
+                errors.collateralRequirement = "Required"
+              }
 
               // if (!values.disputeBond) {
               //   errors.disputeBond = "Required"
               // }
 
-              // if (!values.minSponsorTokens) {
-              //   errors.minSponsorTokens = "Required"
-              // }
+              if (!values.minSponsorTokens) {
+                errors.minSponsorTokens = "Required"
+              }
 
-              // if (!values.withdrawalLiveness) {
-              //   errors.withdrawalLiveness = "Required"
-              // }
+              if (!values.withdrawalLiveness) {
+                errors.withdrawalLiveness = "Required"
+              }
 
-              // if (!values.liquidationLiveness) {
-              //   errors.liquidationLiveness = "Required"
-              // }
+              if (!values.liquidationLiveness) {
+                errors.liquidationLiveness = "Required"
+              }
 
               return errors
             }
@@ -347,7 +251,7 @@ export const CreateExpiringMultiParty: React.FC = () => {
               type="number"
             />
 
-            <FormItem
+            {/* <FormItem
               key="disputeBond"
               label="Dispute bond (%)"
               field="disputeBond"
@@ -356,7 +260,7 @@ export const CreateExpiringMultiParty: React.FC = () => {
               type="number"
               showhelp={true}
               helptext="A prospective disputer must deposit a dispute bond that they can lose in the case of an unsuccessful dispute."
-            />
+            /> */}
 
             <FormItem
               key="minSponsorTokens"
