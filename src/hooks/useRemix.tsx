@@ -5,7 +5,7 @@ import { IRemixApi } from "@remixproject/plugin-api"
 import { Api, PluginApi } from "@remixproject/plugin-utils"
 
 import { ThemeType } from "../types"
-import { log } from "../utils"
+import { getProvider, log } from "../utils"
 
 import { RemixClient } from "./RemixClient"
 
@@ -14,12 +14,14 @@ export type RemixClientInstanceType = PluginApi<Readonly<IRemixApi>> & PluginCli
 interface IRemixProvider {
   clientInstance: RemixClientInstanceType
   themeType: ThemeType
+  web3Provider: any
 }
 
 /* tslint:disable */
 const RemixContext = React.createContext<IRemixProvider>({
   clientInstance: {} as RemixClientInstanceType,
   themeType: "dark" as ThemeType,
+  web3Provider: undefined
 })
 /* tslint:enable */
 
@@ -28,6 +30,7 @@ const PLUGIN_NAME = "Remix Gas Profiler"
 export const RemixProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const [clientInstance, setClientInstance] = useState(undefined as any)
   const [themeType, setThemeType] = useState<ThemeType>("dark")
+  const [web3Provider, setWeb3Provider] = useState(undefined as any)
 
   useEffect(() => {
     log(`${PLUGIN_NAME} loading...`)
@@ -38,6 +41,7 @@ export const RemixProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => 
       log(`${PLUGIN_NAME} Plugin has been loaded`)
 
       setClientInstance(client)
+      setWeb3Provider(getProvider(client))
       const currentTheme = await client.call("theme", "currentTheme")
       log("Current theme", currentTheme)
 
@@ -57,6 +61,7 @@ export const RemixProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => 
       value={{
         clientInstance,
         themeType,
+        web3Provider
       }}
     >
       {children}
