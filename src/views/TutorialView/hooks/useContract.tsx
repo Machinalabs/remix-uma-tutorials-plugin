@@ -36,11 +36,11 @@ interface IContractProvider {
 /* tslint:disable */
 // Defaults
 const ContractContext = React.createContext<IContractProvider>({
-  setContracts: (contractsMap: Map<UMAContractName, EthereumAddress>) => { },
+  setContracts: (contractsMap: Map<UMAContractName, EthereumAddress>) => {},
   getContractAddress: (contractName: UMAContractName) => {
     return ""
   },
-  addContractAddress: (contractName: UMAContractName, address: EthereumAddress) => { },
+  addContractAddress: (contractName: UMAContractName, address: EthereumAddress) => {},
   contracts: new Map<UMAContractName, EthereumAddress>(),
   priceIdentifiers: ["ETH/BTC"],
   addPriceIdentifier: (newPriceIdentifier: string) => {
@@ -54,10 +54,12 @@ const ContractContext = React.createContext<IContractProvider>({
   addSyntheticToken: (newToken: Token) => [
     { name: "SNT", symbol: "SNT", decimals: 18, totalSupply: BigNumber.from("10000000") },
   ],
-  cleanData: () => { },
+  cleanData: () => {},
   collateralBalance: "0",
   syntheticBalance: "0",
-  updateBalances: (signer: any, account: string) => { return Promise.resolve() },
+  updateBalances: (signer: any, account: string) => {
+    return Promise.resolve()
+  },
 })
 /* tslint:enable */
 
@@ -102,7 +104,11 @@ export const ContractProvider: React.FC<PropsWithChildren<{}>> = ({ children }) 
   }
 
   const updateBalances = async (signer: any, account: string) => {
-    const testnetERC20Contract = new ethers.Contract(getContractAddress('TestnetErc20Address'), TestnetERC20Artifact.abi, signer)
+    const testnetERC20Contract = new ethers.Contract(
+      getContractAddress("TestnetErc20Address"),
+      TestnetERC20Artifact.abi,
+      signer
+    )
     const balance: BigNumber = await testnetERC20Contract.balanceOf(account)
 
     setCollateralBalance(`${balance.toString()}`)
@@ -147,7 +153,7 @@ export const ContractProvider: React.FC<PropsWithChildren<{}>> = ({ children }) 
         collateralBalance,
         syntheticBalance,
         updateBalances,
-        addContractAddress
+        addContractAddress,
       }}
     >
       {children}

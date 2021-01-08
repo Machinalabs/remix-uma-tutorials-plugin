@@ -21,7 +21,7 @@ interface IRemixProvider {
 const RemixContext = React.createContext<IRemixProvider>({
   clientInstance: {} as RemixClientInstanceType,
   themeType: "dark" as ThemeType,
-  web3Provider: undefined
+  web3Provider: undefined,
 })
 /* tslint:enable */
 
@@ -61,7 +61,7 @@ export const RemixProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => 
       value={{
         clientInstance,
         themeType,
-        web3Provider
+        web3Provider,
       }}
     >
       {children}

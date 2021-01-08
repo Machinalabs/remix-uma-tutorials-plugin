@@ -58,7 +58,7 @@ export const CreateExpiringMultiParty: React.FC = () => {
       const accounts = await provider.listAccounts()
       debug("Accounts", accounts[0])
 
-      const storeAddress = getContractAddress('Store')
+      const storeAddress = getContractAddress("Store")
       const collateralTokenAddress = collateralTokens[0].address as string
       debug("Collateral address", collateralTokenAddress)
 
@@ -79,14 +79,21 @@ export const CreateExpiringMultiParty: React.FC = () => {
         debug("price identifier", identifierBytes)
 
         const expiringMultipartyCreatorInterface = new ethers.utils.Interface(ExpiringMultiPartyCreatorArtifact.abi)
-        const mockOracleFactory = new ethers.ContractFactory(MockOracleArtifact.abi, MockOracleArtifact.bytecode, signer)
-        const mockOracleContract = await mockOracleFactory.deploy(getContractAddress('Finder'), getContractAddress('Timer'))
+        const mockOracleFactory = new ethers.ContractFactory(
+          MockOracleArtifact.abi,
+          MockOracleArtifact.bytecode,
+          signer
+        )
+        const mockOracleContract = await mockOracleFactory.deploy(
+          getContractAddress("Finder"),
+          getContractAddress("Timer")
+        )
         await mockOracleContract.deployTransaction.wait()
         debug("Mock Oracle deployed")
 
-        const mockOracleInterfaceName = utils.formatBytes32String(InterfaceName.Oracle);
-        const finderContract = new ethers.Contract(getContractAddress('Finder'), FinderArtifact.abi, signer)
-        await finderContract.changeImplementationAddress(mockOracleInterfaceName, mockOracleContract.address);
+        const mockOracleInterfaceName = utils.formatBytes32String(InterfaceName.Oracle)
+        const finderContract = new ethers.Contract(getContractAddress("Finder"), FinderArtifact.abi, signer)
+        await finderContract.changeImplementationAddress(mockOracleInterfaceName, mockOracleContract.address)
         debug("Implementation updated")
 
         const params = {
@@ -108,30 +115,35 @@ export const CreateExpiringMultiParty: React.FC = () => {
             rawValue: toWei("0.1"),
           },
           minSponsorTokens: {
-            rawValue: toWei(`${values.minSponsorTokens}`)
+            rawValue: toWei(`${values.minSponsorTokens}`),
           },
           liquidationLiveness: BigNumber.from(values.liquidationLiveness),
           withdrawalLiveness: BigNumber.from(values.withdrawalLiveness),
-          excessTokenBeneficiary: storeAddress
+          excessTokenBeneficiary: storeAddress,
         }
 
-        const expiringMultipartyCreator = new ethers.Contract(expiringMultiPartyCreatorAddress, expiringMultipartyCreatorInterface, signer)
+        const expiringMultipartyCreator = new ethers.Contract(
+          expiringMultiPartyCreatorAddress,
+          expiringMultipartyCreatorInterface,
+          signer
+        )
         const expiringMultiPartyAddress = await expiringMultipartyCreator.callStatic.createExpiringMultiParty(params)
         debug("ExpiringMultiPartyAddress", expiringMultiPartyAddress)
         setNewEMPAddress(expiringMultiPartyAddress)
-        txn = await expiringMultipartyCreator.createExpiringMultiParty(
-          params
-        )
+        txn = await expiringMultipartyCreator.createExpiringMultiParty(params)
         debug("transaction", txn)
 
         const receipt = await txn.wait()
         debug("Receipt", receipt)
 
-        const collateralToken = new ethers.Contract(getContractAddress('TestnetErc20Address'), TestnetERC20Artifact.abi, signer)
+        const collateralToken = new ethers.Contract(
+          getContractAddress("TestnetErc20Address"),
+          TestnetERC20Artifact.abi,
+          signer
+        )
         console.log("Total supply", await collateralToken.totalSupply())
         await collateralToken.approve(expiringMultiPartyAddress, await collateralToken.totalSupply())
         debug("Approved EMP allowance on collateral")
-
       } catch (error) {
         debug("Error", error)
         const traces = await clientInstance.call("debugger" as any, "getTrace", txn.hash).catch((err) => {
@@ -148,7 +160,6 @@ export const CreateExpiringMultiParty: React.FC = () => {
         setCurrentStepCompleted()
       })
     }, 500)
-
   }
 
   return (
@@ -161,40 +172,39 @@ export const CreateExpiringMultiParty: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
+                const errors: FormikErrors<FormProps> = {}
+                if (!values.expirationTimestamp) {
+                  errors.expirationTimestamp = "Required"
+                }
 
-              const errors: FormikErrors<FormProps> = {}
-              if (!values.expirationTimestamp) {
-                errors.expirationTimestamp = "Required"
+                if (!values.syntheticName) {
+                  errors.syntheticName = "Required"
+                }
+
+                if (!values.syntheticSymbol) {
+                  errors.syntheticSymbol = "Required"
+                }
+
+                if (!values.collateralRequirement) {
+                  errors.collateralRequirement = "Required"
+                } else if (parseInt(values.collateralRequirement, 10) < 100) {
+                  errors.collateralRequirement = "Value should be higher than 100"
+                }
+
+                if (!values.minSponsorTokens) {
+                  errors.minSponsorTokens = "Required"
+                }
+
+                if (!values.withdrawalLiveness) {
+                  errors.withdrawalLiveness = "Required"
+                }
+
+                if (!values.liquidationLiveness) {
+                  errors.liquidationLiveness = "Required"
+                }
+
+                return errors
               }
-
-              if (!values.syntheticName) {
-                errors.syntheticName = "Required"
-              }
-
-              if (!values.syntheticSymbol) {
-                errors.syntheticSymbol = "Required"
-              }
-
-              if (!values.collateralRequirement) {
-                errors.collateralRequirement = "Required"
-              } else if (parseInt(values.collateralRequirement, 10) < 100) {
-                errors.collateralRequirement = "Value should be higher than 100"
-              }
-
-              if (!values.minSponsorTokens) {
-                errors.minSponsorTokens = "Required"
-              }
-
-              if (!values.withdrawalLiveness) {
-                errors.withdrawalLiveness = "Required"
-              }
-
-              if (!values.liquidationLiveness) {
-                errors.liquidationLiveness = "Required"
-              }
-
-              return errors
-            }
         }
         onSubmit={handleSubmit}
       >
@@ -278,7 +288,6 @@ export const CreateExpiringMultiParty: React.FC = () => {
               loadingText="Submitting..."
               text="Submit"
             />
-
 
             <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted} transition={false}>
               You have successfully deployed the expiring multiparty contract {newEMPAddress}

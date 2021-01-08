@@ -16,7 +16,6 @@ import TokenFactoryArtifact from "@uma/core/build/contracts/TokenFactory.json"
 import AddressWhitelistArtifact from "@uma/core/build/contracts/AddressWhitelist.json"
 import ExpiringMultiPartyLibArtifact from "@uma/core/build/contracts/ExpiringMultiPartyLib.json"
 
-
 import { RemixClientInstanceType } from "../../hooks"
 import { debug, defaultTransactionValues } from "../../utils"
 
@@ -43,7 +42,7 @@ export enum InterfaceName {
   Registry = "Registry",
   Store = "Store",
   IdentifierWhitelist = "IdentifierWhitelist",
-  CollateralWhitelist = "CollateralWhitelist"
+  CollateralWhitelist = "CollateralWhitelist",
 }
 
 enum RegistryRoles {
@@ -86,7 +85,6 @@ export type UMAContractName =
   | "ExpiringMultiPartyCreator"
   | "TestnetErc20Address"
 
-
 export class UMADeployer implements IDeployer {
   async deploy(options: Options) {
     const addresses = new Map<UMAContractName, EthereumAddress>()
@@ -121,7 +119,7 @@ export class UMADeployer implements IDeployer {
 
     // 1) Deploy finder
     const finderFactory = new ethers.ContractFactory(FinderArtifact.abi, FinderArtifact.bytecode, signer)
-    const finderInstanceCreator = finderFactory.getDeployTransaction();
+    const finderInstanceCreator = finderFactory.getDeployTransaction()
     const { createdAddress: FinderInstanceAddres } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       from: fromAddress,
@@ -132,11 +130,11 @@ export class UMADeployer implements IDeployer {
     debug("Finder deployed", FinderInstanceAddres)
     addresses.set("Finder", FinderInstanceAddres as string)
 
-    const finderInterface = finderFactory.interface;
+    const finderInterface = finderFactory.interface
 
     // 2) Deploy timer
     const timerFactory = new ethers.ContractFactory(TimerArtifact.abi, TimerArtifact.bytecode, signer)
-    const timerInstanceCreator = timerFactory.getDeployTransaction();
+    const timerInstanceCreator = timerFactory.getDeployTransaction()
     const { createdAddress: TimerInstanceAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       from: fromAddress,
@@ -149,7 +147,7 @@ export class UMADeployer implements IDeployer {
 
     // 3) Deploy voting token
     const votingTokenFactory = new ethers.ContractFactory(VotingTokenArtifact.abi, VotingTokenArtifact.bytecode, signer)
-    const votingTokenInstanceCreator = votingTokenFactory.getDeployTransaction();
+    const votingTokenInstanceCreator = votingTokenFactory.getDeployTransaction()
     const { createdAddress: VotingTokenInstanceAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       from: fromAddress,
@@ -196,7 +194,11 @@ export class UMADeployer implements IDeployer {
     })
 
     // 4) Deploy identifier white list
-    const identifierWhiteListFactory = new ethers.ContractFactory(IdentifierWhiteListArtifact.abi, IdentifierWhiteListArtifact.bytecode, signer)
+    const identifierWhiteListFactory = new ethers.ContractFactory(
+      IdentifierWhiteListArtifact.abi,
+      IdentifierWhiteListArtifact.bytecode,
+      signer
+    )
     const identifierWhiteListInstanceCreator = identifierWhiteListFactory.getDeployTransaction()
     const { createdAddress: IdentifierWhiteListAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
@@ -217,9 +219,12 @@ export class UMADeployer implements IDeployer {
       ...defaultTransactionValues,
       data: changeImplementationAddressEncodedDataForIdentifierWhitelist,
       from: fromAddress,
-      to: FinderInstanceAddres
+      to: FinderInstanceAddres,
     })
-    debug("Changed Registry Implementation for IdentifierWhitelist", utils.formatBytes32String(InterfaceName.IdentifierWhitelist))
+    debug(
+      "Changed Registry Implementation for IdentifierWhitelist",
+      utils.formatBytes32String(InterfaceName.IdentifierWhitelist)
+    )
 
     // // Set the GAT percentage to 5%
     const gatPercentage = { rawValue: toWei("0.05", "ether") }
@@ -265,20 +270,24 @@ export class UMADeployer implements IDeployer {
     addresses.set("Registry", RegistryInstanceAddress as string)
 
     // update implementation on the Finder
-    const changeImplementationAddressEncodedData = finderInterface.encodeFunctionData(
-      "changeImplementationAddress",
-      [utils.formatBytes32String("Registry"), RegistryInstanceAddress]
-    )
+    const changeImplementationAddressEncodedData = finderInterface.encodeFunctionData("changeImplementationAddress", [
+      utils.formatBytes32String("Registry"),
+      RegistryInstanceAddress,
+    ])
     await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
       data: changeImplementationAddressEncodedData,
       from: fromAddress,
-      to: FinderInstanceAddres
+      to: FinderInstanceAddres,
     })
     debug("Changed Registry Implementation", utils.formatBytes32String("Registry"))
 
     // 6) Deploy financial contracts admin
-    const financialContractFactory = new ethers.ContractFactory(FinancialContractsAdminArtifact.abi, FinancialContractsAdminArtifact.bytecode, signer)
+    const financialContractFactory = new ethers.ContractFactory(
+      FinancialContractsAdminArtifact.abi,
+      FinancialContractsAdminArtifact.bytecode,
+      signer
+    )
     const financialContractsAdminInstanceCreator = financialContractFactory.getDeployTransaction()
     const { createdAddress: FinancialContractsAdminAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
@@ -299,7 +308,7 @@ export class UMADeployer implements IDeployer {
       ...defaultTransactionValues,
       data: changeImplementationAddressEncodedDataForFinancialContract,
       from: fromAddress,
-      to: FinderInstanceAddres
+      to: FinderInstanceAddres,
     })
     debug("Changed FinancialContract Admin Implementation")
 
@@ -332,7 +341,7 @@ export class UMADeployer implements IDeployer {
       ...defaultTransactionValues,
       data: changeImplementationAddressEncodedDataForStore,
       from: fromAddress,
-      to: FinderInstanceAddres
+      to: FinderInstanceAddres,
     })
     debug("Changed Store Implementation")
 
@@ -364,7 +373,7 @@ export class UMADeployer implements IDeployer {
       ...defaultTransactionValues,
       data: registryAddMemberEncodedData,
       from: fromAddress,
-      to: RegistryInstanceAddress
+      to: RegistryInstanceAddress,
     })
     debug("Governor added to registry")
 
@@ -376,7 +385,7 @@ export class UMADeployer implements IDeployer {
       ...defaultTransactionValues,
       data: registryRegisterContractEncodedData,
       from: fromAddress,
-      to: RegistryInstanceAddress
+      to: RegistryInstanceAddress,
     })
     debug("Registered Governor Contract in the registry")
 
@@ -388,12 +397,16 @@ export class UMADeployer implements IDeployer {
       ...defaultTransactionValues,
       data: registryRemoveMemberEncodedData,
       from: fromAddress,
-      to: RegistryInstanceAddress
+      to: RegistryInstanceAddress,
     })
     debug("Removed member")
 
     // 9) Deploy designated voting factory
-    const designatedVotingFactoryFactory = new ethers.ContractFactory(DesignatedVotingFactoryArtifact.abi, DesignatedVotingFactoryArtifact.bytecode, signer)
+    const designatedVotingFactoryFactory = new ethers.ContractFactory(
+      DesignatedVotingFactoryArtifact.abi,
+      DesignatedVotingFactoryArtifact.bytecode,
+      signer
+    )
     const designatedVotingInstanceCreator = designatedVotingFactoryFactory.getDeployTransaction(
       FinderInstanceAddres as string
     )
@@ -407,7 +420,11 @@ export class UMADeployer implements IDeployer {
     debug("DesignatedVotingFactory deployed", DesignatedVotingFactoryAddress)
     addresses.set("DesignatedVotingFactory", DesignatedVotingFactoryAddress as string)
 
-    const tokenFactoryFactory = new ethers.ContractFactory(TokenFactoryArtifact.abi, TokenFactoryArtifact.bytecode, signer)
+    const tokenFactoryFactory = new ethers.ContractFactory(
+      TokenFactoryArtifact.abi,
+      TokenFactoryArtifact.bytecode,
+      signer
+    )
     const tokenFactoryInstanceCreator = tokenFactoryFactory.getDeployTransaction()
     const { createdAddress: TokenFactoryAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
@@ -420,7 +437,11 @@ export class UMADeployer implements IDeployer {
     addresses.set("TokenFactory", TokenFactoryAddress as string)
 
     // Deploy AddressWhitelist
-    const addressWhitelistFactory = new ethers.ContractFactory(AddressWhitelistArtifact.abi, AddressWhitelistArtifact.bytecode, signer)
+    const addressWhitelistFactory = new ethers.ContractFactory(
+      AddressWhitelistArtifact.abi,
+      AddressWhitelistArtifact.bytecode,
+      signer
+    )
     const addressWhitelistInstanceCreator = addressWhitelistFactory.getDeployTransaction()
     const { createdAddress: AddressWhitelistAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
@@ -441,12 +462,16 @@ export class UMADeployer implements IDeployer {
       ...defaultTransactionValues,
       data: changeImplementationAddressEncodedDataForCollateralWhitelist,
       from: fromAddress,
-      to: FinderInstanceAddres
+      to: FinderInstanceAddres,
     })
     debug("Changed AddressWhitelist Implementation", utils.formatBytes32String(InterfaceName.CollateralWhitelist))
 
     // Then deploy expiring multi party creator (library)
-    const expiringMultiPartyLibFactory = new ethers.ContractFactory(ExpiringMultiPartyLibArtifact.abi, ExpiringMultiPartyLibArtifact.bytecode, signer)
+    const expiringMultiPartyLibFactory = new ethers.ContractFactory(
+      ExpiringMultiPartyLibArtifact.abi,
+      ExpiringMultiPartyLibArtifact.bytecode,
+      signer
+    )
     const { data: multiPartyLibraryData } = expiringMultiPartyLibFactory.getDeployTransaction()
     const { createdAddress: MultipartyLibraryAddress } = await clientInstance.udapp.sendTransaction({
       ...defaultTransactionValues,
@@ -469,8 +494,11 @@ export class UMADeployer implements IDeployer {
       return linkedBytecode
     }
 
-
-    const expiringMultiPartyCreatorFactory = new ethers.ContractFactory(ExpiringMultiPartyCreatorArtifact.abi, linkBytecode(ExpiringMultiPartyCreatorArtifact.bytecode, MultipartyLibraryAddress), signer)
+    const expiringMultiPartyCreatorFactory = new ethers.ContractFactory(
+      ExpiringMultiPartyCreatorArtifact.abi,
+      linkBytecode(ExpiringMultiPartyCreatorArtifact.bytecode, MultipartyLibraryAddress),
+      signer
+    )
     const { data: ExpiringMultiPartyCreatorData } = expiringMultiPartyCreatorFactory.getDeployTransaction(
       FinderInstanceAddres as string,
       TokenFactoryAddress as string,
@@ -495,7 +523,7 @@ export class UMADeployer implements IDeployer {
       ...defaultTransactionValues,
       data: registryAddMemberEncodedDataForEMP,
       from: fromAddress,
-      to: RegistryInstanceAddress
+      to: RegistryInstanceAddress,
     })
     debug("ExpiringMultiPartyCreator added to registry")
 

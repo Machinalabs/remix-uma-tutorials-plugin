@@ -33,7 +33,7 @@ export const NavigationBar: React.FC = () => {
       )}
       <StyledButton variant="danger" style={{ marginRight: "10px" }} onClick={handleOnEndClick}>
         End
-        </StyledButton>
+      </StyledButton>
     </Wrapper>
   )
 }
