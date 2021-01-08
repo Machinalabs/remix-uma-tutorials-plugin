@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom"
 import styled from "styled-components"
 import Spinner from "react-bootstrap/Spinner"
 import Alert from "react-bootstrap/Alert"
-import YouTube from 'react-youtube';
 
 import { StyledButton } from "../components"
 import { useRemix } from "../hooks"
@@ -12,25 +11,6 @@ import { useStep } from "./TutorialView/hooks"
 
 const TUTORIAL_ROUTE = "/tutorial"
 
-
-const RenderVideo: React.FC = () => {
-  const opts: any = {
-    height: '390',
-    width: '640',
-    playerVars: {
-      // https://developers.google.com/youtube/player_parameters
-      autoplay: 0,
-    }
-  }
-
-  const onReady = (event) => {
-    event.target.pauseVideo();
-  }
-
-  return (
-    <YouTube videoId="RCVAkCrJDdw" opts={opts} onReady={onReady} />
-  )
-}
 export const WelcomeView: React.FC = () => {
   const { clientInstance } = useRemix()
   const { currentStep } = useStep()
@@ -95,7 +75,6 @@ export const WelcomeView: React.FC = () => {
       <br />
         Are you ready? You can also watch <a href="https://www.youtube.com/watch?v=RCVAkCrJDdw" target="_blank">this step by step guide video.</a>
       </p>
-      {/* <RenderVideo /> */}
 
       <StyledButton onClick={handleOnClick} variant="primary" style={{ marginBottom: "2em" }}>
         {isStarting && (
