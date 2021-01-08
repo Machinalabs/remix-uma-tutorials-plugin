@@ -40,13 +40,24 @@ export const CreatePosition: React.FC = () => {
       const accounts = await provider.listAccounts()
       debug("accounts", accounts)
 
-      const contract = new ethers.Contract(getContractAddress('ExpiringMultiParty'), ExpiringMultiPartyArtifact.abi, signer);
+      const contract = new ethers.Contract(
+        getContractAddress("ExpiringMultiParty"),
+        ExpiringMultiPartyArtifact.abi,
+        signer
+      )
 
-      debug("params", { rawValue: toWei(`${values.collateralAmount}`) }, { rawValue: toWei(`${values.syntheticTokens}`) });
+      debug(
+        "params",
+        { rawValue: toWei(`${values.collateralAmount}`) },
+        { rawValue: toWei(`${values.syntheticTokens}`) }
+      )
 
-      const receipt = await contract.create({ rawValue: toWei(`${values.collateralAmount}`) }, { rawValue: toWei(`${values.syntheticTokens}`) })
+      const receipt = await contract.create(
+        { rawValue: toWei(`${values.collateralAmount}`) },
+        { rawValue: toWei(`${values.syntheticTokens}`) }
+      )
 
-      debug("Receipt", await receipt.wait());
+      debug("Receipt", await receipt.wait())
 
       updateBalances(signer, accounts[0])
     }
@@ -73,21 +84,21 @@ export const CreatePosition: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-              const errors: FormikErrors<FormProps> = {}
-              if (!values.collateralAmount) {
-                errors.collateralAmount = "Required"
+                const errors: FormikErrors<FormProps> = {}
+                if (!values.collateralAmount) {
+                  errors.collateralAmount = "Required"
+                }
+
+                if (!values.syntheticTokens) {
+                  errors.syntheticTokens = "Required"
+                } else if (values.syntheticTokens < 100) {
+                  errors.syntheticTokens = "Value should be higher than 100" // TO BE CONFIGURED via call to get the value..
+                }
+
+                // valiadate the collateral requirement
+
+                return errors
               }
-
-              if (!values.syntheticTokens) {
-                errors.syntheticTokens = "Required"
-              } else if (values.syntheticTokens < 100) {
-                errors.syntheticTokens = "Value should be higher than 100" // TO BE CONFIGURED via call to get the value..
-              }
-
-              // valiadate the collateral requirement
-
-              return errors
-            }
         }
         onSubmit={handleSubmit}
       >
