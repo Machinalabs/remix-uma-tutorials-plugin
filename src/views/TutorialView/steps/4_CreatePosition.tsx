@@ -70,10 +70,14 @@ export const CreatePosition: React.FC = () => {
     }
 
     setTimeout(() => {
-      sendTx().then(() => {
-        setSubmitting(false)
-        setCurrentStepCompleted()
-      })
+      sendTx()
+        .then(() => {
+          setSubmitting(false)
+          setCurrentStepCompleted()
+        })
+        .catch((e) => {
+          console.log("Error", e)
+        })
     }, 2000)
   }
   return (

@@ -1,3 +1,4 @@
+import { utils } from "ethers"
 import React, { useEffect, useState } from "react"
 import Accordion from "react-bootstrap/Accordion"
 import Card from "react-bootstrap/Card"
@@ -166,10 +167,10 @@ export const RightPanel: React.FC = () => {
                       Symbol: <span>{item.symbol}</span>
                     </p>
                     <p>
-                      Total supply: <span>{item.totalSupply.toString()}</span>
+                      Total supply: <span>${utils.formatUnits(item.totalSupply, "ether").toString()}</span>
                     </p>
                     <p>
-                      Address: <span style={{ fontSize: "0.8em" }}>0x5B38Da6a701c568545dCfcB03FcB875f56beddC4</span>
+                      Address: <span style={{ fontSize: "0.8em" }}>{item.address}</span>
                     </p>
                   </AccordionContentBody>
                 ))}
@@ -205,7 +206,7 @@ const Description = styled.div`
   flex-direction: column;
   font-weight: 400;
   span.subtitle {
-    font-size: 0.85em;
+                          font - size: 0.85em;
     font-weight: 300;
   }
 `

@@ -196,10 +196,14 @@ export const CreateExpiringMultiParty: React.FC = () => {
       }
     }
     setTimeout(() => {
-      sendTx().then(() => {
-        setSubmitting(false)
-        setCurrentStepCompleted()
-      })
+      sendTx()
+        .then(() => {
+          setSubmitting(false)
+          setCurrentStepCompleted()
+        })
+        .catch((e) => {
+          console.log("Error", e)
+        })
     }, 500)
   }
 

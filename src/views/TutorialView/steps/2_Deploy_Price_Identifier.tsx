@@ -55,10 +55,14 @@ export const DeployPriceIdentifier: React.FC = () => {
     }
 
     setTimeout(() => {
-      sendTx().then(() => {
-        setSubmitting(false)
-        setCurrentStepCompleted()
-      })
+      sendTx()
+        .then(() => {
+          setSubmitting(false)
+          setCurrentStepCompleted()
+        })
+        .catch((e) => {
+          console.log("Error", e)
+        })
     }, 2000)
   }
 
