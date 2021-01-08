@@ -4,11 +4,8 @@ import styled from "styled-components"
 import Spinner from "react-bootstrap/Spinner"
 
 import { StyledButton } from "../components"
-import { UMADeployer } from "../extras/deployment"
 import { useRemix } from "../hooks"
 import { TITLE } from "../text"
-import { debug } from "../utils"
-import { useContract } from "./TutorialView/hooks/useContract"
 import { useStep } from "./TutorialView/hooks"
 
 const TUTORIAL_ROUTE = "/tutorial"
@@ -17,7 +14,6 @@ export const WelcomeView: React.FC = () => {
   const { clientInstance } = useRemix()
   const { currentStep } = useStep()
   const [isStarting, setIsStarting] = useState(false)
-  const { setContracts } = useContract()
   const history = useHistory()
 
   useEffect(() => {

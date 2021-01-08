@@ -4,7 +4,7 @@ import Alert from "react-bootstrap/Alert"
 
 import { Button } from "../../../components"
 import { useRemix } from "../../../hooks"
-import { debug, defaultTransactionValues, getValidatorFunction } from "../../../utils"
+import { debug } from "../../../utils"
 import { useContract, useStep } from "../hooks"
 import { FormItem } from "../components"
 

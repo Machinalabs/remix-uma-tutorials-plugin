@@ -13,6 +13,17 @@ export const RightPanel: React.FC = () => {
   const [account, setAccount] = useState("")
   const { collateralTokens, priceIdentifiers, collateralBalance, syntheticBalance } = useContract()
 
+  useEffect(() => {
+    const getAccount = async () => {
+      const accounts = await clientInstance.udapp.getAccounts()
+      debug("Accounts", accounts)
+      setAccount(accounts[0])
+    }
+
+    getAccount()
+  }, [clientInstance])
+
+  console.log("collateralTokens", collateralTokens)
   return (
     <React.Fragment>
       <p style={{ fontSize: "0.9em" }}>
