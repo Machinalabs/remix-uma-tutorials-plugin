@@ -6,12 +6,12 @@ import styled from "styled-components"
 import { useRemix } from "../../../hooks"
 import { debug } from "../../../utils"
 
-import { useContract, Token } from "../hooks"
+import { useContract, Token, ExpiringMultiParty, Position } from "../hooks"
 
 export const RightPanel: React.FC = () => {
   const { clientInstance } = useRemix()
   const [account, setAccount] = useState("")
-  const { collateralTokens, priceIdentifiers, collateralBalance, syntheticBalance, syntheticTokens } = useContract()
+  const { collateralTokens, priceIdentifiers, collateralBalance, syntheticBalance, syntheticTokens, expiringMultiParties, positions } = useContract()
 
   useEffect(() => {
     const getAccount = async () => {
@@ -23,7 +23,14 @@ export const RightPanel: React.FC = () => {
     getAccount()
   }, [clientInstance])
 
-  console.log("collateralTokens", collateralTokens)
+  const convertToDate = (unixTimestamp: number) => {
+    const milliseconds = unixTimestamp * 1000
+
+    const dateObject = new Date(milliseconds)
+
+    return dateObject.toLocaleString()
+  }
+
   return (
     <React.Fragment>
       <p style={{ fontSize: "0.9em" }}>
@@ -58,7 +65,7 @@ export const RightPanel: React.FC = () => {
                       Total supply: <span>{item.totalSupply.toString()}</span>
                     </p>
                     <p>
-                      Address: <span style={{ fontSize: "0.8em" }}>0x5B38Da6a701c568545dCfcB03FcB875f56beddC4</span>
+                      Address: <span style={{ fontSize: "0.8em" }}>{item.address}</span>
                     </p>
                   </AccordionContentBody>
                 ))}
@@ -88,7 +95,31 @@ export const RightPanel: React.FC = () => {
             Expiring multiparty
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="2">
-            <Card.Body>{/* TODO */}</Card.Body>
+            <React.Fragment>
+              {expiringMultiParties &&
+                expiringMultiParties.map((item: ExpiringMultiParty, index: number) => (
+                  <AccordionContentBody key={index} className="borderBottomExceptLast">
+                    <p>
+                      Address: <span style={{ fontSize: "0.8em" }}>{item.address}</span>
+                    </p>
+                    <p>
+                      Expiration: <span style={{ fontSize: "0.8em" }}>{convertToDate(item.expirationTimestamp)}</span>
+                    </p>
+                    <p>
+                      Synthetic name: <span style={{ fontSize: "0.8em" }}>{item.syntheticName}</span>
+                    </p>
+                    <p>
+                      Synthetic symbol: <span style={{ fontSize: "0.8em" }}>{item.syntheticSymbol}</span>
+                    </p>
+                    <p>
+                      Collateral requirement: <span style={{ fontSize: "0.8em" }}>{item.collateralRequirement}</span>
+                    </p>
+                    <p>
+                      Minimum sponsor tokens: <span style={{ fontSize: "0.8em" }}>{item.minSponsorTokens}</span>
+                    </p>
+                  </AccordionContentBody>
+                ))}
+            </React.Fragment>
           </Accordion.Collapse>
         </Card>
         <Card>
@@ -96,7 +127,19 @@ export const RightPanel: React.FC = () => {
             Positions
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="3">
-            <Card.Body>{/* TODO */}</Card.Body>
+            <React.Fragment>
+              {positions &&
+                positions.map((item: Position, index: number) => (
+                  <AccordionContentBody key={index} className="borderBottomExceptLast">
+                    <p>
+                      Collateral amount: <span style={{ fontSize: "0.8em" }}>{item.collateralAmount}</span>
+                    </p>
+                    <p>
+                      Synthetic tokens: <span style={{ fontSize: "0.8em" }}>{item.syntheticTokens}</span>
+                    </p>
+                  </AccordionContentBody>
+                ))}
+            </React.Fragment>
           </Accordion.Collapse>
         </Card>
         <Card>

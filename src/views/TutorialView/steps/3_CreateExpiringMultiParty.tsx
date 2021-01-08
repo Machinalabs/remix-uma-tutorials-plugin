@@ -48,6 +48,7 @@ export const CreateExpiringMultiParty: React.FC = () => {
     priceIdentifiers,
     addContractAddress,
     addSyntheticToken,
+    addExpiringMultiParty
   } = useContract()
   const { clientInstance, web3Provider } = useRemix()
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
@@ -172,6 +173,18 @@ export const CreateExpiringMultiParty: React.FC = () => {
         debug("syntheticToken", syntheticToken)
         addSyntheticToken(syntheticToken)
         addContractAddress("SynthethicToken", syntheticTokenAddress)
+
+        // add emp
+        addExpiringMultiParty({
+          address: expiringMultiPartyAddress,
+          expirationTimestamp: parseInt(dateTimestamp, 10),
+          syntheticName: values.syntheticName,
+          syntheticSymbol: values.syntheticSymbol,
+          collateralRequirement: parseInt(values.collateralRequirement, 10),
+          minSponsorTokens: parseInt(values.minSponsorTokens, 10),
+          withdrawalLiveness: parseInt(values.withdrawalLiveness, 10),
+          liquidationLiveness: parseInt(values.liquidationLiveness, 10)
+        })
       } catch (error) {
         debug("Error", error)
         const traces = await clientInstance.call("debugger" as any, "getTrace", txn.hash).catch((err) => {
@@ -200,39 +213,39 @@ export const CreateExpiringMultiParty: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.expirationTimestamp) {
-                  errors.expirationTimestamp = "Required"
-                }
-
-                if (!values.syntheticName) {
-                  errors.syntheticName = "Required"
-                }
-
-                if (!values.syntheticSymbol) {
-                  errors.syntheticSymbol = "Required"
-                }
-
-                if (!values.collateralRequirement) {
-                  errors.collateralRequirement = "Required"
-                } else if (parseInt(values.collateralRequirement, 10) < 100) {
-                  errors.collateralRequirement = "Value should be higher than 100"
-                }
-
-                if (!values.minSponsorTokens) {
-                  errors.minSponsorTokens = "Required"
-                }
-
-                if (!values.withdrawalLiveness) {
-                  errors.withdrawalLiveness = "Required"
-                }
-
-                if (!values.liquidationLiveness) {
-                  errors.liquidationLiveness = "Required"
-                }
-
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.expirationTimestamp) {
+                errors.expirationTimestamp = "Required"
               }
+
+              if (!values.syntheticName) {
+                errors.syntheticName = "Required"
+              }
+
+              if (!values.syntheticSymbol) {
+                errors.syntheticSymbol = "Required"
+              }
+
+              if (!values.collateralRequirement) {
+                errors.collateralRequirement = "Required"
+              } else if (parseInt(values.collateralRequirement, 10) < 100) {
+                errors.collateralRequirement = "Value should be higher than 100"
+              }
+
+              if (!values.minSponsorTokens) {
+                errors.minSponsorTokens = "Required"
+              }
+
+              if (!values.withdrawalLiveness) {
+                errors.withdrawalLiveness = "Required"
+              }
+
+              if (!values.liquidationLiveness) {
+                errors.liquidationLiveness = "Required"
+              }
+
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >
