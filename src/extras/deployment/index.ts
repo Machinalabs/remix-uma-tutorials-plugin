@@ -1,7 +1,5 @@
-import { asciiToHex, toHex, toWei, utf8ToHex } from "web3-utils"
-import { BigNumber, ethers, utils } from "ethers"
-import { RemixClientInstanceType } from "../../hooks"
-import { debug, defaultTransactionValues } from "../../utils"
+import { toWei } from "web3-utils"
+import { ethers, utils } from "ethers"
 
 import FinderArtifact from "@uma/core/build/contracts/Finder.json"
 import TimerArtifact from "@uma/core/build/contracts/Timer.json"
@@ -13,11 +11,14 @@ import FinancialContractsAdminArtifact from "@uma/core/build/contracts/Financial
 import StoreArtifact from "@uma/core/build/contracts/Store.json"
 import ExpiringMultiPartyCreatorArtifact from "@uma/core/build/contracts/ExpiringMultiPartyCreator.json"
 import GovernorArtifact from "@uma/core/build/contracts/Governor.json"
-import DesignatedVotingArtifact from "@uma/core/build/contracts/DesignatedVoting.json"
 import DesignatedVotingFactoryArtifact from "@uma/core/build/contracts/DesignatedVotingFactory.json"
 import TokenFactoryArtifact from "@uma/core/build/contracts/TokenFactory.json"
 import AddressWhitelistArtifact from "@uma/core/build/contracts/AddressWhitelist.json"
 import ExpiringMultiPartyLibArtifact from "@uma/core/build/contracts/ExpiringMultiPartyLib.json"
+
+
+import { RemixClientInstanceType } from "../../hooks"
+import { debug, defaultTransactionValues } from "../../utils"
 
 export type Bytes20 = string
 export type EthereumAddress = Bytes20
