@@ -25,22 +25,20 @@ export const WelcomeView: React.FC = () => {
       const deployUMAContracts = async () => {
         // const accounts = await clientInstance.udapp.getAccounts()
         // debug("Accounts", accounts)
-
-        // // if snapshot.. do X, otherwise Y
+        // if snapshot.. do X, otherwise Y
         // const umaDeployer = new UMADeployer()
         // const addresses = await umaDeployer.deploy({
         //   clientInstance,
         //   from: accounts[0],
         // })
-
         // setContracts(addresses)
-
         // debug("Addresses", addresses)
-
         history.push(`${TUTORIAL_ROUTE}/${currentStep.route}`)
       }
 
-      deployUMAContracts()
+      setTimeout(() => {
+        deployUMAContracts()
+      }, 3000);
     }
   }, [isStarting, clientInstance, history]) // eslint-disable-line
 
