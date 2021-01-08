@@ -78,7 +78,7 @@ export const WelcomeView: React.FC = () => {
         Once you have completed that, we can start !
         <br />
         Are you ready? You can also watch{" "}
-        <a href="https://www.youtube.com/watch?v=RCVAkCrJDdw" target="_blank">
+        <a href="https://www.youtube.com/watch?v=RCVAkCrJDdw" target="_blank" rel="noreferrer">
           this step by step guide video.
         </a>
       </p>
