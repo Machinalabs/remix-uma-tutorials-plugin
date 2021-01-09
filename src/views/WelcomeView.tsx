@@ -58,16 +58,7 @@ export const WelcomeView: React.FC = () => {
           setIsStarting(false)
           return
         }
-        // const accounts = await clientInstance.udapp.getAccounts()
-        // debug("Accounts", accounts)
-        // if snapshot.. do X, otherwise Y
-        // const umaDeployer = new UMADeployer()
-        // const addresses = await umaDeployer.deploy({
-        //   clientInstance,
-        //   from: accounts[0],
-        // })
-        // setContracts(addresses)
-        // debug("Addresses", addresses)
+
         history.push(`${TUTORIAL_ROUTE}/${currentStep.route}`)
       }
 
