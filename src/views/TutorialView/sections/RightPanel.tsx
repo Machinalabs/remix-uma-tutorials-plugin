@@ -167,7 +167,7 @@ export const RightPanel: React.FC = () => {
                       Symbol: <span>{item.symbol}</span>
                     </p>
                     <p>
-                      Total supply: <span>${utils.formatUnits(item.totalSupply, "ether").toString()}</span>
+                      Total supply: <span>{utils.formatUnits(item.totalSupply, "ether").toString()}</span>
                     </p>
                     <p>
                       Address: <span style={{ fontSize: "0.8em" }}>{item.address}</span>

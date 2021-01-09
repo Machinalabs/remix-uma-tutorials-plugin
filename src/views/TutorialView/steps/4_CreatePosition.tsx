@@ -9,7 +9,7 @@ import { useRemix } from "../../../hooks"
 import { debug } from "../../../utils"
 import { useContract, useStep } from "../hooks"
 import { FormItem } from "../components"
-import { ethers } from "ethers"
+import { BigNumber, ethers } from "ethers"
 import { toWei } from "web3-utils"
 
 interface FormProps {
@@ -23,7 +23,7 @@ const initialValues: FormProps = {
 }
 
 export const CreatePosition: React.FC = () => {
-  const { getContractAddress, updateBalances, addPosition, updateSyntheticTotalSupply } = useContract()
+  const { getContractAddress, updateBalances, addPosition, updateSyntheticTotalSupply, expiringMultiParties, collateralTokens } = useContract()
   const { web3Provider } = useRemix()
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
 
@@ -97,17 +97,29 @@ export const CreatePosition: React.FC = () => {
             : (values) => {
               return new Promise((resolve, reject) => {
                 const errors: FormikErrors<FormProps> = {}
+
+                const minSponsorTokens = expiringMultiParties[0].minSponsorTokens
+                const collateralRequirement = expiringMultiParties[0].collateralRequirement;
+
                 if (!values.collateralAmount) {
                   errors.collateralAmount = "Required"
+                } else if (values.collateralAmount / values.syntheticTokens < collateralRequirement / 100) {
+                  errors.collateralAmount = `The collateral requirement is ${collateralRequirement}`
+                } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
+                  errors.collateralAmount = `The collateral desired is bigger than the total supply`
                 }
 
                 if (!values.syntheticTokens) {
                   errors.syntheticTokens = "Required"
                 } else if (values.syntheticTokens < 100) {
                   errors.syntheticTokens = "Value should be higher than 100" // TO BE CONFIGURED via call to get the value..
+                } else if (values.syntheticTokens < minSponsorTokens) {
+                  errors.syntheticTokens = `The minimum number of synthetic tokens is ${minSponsorTokens}`
+                } else if (values.syntheticTokens < minSponsorTokens) {
+                  errors.syntheticTokens = `The minimum number of synthetic tokens is ${minSponsorTokens}`
                 }
 
-                // valiadate the collateral requirement
+
 
                 resolve(errors)
               })
@@ -146,7 +158,6 @@ export const CreatePosition: React.FC = () => {
 
             <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted} transition={false}>
               You have successfully created a position.
-              {/* Created ${argv.tokens} tokens (backed by ${argv.collateral} collateral) */}
             </Alert>
           </Form>
         )}
