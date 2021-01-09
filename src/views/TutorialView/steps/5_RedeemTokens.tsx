@@ -24,7 +24,7 @@ const initialValues: FormProps = {
 export const RedeemTokens: React.FC = () => {
   const { web3Provider } = useRemix()
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
-  const { positions, getContractAddress, updateBalances, updateSyntheticTotalSupply } = useContract()
+  const { positions, getContractAddress, updateBalances, updateSyntheticTotalSupply, updatePositions } = useContract()
   const [error, setError] = useState<string | undefined>(undefined)
 
   const handleSubmit = (values: FormProps, { setSubmitting }) => {
@@ -65,6 +65,8 @@ export const RedeemTokens: React.FC = () => {
       updateBalances(signer, accounts[0])
 
       await updateSyntheticTotalSupply(signer)
+
+      await updatePositions(signer, accounts[0])
     }
 
     setTimeout(() => {
@@ -96,22 +98,22 @@ export const RedeemTokens: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                return new Promise((resolve, reject) => {
-                  const errors: FormikErrors<FormProps> = {}
+              return new Promise((resolve, reject) => {
+                const errors: FormikErrors<FormProps> = {}
 
-                  debug("values.syntheticTokens > positions[0].syntheticTokens", values.syntheticTokens)
-                  debug("values.syntheticTokens > positions[0].syntheticTokens", positions[0].syntheticTokens)
-                  if (!values.syntheticTokens) {
-                    errors.syntheticTokens = "Required"
-                  } else if (
-                    parseInt(`${values.syntheticTokens}`, 10) > parseInt(`${positions[0].syntheticTokens}`, 10)
-                  ) {
-                    errors.syntheticTokens = "The number exceed the available synthetic tokens"
-                  }
+                debug("values.syntheticTokens > positions[0].syntheticTokens", values.syntheticTokens)
+                debug("values.syntheticTokens > positions[0].syntheticTokens", positions[0].syntheticTokens)
+                if (!values.syntheticTokens) {
+                  errors.syntheticTokens = "Required"
+                } else if (
+                  parseInt(`${values.syntheticTokens}`, 10) > parseInt(`${positions[0].syntheticTokens}`, 10)
+                ) {
+                  errors.syntheticTokens = "The number exceed the available synthetic tokens"
+                }
 
-                  resolve(errors)
-                })
-              }
+                resolve(errors)
+              })
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -122,6 +124,7 @@ export const RedeemTokens: React.FC = () => {
               label="Synthetic tokens to redeem"
               field="syntheticTokens"
               labelWidth={3}
+              type="number"
               placeHolder="Amount of synthetic tokens (i.e 100)"
             />
 

@@ -27,6 +27,7 @@ export const DeployPriceIdentifier: React.FC = () => {
 
   const handleSubmit = (values: FormProps, { setSubmitting }) => {
     debug("Deploying price identifier", values)
+    setError(undefined)
 
     const sendTx = async () => {
       const accounts = await clientInstance.udapp.getAccounts()
@@ -79,12 +80,12 @@ export const DeployPriceIdentifier: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.priceIdentifier) {
-                  errors.priceIdentifier = "Required"
-                }
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.priceIdentifier) {
+                errors.priceIdentifier = "Required"
               }
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >

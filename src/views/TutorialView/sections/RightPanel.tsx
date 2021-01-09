@@ -1,4 +1,5 @@
 import { utils } from "ethers"
+import { formatUnits } from "ethers/lib/utils"
 import React, { useEffect, useState } from "react"
 import Accordion from "react-bootstrap/Accordion"
 import Card from "react-bootstrap/Card"
@@ -141,10 +142,10 @@ export const RightPanel: React.FC = () => {
                 positions.map((item: Position, index: number) => (
                   <AccordionContentBody key={index} className="borderBottomExceptLast">
                     <p>
-                      Collateral amount: <span style={{ fontSize: "0.8em" }}>{item.collateralAmount}</span>
+                      Collateral amount: <span style={{ fontSize: "0.8em" }}>{`${formatUnits(item.collateralAmount.toString(), "ether")}`}</span>
                     </p>
                     <p>
-                      Synthetic tokens: <span style={{ fontSize: "0.8em" }}>{item.syntheticTokens}</span>
+                      Synthetic tokens: <span style={{ fontSize: "0.8em" }}>{`${formatUnits(item.syntheticTokens.toString(), "ether")}`}</span>
                     </p>
                   </AccordionContentBody>
                 ))}

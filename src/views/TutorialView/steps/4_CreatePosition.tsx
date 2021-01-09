@@ -26,16 +26,18 @@ export const CreatePosition: React.FC = () => {
   const {
     getContractAddress,
     updateBalances,
-    addPosition,
     updateSyntheticTotalSupply,
     expiringMultiParties,
     collateralTokens,
+    updatePositions
   } = useContract()
   const { web3Provider } = useRemix()
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
   const [error, setError] = useState<string | undefined>(undefined)
 
   const handleSubmit = (values: FormProps, { setSubmitting }) => {
+    setError(undefined)
+
     const sendTx = async () => {
       debug("Creating position", values)
 
@@ -69,12 +71,10 @@ export const CreatePosition: React.FC = () => {
 
       updateBalances(signer, accounts[0])
 
-      addPosition({
-        collateralAmount: values.collateralAmount,
-        syntheticTokens: values.syntheticTokens,
-      })
-
       await updateSyntheticTotalSupply(signer)
+
+      await updatePositions(signer, accounts[0])
+
     }
 
     setTimeout(() => {
@@ -105,33 +105,33 @@ export const CreatePosition: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                return new Promise((resolve, reject) => {
-                  const errors: FormikErrors<FormProps> = {}
+              return new Promise((resolve, reject) => {
+                const errors: FormikErrors<FormProps> = {}
 
-                  const minSponsorTokens = expiringMultiParties[0].minSponsorTokens
-                  const collateralRequirement = expiringMultiParties[0].collateralRequirement
+                const minSponsorTokens = expiringMultiParties[0].minSponsorTokens
+                const collateralRequirement = expiringMultiParties[0].collateralRequirement
 
-                  if (!values.collateralAmount) {
-                    errors.collateralAmount = "Required"
-                  } else if (values.collateralAmount / values.syntheticTokens < collateralRequirement / 100) {
-                    errors.collateralAmount = `The collateral requirement is ${collateralRequirement}`
-                  } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
-                    errors.collateralAmount = `The collateral desired is bigger than the total supply`
-                  }
+                if (!values.collateralAmount) {
+                  errors.collateralAmount = "Required"
+                } else if (values.collateralAmount / values.syntheticTokens < collateralRequirement / 100) {
+                  errors.collateralAmount = `The collateral requirement is ${collateralRequirement}`
+                } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
+                  errors.collateralAmount = `The collateral desired is bigger than the total supply`
+                }
 
-                  if (!values.syntheticTokens) {
-                    errors.syntheticTokens = "Required"
-                  } else if (values.syntheticTokens < 100) {
-                    errors.syntheticTokens = "Value should be higher than 100" // TO BE CONFIGURED via call to get the value..
-                  } else if (values.syntheticTokens < minSponsorTokens) {
-                    errors.syntheticTokens = `The minimum number of synthetic tokens is ${minSponsorTokens}`
-                  } else if (values.syntheticTokens < minSponsorTokens) {
-                    errors.syntheticTokens = `The minimum number of synthetic tokens is ${minSponsorTokens}`
-                  }
+                if (!values.syntheticTokens) {
+                  errors.syntheticTokens = "Required"
+                } else if (values.syntheticTokens < 100) {
+                  errors.syntheticTokens = "Value should be higher than 100" // TO BE CONFIGURED via call to get the value..
+                } else if (values.syntheticTokens < minSponsorTokens) {
+                  errors.syntheticTokens = `The minimum number of synthetic tokens is ${minSponsorTokens}`
+                } else if (values.syntheticTokens < minSponsorTokens) {
+                  errors.syntheticTokens = `The minimum number of synthetic tokens is ${minSponsorTokens}`
+                }
 
-                  resolve(errors)
-                })
-              }
+                resolve(errors)
+              })
+            }
         }
         onSubmit={handleSubmit}
       >

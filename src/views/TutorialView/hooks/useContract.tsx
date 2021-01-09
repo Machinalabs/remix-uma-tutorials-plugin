@@ -4,6 +4,7 @@ import { EthereumAddress, UMAContractName } from "../../../extras/deployment"
 
 import TestnetERC20Artifact from "@uma/core/build/contracts/TestnetERC20.json"
 import ExpandedERC20Artifact from "@uma/core/build/contracts/ExpandedERC20.json"
+import ExpiringMultiPartyArtifact from "@uma/core/build/contracts/ExpiringMultiParty.json"
 import { formatUnits } from "ethers/lib/utils"
 
 export interface Token {
@@ -26,8 +27,8 @@ export interface ExpiringMultiParty {
 }
 
 export interface Position {
-  syntheticTokens: number
-  collateralAmount: number
+  syntheticTokens: BigNumber
+  collateralAmount: BigNumber
 }
 
 interface IContractProvider {
@@ -50,16 +51,17 @@ interface IContractProvider {
   positions: Position[]
   addPosition: (newPosition: Position) => void
   updateSyntheticTotalSupply: (signer: any) => Promise<void>
+  updatePositions: (signer: any, account: string) => Promise<void>
 }
 
 /* tslint:disable */
 // Defaults
 const ContractContext = React.createContext<IContractProvider>({
-  setContracts: (contractsMap: Map<UMAContractName, EthereumAddress>) => {},
+  setContracts: (contractsMap: Map<UMAContractName, EthereumAddress>) => { },
   getContractAddress: (contractName: UMAContractName) => {
     return ""
   },
-  addContractAddress: (contractName: UMAContractName, address: EthereumAddress) => {},
+  addContractAddress: (contractName: UMAContractName, address: EthereumAddress) => { },
   contracts: new Map<UMAContractName, EthereumAddress>(),
   priceIdentifiers: ["ETH/BTC"],
   addPriceIdentifier: (newPriceIdentifier: string) => {
@@ -73,17 +75,20 @@ const ContractContext = React.createContext<IContractProvider>({
   addSyntheticToken: (newToken: Token) => [
     { name: "SNT", symbol: "SNT", decimals: 18, totalSupply: BigNumber.from("10000000") },
   ],
-  cleanData: () => {},
+  cleanData: () => { },
   collateralBalance: "0",
   syntheticBalance: "0",
   updateBalances: (signer: any, account: string) => {
     return Promise.resolve()
   },
   expiringMultiParties: [],
-  addExpiringMultiParty: (newEMP: ExpiringMultiParty) => {},
+  addExpiringMultiParty: (newEMP: ExpiringMultiParty) => { },
   positions: [],
-  addPosition: (newPosition: Position) => {},
+  addPosition: (newPosition: Position) => { },
   updateSyntheticTotalSupply: (signer: any) => {
+    return Promise.resolve()
+  },
+  updatePositions: (signer: any, account: string) => {
     return Promise.resolve()
   },
 })
@@ -220,6 +225,18 @@ export const ContractProvider: React.FC<PropsWithChildren<{}>> = ({ children }) 
     return newItems
   }
 
+  const updatePositions = async (signer: any, account: string) => {
+    const contractInstance = new ethers.Contract(getContractAddress('ExpiringMultiParty'), ExpiringMultiPartyArtifact.abi, signer)
+
+    const position = await contractInstance.positions(account)
+
+    const newPositionsUpdated: Position = {
+      syntheticTokens: position.tokensOutstanding,// `${formatUnits(position.tokensOutstanding.toString(), "ether")}`,
+      collateralAmount: position.rawCollateral, //`${formatUnits(position.rawCollateral.toString(), "ether")}`
+    }
+    setPositions([newPositionsUpdated])
+  }
+
   return (
     <ContractContext.Provider
       value={{
@@ -242,6 +259,7 @@ export const ContractProvider: React.FC<PropsWithChildren<{}>> = ({ children }) 
         positions,
         expiringMultiParties,
         updateSyntheticTotalSupply,
+        updatePositions
       }}
     >
       {children}

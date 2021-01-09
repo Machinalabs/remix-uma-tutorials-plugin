@@ -21,12 +21,14 @@ const initialValues: FormProps = {
 }
 
 export const Deposit: React.FC = () => {
-  const { getContractAddress, updateBalances, collateralTokens } = useContract()
+  const { getContractAddress, updateBalances, collateralTokens, updatePositions } = useContract()
   const { web3Provider } = useRemix()
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
   const [error, setError] = useState<string | undefined>(undefined)
 
   const handleSubmit = (values: FormProps, { setSubmitting }) => {
+    setError(undefined)
+
     const sendTx = async () => {
       debug("Depositing", values)
 
@@ -50,6 +52,8 @@ export const Deposit: React.FC = () => {
       debug("Receipt", await receipt.wait())
 
       updateBalances(signer, accounts[0])
+
+      await updatePositions(signer, accounts[0])
     }
 
     setTimeout(() => {
@@ -81,18 +85,18 @@ export const Deposit: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                return new Promise((resolve, reject) => {
-                  const errors: FormikErrors<FormProps> = {}
+              return new Promise((resolve, reject) => {
+                const errors: FormikErrors<FormProps> = {}
 
-                  if (!values.collateralAmount) {
-                    errors.collateralAmount = "Required"
-                  } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
-                    errors.collateralAmount = `The collateral desired is bigger than the total supply`
-                  }
+                if (!values.collateralAmount) {
+                  errors.collateralAmount = "Required"
+                } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
+                  errors.collateralAmount = `The collateral desired is bigger than the total supply`
+                }
 
-                  resolve(errors)
-                })
-              }
+                resolve(errors)
+              })
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -103,6 +107,7 @@ export const Deposit: React.FC = () => {
               label="Collateral amount"
               field="collateralAmount"
               labelWidth={3}
+              type="number"
               placeHolder="Collateral amount (i.e 100)"
             />
 
