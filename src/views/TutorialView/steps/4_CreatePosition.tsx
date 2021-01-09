@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { Formik, Form, FormikErrors } from "formik"
 import Alert from "react-bootstrap/Alert"
 
@@ -33,6 +33,7 @@ export const CreatePosition: React.FC = () => {
   } = useContract()
   const { web3Provider } = useRemix()
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
+  const [error, setError] = useState<string | undefined>(undefined)
 
   const handleSubmit = (values: FormProps, { setSubmitting }) => {
     const sendTx = async () => {
@@ -83,7 +84,9 @@ export const CreatePosition: React.FC = () => {
           setCurrentStepCompleted()
         })
         .catch((e) => {
-          console.log("Error", e)
+          debug(e)
+          setSubmitting(false)
+          setError(e.message.replace("VM Exception while processing transaction: revert", "").trim())
         })
     }, 2000)
   }
@@ -102,33 +105,33 @@ export const CreatePosition: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                return new Promise((resolve, reject) => {
-                  const errors: FormikErrors<FormProps> = {}
+              return new Promise((resolve, reject) => {
+                const errors: FormikErrors<FormProps> = {}
 
-                  const minSponsorTokens = expiringMultiParties[0].minSponsorTokens
-                  const collateralRequirement = expiringMultiParties[0].collateralRequirement
+                const minSponsorTokens = expiringMultiParties[0].minSponsorTokens
+                const collateralRequirement = expiringMultiParties[0].collateralRequirement
 
-                  if (!values.collateralAmount) {
-                    errors.collateralAmount = "Required"
-                  } else if (values.collateralAmount / values.syntheticTokens < collateralRequirement / 100) {
-                    errors.collateralAmount = `The collateral requirement is ${collateralRequirement}`
-                  } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
-                    errors.collateralAmount = `The collateral desired is bigger than the total supply`
-                  }
+                if (!values.collateralAmount) {
+                  errors.collateralAmount = "Required"
+                } else if (values.collateralAmount / values.syntheticTokens < collateralRequirement / 100) {
+                  errors.collateralAmount = `The collateral requirement is ${collateralRequirement}`
+                } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
+                  errors.collateralAmount = `The collateral desired is bigger than the total supply`
+                }
 
-                  if (!values.syntheticTokens) {
-                    errors.syntheticTokens = "Required"
-                  } else if (values.syntheticTokens < 100) {
-                    errors.syntheticTokens = "Value should be higher than 100" // TO BE CONFIGURED via call to get the value..
-                  } else if (values.syntheticTokens < minSponsorTokens) {
-                    errors.syntheticTokens = `The minimum number of synthetic tokens is ${minSponsorTokens}`
-                  } else if (values.syntheticTokens < minSponsorTokens) {
-                    errors.syntheticTokens = `The minimum number of synthetic tokens is ${minSponsorTokens}`
-                  }
+                if (!values.syntheticTokens) {
+                  errors.syntheticTokens = "Required"
+                } else if (values.syntheticTokens < 100) {
+                  errors.syntheticTokens = "Value should be higher than 100" // TO BE CONFIGURED via call to get the value..
+                } else if (values.syntheticTokens < minSponsorTokens) {
+                  errors.syntheticTokens = `The minimum number of synthetic tokens is ${minSponsorTokens}`
+                } else if (values.syntheticTokens < minSponsorTokens) {
+                  errors.syntheticTokens = `The minimum number of synthetic tokens is ${minSponsorTokens}`
+                }
 
-                  resolve(errors)
-                })
-              }
+                resolve(errors)
+              })
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -163,6 +166,10 @@ export const CreatePosition: React.FC = () => {
 
             <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted} transition={false}>
               You have successfully created a position.
+            </Alert>
+
+            <Alert variant="danger" style={{ width: "85%", marginTop: "1em" }} show={error !== undefined} transition={false} >
+              {error}
             </Alert>
           </Form>
         )}

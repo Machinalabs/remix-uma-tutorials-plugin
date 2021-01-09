@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { Formik, Form, FormikErrors } from "formik"
 import Alert from "react-bootstrap/Alert"
 
@@ -23,6 +23,7 @@ export const DeployPriceIdentifier: React.FC = () => {
   const { getContractAddress, addPriceIdentifier } = useContract()
   const { clientInstance } = useRemix()
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
+  const [error, setError] = useState<string | undefined>(undefined)
 
   const handleSubmit = (values: FormProps, { setSubmitting }) => {
     debug("Deploying price identifier", values)
@@ -61,7 +62,9 @@ export const DeployPriceIdentifier: React.FC = () => {
           setCurrentStepCompleted()
         })
         .catch((e) => {
-          console.log("Error", e)
+          debug(e)
+          setSubmitting(false)
+          setError(e.message.replace("VM Exception while processing transaction: revert", "").trim())
         })
     }, 2000)
   }
@@ -76,12 +79,12 @@ export const DeployPriceIdentifier: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.priceIdentifier) {
-                  errors.priceIdentifier = "Required"
-                }
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.priceIdentifier) {
+                errors.priceIdentifier = "Required"
               }
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -107,6 +110,10 @@ export const DeployPriceIdentifier: React.FC = () => {
 
             <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted} transition={false}>
               You have successfully deployed the price identifier.
+            </Alert>
+
+            <Alert variant="danger" style={{ width: "85%", marginTop: "1em" }} show={error !== undefined} transition={false} >
+              {error}
             </Alert>
           </Form>
         )}

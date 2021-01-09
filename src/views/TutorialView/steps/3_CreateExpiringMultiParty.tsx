@@ -53,6 +53,7 @@ export const CreateExpiringMultiParty: React.FC = () => {
   const { clientInstance, web3Provider } = useRemix()
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
   const [newEMPAddress, setNewEMPAddress] = useState<string | undefined>(undefined)
+  const [error, setError] = useState<string | undefined>(undefined)
 
   const handleSubmit = (values: FormProps, { setSubmitting }) => {
     const sendTx = async () => {
@@ -202,7 +203,9 @@ export const CreateExpiringMultiParty: React.FC = () => {
           setCurrentStepCompleted()
         })
         .catch((e) => {
-          console.log("Error", e)
+          debug(e)
+          setSubmitting(false)
+          setError(e.message.replace("VM Exception while processing transaction: revert", "").trim())
         })
     }, 500)
   }
@@ -217,39 +220,39 @@ export const CreateExpiringMultiParty: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.expirationTimestamp) {
-                  errors.expirationTimestamp = "Required"
-                }
-
-                if (!values.syntheticName) {
-                  errors.syntheticName = "Required"
-                }
-
-                if (!values.syntheticSymbol) {
-                  errors.syntheticSymbol = "Required"
-                }
-
-                if (!values.collateralRequirement) {
-                  errors.collateralRequirement = "Required"
-                } else if (parseInt(values.collateralRequirement, 10) < 100) {
-                  errors.collateralRequirement = "Value should be higher than 100"
-                }
-
-                if (!values.minSponsorTokens) {
-                  errors.minSponsorTokens = "Required"
-                }
-
-                if (!values.withdrawalLiveness) {
-                  errors.withdrawalLiveness = "Required"
-                }
-
-                if (!values.liquidationLiveness) {
-                  errors.liquidationLiveness = "Required"
-                }
-
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.expirationTimestamp) {
+                errors.expirationTimestamp = "Required"
               }
+
+              if (!values.syntheticName) {
+                errors.syntheticName = "Required"
+              }
+
+              if (!values.syntheticSymbol) {
+                errors.syntheticSymbol = "Required"
+              }
+
+              if (!values.collateralRequirement) {
+                errors.collateralRequirement = "Required"
+              } else if (parseInt(values.collateralRequirement, 10) < 100) {
+                errors.collateralRequirement = "Value should be higher than 100"
+              }
+
+              if (!values.minSponsorTokens) {
+                errors.minSponsorTokens = "Required"
+              }
+
+              if (!values.withdrawalLiveness) {
+                errors.withdrawalLiveness = "Required"
+              }
+
+              if (!values.liquidationLiveness) {
+                errors.liquidationLiveness = "Required"
+              }
+
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -337,6 +340,10 @@ export const CreateExpiringMultiParty: React.FC = () => {
 
             <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted} transition={false}>
               You have successfully deployed the expiring multiparty contract {newEMPAddress}
+            </Alert>
+
+            <Alert variant="danger" style={{ width: "85%", marginTop: "1em" }} show={error !== undefined} transition={false} >
+              {error}
             </Alert>
           </Form>
         )}
