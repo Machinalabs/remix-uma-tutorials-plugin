@@ -17,7 +17,7 @@ describe("useStep tests", () => {
     const stepsNumber = Object.keys(allSteps).length
 
     expect(allSteps).toBeDefined()
-    expect(stepsNumber).toEqual(7)
+    expect(stepsNumber).toEqual(6)
   })
 
   test("currentStep", () => {
@@ -106,10 +106,10 @@ describe("useStep tests", () => {
       result.current.goNextStep()
     })
 
-    act(() => {
-      result.current.goNextStep()
-    })
+    // act(() => {
+    //   result.current.goNextStep()
+    // })
 
-    expect(result.current.currentStep).toEqual(allSteps[6])
+    expect(result.current.currentStep).toEqual(allSteps[5])
   })
 })
