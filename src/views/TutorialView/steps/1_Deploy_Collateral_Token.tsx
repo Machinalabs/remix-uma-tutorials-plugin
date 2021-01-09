@@ -127,6 +127,7 @@ export const DeployCollateralToken: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
+              return new Promise(async (resolve, reject) => {
                 const errors: FormikErrors<FormProps> = {}
                 if (!values.name) {
                   errors.name = "Required"
@@ -143,9 +144,9 @@ export const DeployCollateralToken: React.FC = () => {
                 if (!values.totalSupply) {
                   errors.totalSupply = "Required"
                 }
-
-                return errors
-              }
+                resolve(errors)
+              })
+            }
         }
         onSubmit={handleSubmit}
       >
