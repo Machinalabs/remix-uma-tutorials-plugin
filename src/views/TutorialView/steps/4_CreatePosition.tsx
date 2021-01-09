@@ -95,6 +95,7 @@ export const CreatePosition: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
+              return new Promise((resolve, reject) => {
                 const errors: FormikErrors<FormProps> = {}
                 if (!values.collateralAmount) {
                   errors.collateralAmount = "Required"
@@ -108,8 +109,9 @@ export const CreatePosition: React.FC = () => {
 
                 // valiadate the collateral requirement
 
-                return errors
-              }
+                resolve(errors)
+              })
+            }
         }
         onSubmit={handleSubmit}
       >
