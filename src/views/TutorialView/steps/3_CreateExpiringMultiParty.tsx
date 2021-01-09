@@ -222,39 +222,39 @@ export const CreateExpiringMultiParty: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-              const errors: FormikErrors<FormProps> = {}
-              if (!values.expirationTimestamp) {
-                errors.expirationTimestamp = "Required"
-              }
+                const errors: FormikErrors<FormProps> = {}
+                if (!values.expirationTimestamp) {
+                  errors.expirationTimestamp = "Required"
+                }
 
-              if (!values.syntheticName) {
-                errors.syntheticName = "Required"
-              }
+                if (!values.syntheticName) {
+                  errors.syntheticName = "Required"
+                }
 
-              if (!values.syntheticSymbol) {
-                errors.syntheticSymbol = "Required"
-              }
+                if (!values.syntheticSymbol) {
+                  errors.syntheticSymbol = "Required"
+                }
 
-              if (!values.collateralRequirement) {
-                errors.collateralRequirement = "Required"
-              } else if (parseInt(values.collateralRequirement, 10) < 100) {
-                errors.collateralRequirement = "Value should be higher than 100"
-              }
+                if (!values.collateralRequirement) {
+                  errors.collateralRequirement = "Required"
+                } else if (parseInt(values.collateralRequirement, 10) < 100) {
+                  errors.collateralRequirement = "Value should be higher than 100"
+                }
 
-              if (!values.minSponsorTokens) {
-                errors.minSponsorTokens = "Required"
-              }
+                if (!values.minSponsorTokens) {
+                  errors.minSponsorTokens = "Required"
+                }
 
-              if (!values.withdrawalLiveness) {
-                errors.withdrawalLiveness = "Required"
-              }
+                if (!values.withdrawalLiveness) {
+                  errors.withdrawalLiveness = "Required"
+                }
 
-              if (!values.liquidationLiveness) {
-                errors.liquidationLiveness = "Required"
-              }
+                if (!values.liquidationLiveness) {
+                  errors.liquidationLiveness = "Required"
+                }
 
-              return errors
-            }
+                return errors
+              }
         }
         onSubmit={handleSubmit}
       >

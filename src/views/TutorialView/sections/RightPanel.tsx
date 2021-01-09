@@ -142,10 +142,18 @@ export const RightPanel: React.FC = () => {
                 positions.map((item: Position, index: number) => (
                   <AccordionContentBody key={index} className="borderBottomExceptLast">
                     <p>
-                      Collateral amount: <span style={{ fontSize: "0.8em" }}>{`${formatUnits(item.collateralAmount.toString(), "ether")}`}</span>
+                      Collateral amount:{" "}
+                      <span style={{ fontSize: "0.8em" }}>{`${formatUnits(
+                        item.collateralAmount.toString(),
+                        "ether"
+                      )}`}</span>
                     </p>
                     <p>
-                      Synthetic tokens: <span style={{ fontSize: "0.8em" }}>{`${formatUnits(item.syntheticTokens.toString(), "ether")}`}</span>
+                      Synthetic tokens:{" "}
+                      <span style={{ fontSize: "0.8em" }}>{`${formatUnits(
+                        item.syntheticTokens.toString(),
+                        "ether"
+                      )}`}</span>
                     </p>
                   </AccordionContentBody>
                 ))}

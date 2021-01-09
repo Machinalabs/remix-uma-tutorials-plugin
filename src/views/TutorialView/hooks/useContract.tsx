@@ -57,11 +57,11 @@ interface IContractProvider {
 /* tslint:disable */
 // Defaults
 const ContractContext = React.createContext<IContractProvider>({
-  setContracts: (contractsMap: Map<UMAContractName, EthereumAddress>) => { },
+  setContracts: (contractsMap: Map<UMAContractName, EthereumAddress>) => {},
   getContractAddress: (contractName: UMAContractName) => {
     return ""
   },
-  addContractAddress: (contractName: UMAContractName, address: EthereumAddress) => { },
+  addContractAddress: (contractName: UMAContractName, address: EthereumAddress) => {},
   contracts: new Map<UMAContractName, EthereumAddress>(),
   priceIdentifiers: ["ETH/BTC"],
   addPriceIdentifier: (newPriceIdentifier: string) => {
@@ -75,16 +75,16 @@ const ContractContext = React.createContext<IContractProvider>({
   addSyntheticToken: (newToken: Token) => [
     { name: "SNT", symbol: "SNT", decimals: 18, totalSupply: BigNumber.from("10000000") },
   ],
-  cleanData: () => { },
+  cleanData: () => {},
   collateralBalance: "0",
   syntheticBalance: "0",
   updateBalances: (signer: any, account: string) => {
     return Promise.resolve()
   },
   expiringMultiParties: [],
-  addExpiringMultiParty: (newEMP: ExpiringMultiParty) => { },
+  addExpiringMultiParty: (newEMP: ExpiringMultiParty) => {},
   positions: [],
-  addPosition: (newPosition: Position) => { },
+  addPosition: (newPosition: Position) => {},
   updateSyntheticTotalSupply: (signer: any) => {
     return Promise.resolve()
   },
@@ -226,12 +226,16 @@ export const ContractProvider: React.FC<PropsWithChildren<{}>> = ({ children }) 
   }
 
   const updatePositions = async (signer: any, account: string) => {
-    const contractInstance = new ethers.Contract(getContractAddress('ExpiringMultiParty'), ExpiringMultiPartyArtifact.abi, signer)
+    const contractInstance = new ethers.Contract(
+      getContractAddress("ExpiringMultiParty"),
+      ExpiringMultiPartyArtifact.abi,
+      signer
+    )
 
     const position = await contractInstance.positions(account)
 
     const newPositionsUpdated: Position = {
-      syntheticTokens: position.tokensOutstanding,// `${formatUnits(position.tokensOutstanding.toString(), "ether")}`,
+      syntheticTokens: position.tokensOutstanding, // `${formatUnits(position.tokensOutstanding.toString(), "ether")}`,
       collateralAmount: position.rawCollateral, //`${formatUnits(position.rawCollateral.toString(), "ether")}`
     }
     setPositions([newPositionsUpdated])
@@ -259,7 +263,7 @@ export const ContractProvider: React.FC<PropsWithChildren<{}>> = ({ children }) 
         positions,
         expiringMultiParties,
         updateSyntheticTotalSupply,
-        updatePositions
+        updatePositions,
       }}
     >
       {children}
