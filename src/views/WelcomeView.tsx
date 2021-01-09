@@ -3,21 +3,24 @@ import { useHistory } from "react-router-dom"
 import styled from "styled-components"
 import Spinner from "react-bootstrap/Spinner"
 import Alert from "react-bootstrap/Alert"
+import { ethers } from "ethers"
 
 import { StyledButton } from "../components"
 import { useRemix } from "../hooks"
 import { TITLE } from "../text"
 import { useStep } from "./TutorialView/hooks"
+import { useContract } from './TutorialView/hooks'
+import { debug } from "../utils"
 
 const TUTORIAL_ROUTE = "/tutorial"
 
 export const WelcomeView: React.FC = () => {
-  const { clientInstance } = useRemix()
+  const { clientInstance, web3Provider } = useRemix()
   const { currentStep } = useStep()
   const [isStarting, setIsStarting] = useState(false)
   const history = useHistory()
   const [error, setError] = useState<string | undefined>(undefined)
-
+  const { getContractAddress } = useContract()
   useEffect(() => {
     if (isStarting && clientInstance) {
       const validateAndRedirectIfOk = async () => {
@@ -30,6 +33,31 @@ export const WelcomeView: React.FC = () => {
           return
         }
 
+        try {
+          const network = await clientInstance.call('network', 'detectNetwork')
+          console.log("Network", network)
+        } catch (error) {
+          setError(
+            "Invalid provider selected. Please be sure you are running the UMA snapshot docker image and the provider is correct."
+          )
+          setIsStarting(false)
+          return
+        }
+
+        try {
+          const ethersProvider = new ethers.providers.Web3Provider(web3Provider)
+          const signer = ethersProvider.getSigner()
+          debug("Signer", signer)
+          // TODO: Verify all contracts...
+          const finderCode = await ethersProvider.getCode(getContractAddress('Finder'))
+          debug("finderCode", finderCode)
+        } catch (error) {
+          setError(
+            "UMA snapshot not found. Please be sure you are running the UMA snapshot docker image and the provider is correct."
+          )
+          setIsStarting(false)
+          return
+        }
         // const accounts = await clientInstance.udapp.getAccounts()
         // debug("Accounts", accounts)
         // if snapshot.. do X, otherwise Y
