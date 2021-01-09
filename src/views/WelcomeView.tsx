@@ -9,7 +9,7 @@ import { StyledButton } from "../components"
 import { useRemix } from "../hooks"
 import { TITLE } from "../text"
 import { useStep } from "./TutorialView/hooks"
-import { useContract } from './TutorialView/hooks'
+import { useContract } from "./TutorialView/hooks"
 import { debug } from "../utils"
 
 const TUTORIAL_ROUTE = "/tutorial"
@@ -34,7 +34,7 @@ export const WelcomeView: React.FC = () => {
         }
 
         try {
-          const network = await clientInstance.call('network', 'detectNetwork')
+          const network = await clientInstance.call("network", "detectNetwork")
           console.log("Network", network)
         } catch (error) {
           setError(
@@ -49,7 +49,7 @@ export const WelcomeView: React.FC = () => {
           const signer = ethersProvider.getSigner()
           debug("Signer", signer)
           // TODO: Verify all contracts...
-          const finderCode = await ethersProvider.getCode(getContractAddress('Finder'))
+          const finderCode = await ethersProvider.getCode(getContractAddress("Finder"))
           debug("finderCode", finderCode)
         } catch (error) {
           setError(
