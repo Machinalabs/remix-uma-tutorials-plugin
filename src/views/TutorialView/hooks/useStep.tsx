@@ -48,12 +48,12 @@ const STEPS: Step = [
     route: "deposit",
     name: "Deposit",
   },
-  {
-    key: "withdraw",
-    order: 7,
-    route: "withdraw",
-    name: "Withdraw",
-  },
+  // {
+  //   key: "withdraw",
+  //   order: 7,
+  //   route: "withdraw",
+  //   name: "Withdraw",
+  // },
 ]
 
 interface IStepProvider {
