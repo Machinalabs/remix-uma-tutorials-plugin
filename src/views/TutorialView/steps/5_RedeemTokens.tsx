@@ -31,7 +31,6 @@ export const RedeemTokens: React.FC = () => {
     setError(undefined)
 
     const sendTx = async () => {
-
       const syntheticTokens = toWei(`${values.syntheticTokens}`)
       debug("Redeeming tokens", values)
 
@@ -50,7 +49,7 @@ export const RedeemTokens: React.FC = () => {
         signer
       )
 
-      await syntheticContract.approve(getContractAddress('ExpiringMultiParty'), syntheticTokens)
+      await syntheticContract.approve(getContractAddress("ExpiringMultiParty"), syntheticTokens)
       debug("Synthetic approved")
 
       const empContract = new ethers.Contract(
@@ -59,9 +58,7 @@ export const RedeemTokens: React.FC = () => {
         signer
       )
 
-      const receipt = await empContract.redeem(
-        { rawValue: syntheticTokens }
-      )
+      const receipt = await empContract.redeem({ rawValue: syntheticTokens })
 
       debug("Receipt", await receipt.wait())
 
@@ -87,8 +84,11 @@ export const RedeemTokens: React.FC = () => {
   return (
     <React.Fragment>
       <h4>Redeem Tokens</h4>
-      <p>Because we are a token sponsor for this synthetic token contract, we can redeem some of the tokens we minted even before the synthetic token expires. <br />
-      Let's redeem synthetic tokens.</p>
+      <p>
+        Because we are a token sponsor for this synthetic token contract, we can redeem some of the tokens we minted
+        even before the synthetic token expires. <br />
+        Let's redeem synthetic tokens.
+      </p>
 
       <Formik
         initialValues={initialValues}
@@ -96,20 +96,22 @@ export const RedeemTokens: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-              return new Promise((resolve, reject) => {
-                const errors: FormikErrors<FormProps> = {}
+                return new Promise((resolve, reject) => {
+                  const errors: FormikErrors<FormProps> = {}
 
-                debug('values.syntheticTokens > positions[0].syntheticTokens', values.syntheticTokens)
-                debug('values.syntheticTokens > positions[0].syntheticTokens', positions[0].syntheticTokens)
-                if (!values.syntheticTokens) {
-                  errors.syntheticTokens = "Required"
-                } else if (parseInt(`${values.syntheticTokens}`, 10) > parseInt(`${positions[0].syntheticTokens}`, 10)) {
-                  errors.syntheticTokens = "The number exceed the available synthetic tokens"
-                }
+                  debug("values.syntheticTokens > positions[0].syntheticTokens", values.syntheticTokens)
+                  debug("values.syntheticTokens > positions[0].syntheticTokens", positions[0].syntheticTokens)
+                  if (!values.syntheticTokens) {
+                    errors.syntheticTokens = "Required"
+                  } else if (
+                    parseInt(`${values.syntheticTokens}`, 10) > parseInt(`${positions[0].syntheticTokens}`, 10)
+                  ) {
+                    errors.syntheticTokens = "The number exceed the available synthetic tokens"
+                  }
 
-                resolve(errors)
-              })
-            }
+                  resolve(errors)
+                })
+              }
         }
         onSubmit={handleSubmit}
       >
@@ -138,7 +140,12 @@ export const RedeemTokens: React.FC = () => {
               You have successfully redeemed tokens.
             </Alert>
 
-            <Alert variant="danger" style={{ width: "85%", marginTop: "1em" }} show={error !== undefined} transition={false} >
+            <Alert
+              variant="danger"
+              style={{ width: "85%", marginTop: "1em" }}
+              show={error !== undefined}
+              transition={false}
+            >
               {error}
             </Alert>
           </Form>

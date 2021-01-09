@@ -21,11 +21,7 @@ const initialValues: FormProps = {
 }
 
 export const Deposit: React.FC = () => {
-  const {
-    getContractAddress,
-    updateBalances,
-    collateralTokens,
-  } = useContract()
+  const { getContractAddress, updateBalances, collateralTokens } = useContract()
   const { web3Provider } = useRemix()
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
   const [error, setError] = useState<string | undefined>(undefined)
@@ -54,7 +50,6 @@ export const Deposit: React.FC = () => {
       debug("Receipt", await receipt.wait())
 
       updateBalances(signer, accounts[0])
-
     }
 
     setTimeout(() => {
@@ -74,9 +69,11 @@ export const Deposit: React.FC = () => {
   return (
     <React.Fragment>
       <h4>Deposit</h4>
-      <p>As a token sponsor, we may wish to add additional collateral to our position to avoid being liquidated.
+      <p>
+        As a token sponsor, we may wish to add additional collateral to our position to avoid being liquidated.
         <br />
-      Let’s deposit additional collateral tokens to our position.</p>
+        Let’s deposit additional collateral tokens to our position.
+      </p>
 
       <Formik
         initialValues={initialValues}
@@ -84,18 +81,18 @@ export const Deposit: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-              return new Promise((resolve, reject) => {
-                const errors: FormikErrors<FormProps> = {}
+                return new Promise((resolve, reject) => {
+                  const errors: FormikErrors<FormProps> = {}
 
-                if (!values.collateralAmount) {
-                  errors.collateralAmount = "Required"
-                } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
-                  errors.collateralAmount = `The collateral desired is bigger than the total supply`
-                }
+                  if (!values.collateralAmount) {
+                    errors.collateralAmount = "Required"
+                  } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
+                    errors.collateralAmount = `The collateral desired is bigger than the total supply`
+                  }
 
-                resolve(errors)
-              })
-            }
+                  resolve(errors)
+                })
+              }
         }
         onSubmit={handleSubmit}
       >
@@ -124,7 +121,12 @@ export const Deposit: React.FC = () => {
               You have successfully deposited collateral.
             </Alert>
 
-            <Alert variant="danger" style={{ width: "85%", marginTop: "1em" }} show={error !== undefined} transition={false} >
+            <Alert
+              variant="danger"
+              style={{ width: "85%", marginTop: "1em" }}
+              show={error !== undefined}
+              transition={false}
+            >
               {error}
             </Alert>
           </Form>

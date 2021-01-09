@@ -79,12 +79,12 @@ export const DeployPriceIdentifier: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-              const errors: FormikErrors<FormProps> = {}
-              if (!values.priceIdentifier) {
-                errors.priceIdentifier = "Required"
+                const errors: FormikErrors<FormProps> = {}
+                if (!values.priceIdentifier) {
+                  errors.priceIdentifier = "Required"
+                }
+                return errors
               }
-              return errors
-            }
         }
         onSubmit={handleSubmit}
       >
@@ -112,7 +112,12 @@ export const DeployPriceIdentifier: React.FC = () => {
               You have successfully deployed the price identifier.
             </Alert>
 
-            <Alert variant="danger" style={{ width: "85%", marginTop: "1em" }} show={error !== undefined} transition={false} >
+            <Alert
+              variant="danger"
+              style={{ width: "85%", marginTop: "1em" }}
+              show={error !== undefined}
+              transition={false}
+            >
               {error}
             </Alert>
           </Form>
