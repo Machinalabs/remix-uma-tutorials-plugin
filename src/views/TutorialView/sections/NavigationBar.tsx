@@ -9,7 +9,7 @@ import { useContract, useStep } from "../hooks"
 const TUTORIAL_ROUTE = "/tutorial"
 
 export const NavigationBar: React.FC = () => {
-  const { isLastStep, getNextStep, goNextStep, currentStep, getDefaultStep, isCurrentStepCompleted, restart } = useStep()
+  const { isLastStep, getNextStep, goNextStep, getDefaultStep, isCurrentStepCompleted, restart } = useStep()
   const { cleanData } = useContract()
   const [isRestarting, setIsRestarting] = useState(false)
   const history = useHistory()
