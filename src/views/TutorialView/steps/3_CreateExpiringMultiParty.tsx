@@ -17,6 +17,7 @@ import { Button } from "../../../components"
 import { ErrorMessage, FormItem, SuccessMessage } from "../components"
 import { useRemix } from "../../../hooks"
 import { InterfaceName } from "../../../extras/deployment"
+import { NavigationBar } from "../sections"
 
 interface FormProps {
   expirationTimestamp: string
@@ -221,39 +222,46 @@ export const CreateExpiringMultiParty: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.expirationTimestamp) {
-                  errors.expirationTimestamp = "Required"
-                }
-
-                if (!values.syntheticName) {
-                  errors.syntheticName = "Required"
-                }
-
-                if (!values.syntheticSymbol) {
-                  errors.syntheticSymbol = "Required"
-                }
-
-                if (!values.collateralRequirement) {
-                  errors.collateralRequirement = "Required"
-                } else if (parseInt(values.collateralRequirement, 10) < 100) {
-                  errors.collateralRequirement = "Value should be higher than 100"
-                }
-
-                if (!values.minSponsorTokens) {
-                  errors.minSponsorTokens = "Required"
-                }
-
-                if (!values.withdrawalLiveness) {
-                  errors.withdrawalLiveness = "Required"
-                }
-
-                if (!values.liquidationLiveness) {
-                  errors.liquidationLiveness = "Required"
-                }
-
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.expirationTimestamp) {
+                errors.expirationTimestamp = "Required"
               }
+
+              if (!values.syntheticName) {
+                errors.syntheticName = "Required"
+              }
+
+              if (!values.syntheticSymbol) {
+                errors.syntheticSymbol = "Required"
+              }
+
+              if (!values.collateralRequirement) {
+                errors.collateralRequirement = "Required"
+              } else if (parseInt(values.collateralRequirement, 10) < 100) {
+                errors.collateralRequirement = "Value should be higher than 100"
+              }
+
+              if (!values.minSponsorTokens) {
+                errors.minSponsorTokens = "Required"
+              } else if (parseInt(values.minSponsorTokens, 10) < 0) {
+                errors.minSponsorTokens = "Value cannot be negative"
+              }
+
+
+              if (!values.withdrawalLiveness) {
+                errors.withdrawalLiveness = "Required"
+              } else if (parseInt(values.withdrawalLiveness, 10) < 0) {
+                errors.withdrawalLiveness = "Value cannot be negative"
+              }
+
+              if (!values.liquidationLiveness) {
+                errors.liquidationLiveness = "Required"
+              } else if (parseInt(values.liquidationLiveness, 10) < 0) {
+                errors.liquidationLiveness = "Value cannot be negative"
+              }
+
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -334,8 +342,8 @@ export const CreateExpiringMultiParty: React.FC = () => {
               size="sm"
               disabled={isSubmitting}
               isLoading={isSubmitting}
-              loadingText="Submitting..."
-              text="Deploy"
+              loadingText="Creating..."
+              text="Create"
               show={!isCurrentStepCompleted}
             />
 
@@ -343,6 +351,8 @@ export const CreateExpiringMultiParty: React.FC = () => {
               You have successfully deployed the expiring multiparty contract {newEMPAddress}
             </SuccessMessage>
             <ErrorMessage show={error !== undefined}>{error}</ErrorMessage>
+
+            <NavigationBar />
           </Form>
         )}
       </Formik>

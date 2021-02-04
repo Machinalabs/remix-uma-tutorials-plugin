@@ -1,14 +1,17 @@
-import React from "react"
+import React, { useState } from "react"
 import { useHistory } from "react-router-dom"
 import styled from "styled-components"
 
-import { StyledButton } from "../../../components"
+import { Button as CustomButton, StyledButton } from "../../../components"
 
 import { useContract, useStep } from "../hooks"
 
+const TUTORIAL_ROUTE = "/tutorial"
+
 export const NavigationBar: React.FC = () => {
-  const { isLastStep, getNextStep, goNextStep, isCurrentStepCompleted } = useStep()
+  const { isLastStep, getNextStep, goNextStep, currentStep, getDefaultStep, isCurrentStepCompleted, restart } = useStep()
   const { cleanData } = useContract()
+  const [isRestarting, setIsRestarting] = useState(false)
   const history = useHistory()
 
   const handleOnNextClick = () => {
@@ -24,16 +27,31 @@ export const NavigationBar: React.FC = () => {
     history.push("/")
   }
 
+  const handleOnRestartClick = () => {
+    setIsRestarting(true)
+    restart()
+    const defaultStep = getDefaultStep()
+    setTimeout(() => {
+      cleanData()
+      setIsRestarting(false)
+      history.push(`${TUTORIAL_ROUTE}/${defaultStep.route}`)
+    }, 2000);
+  }
+
   return (
     <Wrapper isCurrentStepCompleted={isCurrentStepCompleted}>
       {!isLastStep() && isCurrentStepCompleted && (
-        <StyledButton disabled={!isCurrentStepCompleted} variant="success" onClick={handleOnNextClick}>
+        <StyledButton isLoading={false} disabled={!isCurrentStepCompleted} variant="success" onClick={handleOnNextClick}>
           Next
         </StyledButton>
       )}
-      <StyledButton variant="danger" style={{ marginRight: "10px" }} onClick={handleOnEndClick}>
-        End
+      <div>
+        <CustomButton variant="warning" style={{ marginRight: "4px" }}
+          onClick={handleOnRestartClick} isLoading={isRestarting} loadingText="Restarting..." text="Restart" />
+        <StyledButton variant="danger" onClick={handleOnEndClick}>
+          End
       </StyledButton>
+      </div>
     </Wrapper>
   )
 }

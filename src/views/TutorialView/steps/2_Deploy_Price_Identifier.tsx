@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Formik, Form, FormikErrors } from "formik"
 
 import { useRemix } from "../../../hooks"
@@ -10,6 +10,7 @@ import IdentifierWhitelistArtifact from "@uma/core/build/contracts/IdentifierWhi
 import { FormItem } from "../components"
 import { useStep } from "../hooks"
 import { SuccessMessage, ErrorMessage } from "../components"
+import { NavigationBar } from "../sections"
 
 interface FormProps {
   priceIdentifier: string
@@ -25,7 +26,7 @@ export const DeployPriceIdentifier: React.FC = () => {
   const { setCurrentStepCompleted, isCurrentStepCompleted } = useStep()
   const [error, setError] = useState<string | undefined>(undefined)
 
-  const handleSubmit = (values: FormProps, { setSubmitting }) => {
+  const handleSubmit = (values: FormProps, { setSubmitting, resetForm }) => {
     debug("Deploying price identifier", values)
     setError(undefined)
 
@@ -61,6 +62,7 @@ export const DeployPriceIdentifier: React.FC = () => {
         .then(() => {
           setSubmitting(false)
           setCurrentStepCompleted()
+          resetForm({})
         })
         .catch((e) => {
           debug(e)
@@ -69,6 +71,10 @@ export const DeployPriceIdentifier: React.FC = () => {
         })
     }, 2000)
   }
+
+  useEffect(() => {
+
+  }, [])
 
   return (
     <React.Fragment>
@@ -80,12 +86,12 @@ export const DeployPriceIdentifier: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.priceIdentifier) {
-                  errors.priceIdentifier = "Required"
-                }
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.priceIdentifier) {
+                errors.priceIdentifier = "Required"
               }
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -104,7 +110,7 @@ export const DeployPriceIdentifier: React.FC = () => {
               size="sm"
               disabled={isSubmitting}
               isLoading={isSubmitting}
-              loadingText="Submitting..."
+              loadingText="Deploying..."
               text="Deploy"
               show={!isCurrentStepCompleted}
             />
@@ -113,6 +119,8 @@ export const DeployPriceIdentifier: React.FC = () => {
               You have successfully deployed the price identifier.
             </SuccessMessage>
             <ErrorMessage show={error !== undefined}>{error}</ErrorMessage>
+
+            <NavigationBar />
           </Form>
         )}
       </Formik>

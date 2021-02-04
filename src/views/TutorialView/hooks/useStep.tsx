@@ -66,6 +66,8 @@ interface IStepProvider {
   goStepBefore: () => void
   isCurrentStepCompleted: boolean
   setCurrentStepCompleted: () => void
+  restart: () => void
+  getDefaultStep: () => StepDefinition
 }
 
 /* tslint:disable */
@@ -76,10 +78,12 @@ const StepContext = React.createContext<IStepProvider>({
   currentStep: STEPS[DEFAULT_STEP],
   getStepBefore: () => STEPS[DEFAULT_STEP],
   isLastStep: () => false,
-  goNextStep: () => {},
-  goStepBefore: () => {},
+  goNextStep: () => { },
+  goStepBefore: () => { },
   isCurrentStepCompleted: false,
-  setCurrentStepCompleted: () => {},
+  setCurrentStepCompleted: () => { },
+  restart: () => { },
+  getDefaultStep: () => STEPS[DEFAULT_STEP]
 })
 /* tslint:enable */
 
@@ -146,6 +150,14 @@ export const StepProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     setIsCurrentStepCompleted(true)
   }
 
+  const restart = () => {
+    setCurrentStep(STEPS[DEFAULT_STEP])
+  }
+
+  const getDefaultStep = () => {
+    return STEPS[DEFAULT_STEP]
+  }
+
   useEffect(() => {
     setIsCurrentStepCompleted(false)
   }, [currentStep])
@@ -162,6 +174,8 @@ export const StepProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
         goStepBefore,
         setCurrentStepCompleted,
         isCurrentStepCompleted,
+        restart,
+        getDefaultStep
       }}
     >
       {children}

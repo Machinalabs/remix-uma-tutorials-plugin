@@ -5,7 +5,7 @@ import { TITLE } from "../../text"
 
 import { StepProvider } from "./hooks"
 import { Stepmanager } from "./steps"
-import { NavigationBar, NavMenu, RightPanel } from "./sections"
+import { NavMenu, RightPanel } from "./sections"
 
 export const TutorialView: React.FC = () => {
   return (
@@ -19,7 +19,6 @@ export const TutorialView: React.FC = () => {
             </Col>
             <Col xs={6} lg={4} style={{ display: "flex", flexDirection: "column" }}>
               <Stepmanager />
-              <NavigationBar />
             </Col>
             <Col xs={3} md={3} lg={3} style={{ paddingLeft: "0", paddingRight: "0" }}>
               <RightPanel />

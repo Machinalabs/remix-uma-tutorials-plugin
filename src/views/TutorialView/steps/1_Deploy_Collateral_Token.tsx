@@ -14,6 +14,7 @@ import { Button } from "../../../components"
 import { useContract, useStep } from "../hooks"
 import { FormItem } from "../components"
 import { SuccessMessage, ErrorMessage } from "../components"
+import { NavigationBar } from "../sections"
 
 interface FormProps {
   name: string
@@ -36,7 +37,7 @@ export const DeployCollateralToken: React.FC = () => {
   const [newCollateralTokenAddress, setNewCollateralTokenAddress] = useState<string | undefined>(undefined)
   const [error, setError] = useState<string | undefined>(undefined)
 
-  const handleSubmit = (values: FormProps, { setSubmitting }) => {
+  const handleSubmit = (values: FormProps, { setSubmitting, resetForm }) => {
     debug("Deploying collateral token", values)
     setError(undefined)
 
@@ -106,6 +107,7 @@ export const DeployCollateralToken: React.FC = () => {
         .then(() => {
           setSubmitting(false)
           setCurrentStepCompleted()
+          resetForm()
         })
         .catch((e) => {
           console.log("Error", e)
@@ -132,26 +134,30 @@ export const DeployCollateralToken: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                return new Promise(async (resolve, reject) => {
-                  const errors: FormikErrors<FormProps> = {}
-                  if (!values.name) {
-                    errors.name = "Required"
-                  }
-                  if (!values.symbol) {
-                    errors.symbol = "Required"
-                  }
-                  if (!values.decimals) {
-                    errors.decimals = "Required"
-                  } else if (parseInt(values.decimals, 10) > 255) {
-                    errors.decimals = "Max value is 255"
-                  }
+              return new Promise(async (resolve, reject) => {
+                const errors: FormikErrors<FormProps> = {}
+                if (!values.name) {
+                  errors.name = "Required"
+                }
+                if (!values.symbol) {
+                  errors.symbol = "Required"
+                }
+                if (!values.decimals) {
+                  errors.decimals = "Required"
+                } else if (parseInt(values.decimals, 10) > 255) {
+                  errors.decimals = "Max value is 255"
+                } else if (parseInt(values.decimals, 10) < 0) {
+                  errors.decimals = "Value cannot be negative"
+                }
 
-                  if (!values.totalSupply) {
-                    errors.totalSupply = "Required"
-                  }
-                  resolve(errors)
-                })
-              }
+                if (!values.totalSupply) {
+                  errors.totalSupply = "Required"
+                } else if (parseInt(values.totalSupply, 10) < 0) {
+                  errors.totalSupply = "Value cannot be negative"
+                }
+                resolve(errors)
+              })
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -186,7 +192,7 @@ export const DeployCollateralToken: React.FC = () => {
               size="sm"
               disabled={isSubmitting}
               isLoading={isSubmitting}
-              loadingText="Submitting..."
+              loadingText="Deploying..."
               text="Deploy"
               show={!isCurrentStepCompleted}
             />
@@ -195,6 +201,8 @@ export const DeployCollateralToken: React.FC = () => {
               You have successfully deployed the collateral token at {newCollateralTokenAddress}
             </SuccessMessage>
             <ErrorMessage show={error !== undefined}>{error}</ErrorMessage>
+
+            <NavigationBar />
           </Form>
         )}
       </Formik>
