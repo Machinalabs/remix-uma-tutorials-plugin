@@ -102,7 +102,7 @@ export const WelcomeView: React.FC = () => {
         Now, you need to setup Remix to use the Web3 provider (Check the image below) <br />
         Once you have completed that, we can start !
         <br />
-        <img style={{ marginBottom: "1em", marginTop: "1em" }} width="800" height="800" src={getImage()} />
+        <img alt="image of how to set web3 provider" style={{ marginBottom: "1em", marginTop: "1em" }} width="800" height="800" src={getImage()} />
         <br />
         Are you ready? Let's get started !
       </p>
