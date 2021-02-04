@@ -175,7 +175,7 @@ export const StepProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
         setCurrentStepCompleted,
         isCurrentStepCompleted,
         restart,
-        getDefaultStep
+        getDefaultStep,
       }}
     >
       {children}

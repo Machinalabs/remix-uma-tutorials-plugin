@@ -222,46 +222,45 @@ export const CreateExpiringMultiParty: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-              const errors: FormikErrors<FormProps> = {}
-              if (!values.expirationTimestamp) {
-                errors.expirationTimestamp = "Required"
+                const errors: FormikErrors<FormProps> = {}
+                if (!values.expirationTimestamp) {
+                  errors.expirationTimestamp = "Required"
+                }
+
+                if (!values.syntheticName) {
+                  errors.syntheticName = "Required"
+                }
+
+                if (!values.syntheticSymbol) {
+                  errors.syntheticSymbol = "Required"
+                }
+
+                if (!values.collateralRequirement) {
+                  errors.collateralRequirement = "Required"
+                } else if (parseInt(values.collateralRequirement, 10) < 100) {
+                  errors.collateralRequirement = "Value should be higher than 100"
+                }
+
+                if (!values.minSponsorTokens) {
+                  errors.minSponsorTokens = "Required"
+                } else if (parseInt(values.minSponsorTokens, 10) < 0) {
+                  errors.minSponsorTokens = "Value cannot be negative"
+                }
+
+                if (!values.withdrawalLiveness) {
+                  errors.withdrawalLiveness = "Required"
+                } else if (parseInt(values.withdrawalLiveness, 10) < 0) {
+                  errors.withdrawalLiveness = "Value cannot be negative"
+                }
+
+                if (!values.liquidationLiveness) {
+                  errors.liquidationLiveness = "Required"
+                } else if (parseInt(values.liquidationLiveness, 10) < 0) {
+                  errors.liquidationLiveness = "Value cannot be negative"
+                }
+
+                return errors
               }
-
-              if (!values.syntheticName) {
-                errors.syntheticName = "Required"
-              }
-
-              if (!values.syntheticSymbol) {
-                errors.syntheticSymbol = "Required"
-              }
-
-              if (!values.collateralRequirement) {
-                errors.collateralRequirement = "Required"
-              } else if (parseInt(values.collateralRequirement, 10) < 100) {
-                errors.collateralRequirement = "Value should be higher than 100"
-              }
-
-              if (!values.minSponsorTokens) {
-                errors.minSponsorTokens = "Required"
-              } else if (parseInt(values.minSponsorTokens, 10) < 0) {
-                errors.minSponsorTokens = "Value cannot be negative"
-              }
-
-
-              if (!values.withdrawalLiveness) {
-                errors.withdrawalLiveness = "Required"
-              } else if (parseInt(values.withdrawalLiveness, 10) < 0) {
-                errors.withdrawalLiveness = "Value cannot be negative"
-              }
-
-              if (!values.liquidationLiveness) {
-                errors.liquidationLiveness = "Required"
-              } else if (parseInt(values.liquidationLiveness, 10) < 0) {
-                errors.liquidationLiveness = "Value cannot be negative"
-              }
-
-              return errors
-            }
         }
         onSubmit={handleSubmit}
       >

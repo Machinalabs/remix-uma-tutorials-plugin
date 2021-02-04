@@ -85,20 +85,20 @@ export const Deposit: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-              return new Promise((resolve, reject) => {
-                const errors: FormikErrors<FormProps> = {}
+                return new Promise((resolve, reject) => {
+                  const errors: FormikErrors<FormProps> = {}
 
-                if (!values.collateralAmount) {
-                  errors.collateralAmount = "Required"
-                } else if (parseInt(`${values.collateralAmount}`, 10) < 0) {
-                  errors.collateralAmount = "Value cannot be negative"
-                } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
-                  errors.collateralAmount = `The collateral desired is bigger than the total supply`
-                }
+                  if (!values.collateralAmount) {
+                    errors.collateralAmount = "Required"
+                  } else if (parseInt(`${values.collateralAmount}`, 10) < 0) {
+                    errors.collateralAmount = "Value cannot be negative"
+                  } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
+                    errors.collateralAmount = `The collateral desired is bigger than the total supply`
+                  }
 
-                resolve(errors)
-              })
-            }
+                  resolve(errors)
+                })
+              }
         }
         onSubmit={handleSubmit}
       >
@@ -127,7 +127,6 @@ export const Deposit: React.FC = () => {
             <SuccessMessage show={isCurrentStepCompleted}>You have successfully deposited collateral.</SuccessMessage>
             <ErrorMessage show={error !== undefined}>{error}</ErrorMessage>
             <NavigationBar />
-
           </Form>
         )}
       </Formik>

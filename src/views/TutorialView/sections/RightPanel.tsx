@@ -54,7 +54,7 @@ export const RightPanel: React.FC = () => {
         <b>Synthetic Balance</b>
       </p>
       <p style={{ fontSize: "0.9em" }}>{syntheticBalance}</p>
-      {collateralTokens && collateralTokens.length > 0 &&
+      {collateralTokens && collateralTokens.length > 0 && (
         <Card>
           <Card.Header>Collateral token</Card.Header>
           <React.Fragment>
@@ -75,8 +75,9 @@ export const RightPanel: React.FC = () => {
               </AccordionContentBody>
             ))}
           </React.Fragment>
-        </Card>}
-      {priceIdentifiers && priceIdentifiers.length > 0 &&
+        </Card>
+      )}
+      {priceIdentifiers && priceIdentifiers.length > 0 && (
         <Card>
           <Card.Header> Price identifier</Card.Header>
           <React.Fragment>
@@ -89,8 +90,9 @@ export const RightPanel: React.FC = () => {
               </AccordionContentBody>
             ))}
           </React.Fragment>
-        </Card>}
-      {expiringMultiParties && expiringMultiParties.length > 0 &&
+        </Card>
+      )}
+      {expiringMultiParties && expiringMultiParties.length > 0 && (
         <Card>
           <Card.Header>Expiring multiparty</Card.Header>
           <React.Fragment>
@@ -117,8 +119,9 @@ export const RightPanel: React.FC = () => {
               </AccordionContentBody>
             ))}
           </React.Fragment>
-        </Card>}
-      {positions && positions.length > 0 &&
+        </Card>
+      )}
+      {positions && positions.length > 0 && (
         <Card>
           <Card.Header>Position</Card.Header>
           <React.Fragment>
@@ -141,8 +144,9 @@ export const RightPanel: React.FC = () => {
               </AccordionContentBody>
             ))}
           </React.Fragment>
-        </Card>}
-      {syntheticTokens && syntheticTokens.length > 0 &&
+        </Card>
+      )}
+      {syntheticTokens && syntheticTokens.length > 0 && (
         <Card>
           <Card.Header>Synthetic tokens</Card.Header>
           <React.Fragment>
@@ -163,8 +167,9 @@ export const RightPanel: React.FC = () => {
               </AccordionContentBody>
             ))}
           </React.Fragment>
-        </Card>}
-    </React.Fragment >
+        </Card>
+      )}
+    </React.Fragment>
   )
 }
 

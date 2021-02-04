@@ -35,22 +35,33 @@ export const NavigationBar: React.FC = () => {
       cleanData()
       setIsRestarting(false)
       history.push(`${TUTORIAL_ROUTE}/${defaultStep.route}`)
-    }, 2000);
+    }, 2000)
   }
 
   return (
     <Wrapper isCurrentStepCompleted={isCurrentStepCompleted}>
       {!isLastStep() && isCurrentStepCompleted && (
-        <StyledButton isLoading={false} disabled={!isCurrentStepCompleted} variant="success" onClick={handleOnNextClick}>
+        <StyledButton
+          isLoading={false}
+          disabled={!isCurrentStepCompleted}
+          variant="success"
+          onClick={handleOnNextClick}
+        >
           Next
         </StyledButton>
       )}
       <div>
-        <CustomButton variant="warning" style={{ marginRight: "4px" }}
-          onClick={handleOnRestartClick} isLoading={isRestarting} loadingText="Restarting..." text="Restart" />
+        <CustomButton
+          variant="warning"
+          style={{ marginRight: "4px" }}
+          onClick={handleOnRestartClick}
+          isLoading={isRestarting}
+          loadingText="Restarting..."
+          text="Restart"
+        />
         <StyledButton variant="danger" onClick={handleOnEndClick}>
           End
-      </StyledButton>
+        </StyledButton>
       </div>
     </Wrapper>
   )

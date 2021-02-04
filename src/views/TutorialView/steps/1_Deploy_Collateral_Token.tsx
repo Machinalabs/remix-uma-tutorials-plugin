@@ -134,30 +134,30 @@ export const DeployCollateralToken: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-              return new Promise(async (resolve, reject) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.name) {
-                  errors.name = "Required"
-                }
-                if (!values.symbol) {
-                  errors.symbol = "Required"
-                }
-                if (!values.decimals) {
-                  errors.decimals = "Required"
-                } else if (parseInt(values.decimals, 10) > 255) {
-                  errors.decimals = "Max value is 255"
-                } else if (parseInt(values.decimals, 10) < 0) {
-                  errors.decimals = "Value cannot be negative"
-                }
+                return new Promise(async (resolve, reject) => {
+                  const errors: FormikErrors<FormProps> = {}
+                  if (!values.name) {
+                    errors.name = "Required"
+                  }
+                  if (!values.symbol) {
+                    errors.symbol = "Required"
+                  }
+                  if (!values.decimals) {
+                    errors.decimals = "Required"
+                  } else if (parseInt(values.decimals, 10) > 255) {
+                    errors.decimals = "Max value is 255"
+                  } else if (parseInt(values.decimals, 10) < 0) {
+                    errors.decimals = "Value cannot be negative"
+                  }
 
-                if (!values.totalSupply) {
-                  errors.totalSupply = "Required"
-                } else if (parseInt(values.totalSupply, 10) < 0) {
-                  errors.totalSupply = "Value cannot be negative"
-                }
-                resolve(errors)
-              })
-            }
+                  if (!values.totalSupply) {
+                    errors.totalSupply = "Required"
+                  } else if (parseInt(values.totalSupply, 10) < 0) {
+                    errors.totalSupply = "Value cannot be negative"
+                  }
+                  resolve(errors)
+                })
+              }
         }
         onSubmit={handleSubmit}
       >

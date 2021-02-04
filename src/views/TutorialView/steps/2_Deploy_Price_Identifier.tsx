@@ -72,9 +72,7 @@ export const DeployPriceIdentifier: React.FC = () => {
     }, 2000)
   }
 
-  useEffect(() => {
-
-  }, [])
+  useEffect(() => {}, [])
 
   return (
     <React.Fragment>
@@ -86,12 +84,12 @@ export const DeployPriceIdentifier: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-              const errors: FormikErrors<FormProps> = {}
-              if (!values.priceIdentifier) {
-                errors.priceIdentifier = "Required"
+                const errors: FormikErrors<FormProps> = {}
+                if (!values.priceIdentifier) {
+                  errors.priceIdentifier = "Required"
+                }
+                return errors
               }
-              return errors
-            }
         }
         onSubmit={handleSubmit}
       >
