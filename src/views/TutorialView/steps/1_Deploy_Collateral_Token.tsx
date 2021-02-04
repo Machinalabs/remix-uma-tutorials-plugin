@@ -132,26 +132,26 @@ export const DeployCollateralToken: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-              return new Promise(async (resolve, reject) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.name) {
-                  errors.name = "Required"
-                }
-                if (!values.symbol) {
-                  errors.symbol = "Required"
-                }
-                if (!values.decimals) {
-                  errors.decimals = "Required"
-                } else if (parseInt(values.decimals, 10) > 255) {
-                  errors.decimals = "Max value is 255"
-                }
+                return new Promise(async (resolve, reject) => {
+                  const errors: FormikErrors<FormProps> = {}
+                  if (!values.name) {
+                    errors.name = "Required"
+                  }
+                  if (!values.symbol) {
+                    errors.symbol = "Required"
+                  }
+                  if (!values.decimals) {
+                    errors.decimals = "Required"
+                  } else if (parseInt(values.decimals, 10) > 255) {
+                    errors.decimals = "Max value is 255"
+                  }
 
-                if (!values.totalSupply) {
-                  errors.totalSupply = "Required"
-                }
-                resolve(errors)
-              })
-            }
+                  if (!values.totalSupply) {
+                    errors.totalSupply = "Required"
+                  }
+                  resolve(errors)
+                })
+              }
         }
         onSubmit={handleSubmit}
       >
