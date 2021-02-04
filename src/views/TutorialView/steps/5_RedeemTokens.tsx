@@ -98,22 +98,22 @@ export const RedeemTokens: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-              return new Promise((resolve, reject) => {
-                const errors: FormikErrors<FormProps> = {}
+                return new Promise((resolve, reject) => {
+                  const errors: FormikErrors<FormProps> = {}
 
-                debug("values.syntheticTokens > positions[0].syntheticTokens", values.syntheticTokens)
-                debug("values.syntheticTokens > positions[0].syntheticTokens", positions[0].syntheticTokens)
-                if (!values.syntheticTokens) {
-                  errors.syntheticTokens = "Required"
-                } else if (
-                  parseInt(`${values.syntheticTokens}`, 10) > parseInt(`${positions[0].syntheticTokens}`, 10)
-                ) {
-                  errors.syntheticTokens = "The number exceed the available synthetic tokens"
-                }
+                  debug("values.syntheticTokens > positions[0].syntheticTokens", values.syntheticTokens)
+                  debug("values.syntheticTokens > positions[0].syntheticTokens", positions[0].syntheticTokens)
+                  if (!values.syntheticTokens) {
+                    errors.syntheticTokens = "Required"
+                  } else if (
+                    parseInt(`${values.syntheticTokens}`, 10) > parseInt(`${positions[0].syntheticTokens}`, 10)
+                  ) {
+                    errors.syntheticTokens = "The number exceed the available synthetic tokens"
+                  }
 
-                resolve(errors)
-              })
-            }
+                  resolve(errors)
+                })
+              }
         }
         onSubmit={handleSubmit}
       >
@@ -139,12 +139,8 @@ export const RedeemTokens: React.FC = () => {
               show={!isCurrentStepCompleted}
             />
 
-            <SuccessMessage show={isCurrentStepCompleted}>
-              You have successfully redeemed tokens.
-            </SuccessMessage>
-            <ErrorMessage show={error !== undefined}>
-              {error}
-            </ErrorMessage>
+            <SuccessMessage show={isCurrentStepCompleted}>You have successfully redeemed tokens.</SuccessMessage>
+            <ErrorMessage show={error !== undefined}>{error}</ErrorMessage>
           </Form>
         )}
       </Formik>

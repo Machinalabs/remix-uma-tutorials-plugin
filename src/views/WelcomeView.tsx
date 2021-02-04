@@ -78,7 +78,6 @@ export const WelcomeView: React.FC = () => {
       return "https://res.cloudinary.com/key-solutions/image/upload/v1612437191/remix/uma-howto-white.png"
     }
     return "https://res.cloudinary.com/key-solutions/image/upload/v1612436252/remix/how-to-uma-remix.png"
-
   }
   return (
     <Wrapper>
