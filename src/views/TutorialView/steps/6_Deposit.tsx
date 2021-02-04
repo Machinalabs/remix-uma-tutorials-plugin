@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import { Formik, Form, FormikErrors } from "formik"
-import Alert from "react-bootstrap/Alert"
 import { toWei } from "web3-utils"
 
 import ExpiringMultiPartyArtifact from "@uma/core/build/contracts/ExpiringMultiParty.json"
@@ -85,18 +84,18 @@ export const Deposit: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                return new Promise((resolve, reject) => {
-                  const errors: FormikErrors<FormProps> = {}
+              return new Promise((resolve, reject) => {
+                const errors: FormikErrors<FormProps> = {}
 
-                  if (!values.collateralAmount) {
-                    errors.collateralAmount = "Required"
-                  } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
-                    errors.collateralAmount = `The collateral desired is bigger than the total supply`
-                  }
+                if (!values.collateralAmount) {
+                  errors.collateralAmount = "Required"
+                } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
+                  errors.collateralAmount = `The collateral desired is bigger than the total supply`
+                }
 
-                  resolve(errors)
-                })
-              }
+                resolve(errors)
+              })
+            }
         }
         onSubmit={handleSubmit}
       >

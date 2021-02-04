@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import { Formik, Form, FormikErrors } from "formik"
 import { BigNumber, ethers, utils } from "ethers"
 import { hexToAscii, toWei } from "web3-utils"
-import Alert from "react-bootstrap/Alert"
 import "react-datetime/css/react-datetime.css"
 
 import TestnetERC20Artifact from "@uma/core/build/contracts/TestnetERC20.json"
@@ -222,39 +221,39 @@ export const CreateExpiringMultiParty: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.expirationTimestamp) {
-                  errors.expirationTimestamp = "Required"
-                }
-
-                if (!values.syntheticName) {
-                  errors.syntheticName = "Required"
-                }
-
-                if (!values.syntheticSymbol) {
-                  errors.syntheticSymbol = "Required"
-                }
-
-                if (!values.collateralRequirement) {
-                  errors.collateralRequirement = "Required"
-                } else if (parseInt(values.collateralRequirement, 10) < 100) {
-                  errors.collateralRequirement = "Value should be higher than 100"
-                }
-
-                if (!values.minSponsorTokens) {
-                  errors.minSponsorTokens = "Required"
-                }
-
-                if (!values.withdrawalLiveness) {
-                  errors.withdrawalLiveness = "Required"
-                }
-
-                if (!values.liquidationLiveness) {
-                  errors.liquidationLiveness = "Required"
-                }
-
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.expirationTimestamp) {
+                errors.expirationTimestamp = "Required"
               }
+
+              if (!values.syntheticName) {
+                errors.syntheticName = "Required"
+              }
+
+              if (!values.syntheticSymbol) {
+                errors.syntheticSymbol = "Required"
+              }
+
+              if (!values.collateralRequirement) {
+                errors.collateralRequirement = "Required"
+              } else if (parseInt(values.collateralRequirement, 10) < 100) {
+                errors.collateralRequirement = "Value should be higher than 100"
+              }
+
+              if (!values.minSponsorTokens) {
+                errors.minSponsorTokens = "Required"
+              }
+
+              if (!values.withdrawalLiveness) {
+                errors.withdrawalLiveness = "Required"
+              }
+
+              if (!values.liquidationLiveness) {
+                errors.liquidationLiveness = "Required"
+              }
+
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >

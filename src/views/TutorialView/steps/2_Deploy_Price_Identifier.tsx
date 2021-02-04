@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import { Formik, Form, FormikErrors } from "formik"
-import Alert from "react-bootstrap/Alert"
 
 import { useRemix } from "../../../hooks"
 import { Button } from "../../../components"
@@ -81,12 +80,12 @@ export const DeployPriceIdentifier: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.priceIdentifier) {
-                  errors.priceIdentifier = "Required"
-                }
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.priceIdentifier) {
+                errors.priceIdentifier = "Required"
               }
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >
