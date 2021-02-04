@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { Formik, Form, FormikErrors } from "formik"
 
 import { useRemix } from "../../../hooks"
@@ -82,12 +82,12 @@ export const DeployPriceIdentifier: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.priceIdentifier) {
-                  errors.priceIdentifier = "Required"
-                }
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.priceIdentifier) {
+                errors.priceIdentifier = "Required"
               }
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >
