@@ -14,6 +14,7 @@ import { Button } from "../../../components"
 
 import { useContract, useStep } from "../hooks"
 import { FormItem } from "../components"
+import { SuccessMessage, ErrorMessage } from '../components'
 
 interface FormProps {
   name: string
@@ -132,26 +133,26 @@ export const DeployCollateralToken: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                return new Promise(async (resolve, reject) => {
-                  const errors: FormikErrors<FormProps> = {}
-                  if (!values.name) {
-                    errors.name = "Required"
-                  }
-                  if (!values.symbol) {
-                    errors.symbol = "Required"
-                  }
-                  if (!values.decimals) {
-                    errors.decimals = "Required"
-                  } else if (parseInt(values.decimals, 10) > 255) {
-                    errors.decimals = "Max value is 255"
-                  }
+              return new Promise(async (resolve, reject) => {
+                const errors: FormikErrors<FormProps> = {}
+                if (!values.name) {
+                  errors.name = "Required"
+                }
+                if (!values.symbol) {
+                  errors.symbol = "Required"
+                }
+                if (!values.decimals) {
+                  errors.decimals = "Required"
+                } else if (parseInt(values.decimals, 10) > 255) {
+                  errors.decimals = "Max value is 255"
+                }
 
-                  if (!values.totalSupply) {
-                    errors.totalSupply = "Required"
-                  }
-                  resolve(errors)
-                })
-              }
+                if (!values.totalSupply) {
+                  errors.totalSupply = "Required"
+                }
+                resolve(errors)
+              })
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -191,18 +192,12 @@ export const DeployCollateralToken: React.FC = () => {
               show={!isCurrentStepCompleted}
             />
 
-            <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted} transition={false}>
+            <SuccessMessage show={isCurrentStepCompleted}>
               You have successfully deployed the collateral token at {newCollateralTokenAddress}
-            </Alert>
-
-            <Alert
-              variant="danger"
-              style={{ width: "85%", marginTop: "1em" }}
-              show={error !== undefined}
-              transition={false}
-            >
+            </SuccessMessage>
+            <ErrorMessage show={error !== undefined}>
               {error}
-            </Alert>
+            </ErrorMessage>
           </Form>
         )}
       </Formik>

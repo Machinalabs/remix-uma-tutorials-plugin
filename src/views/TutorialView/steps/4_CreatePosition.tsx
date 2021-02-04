@@ -8,7 +8,7 @@ import { Button } from "../../../components"
 import { useRemix } from "../../../hooks"
 import { debug } from "../../../utils"
 import { useContract, useStep } from "../hooks"
-import { FormItem } from "../components"
+import { ErrorMessage, FormItem, SuccessMessage } from "../components"
 import { BigNumber, ethers } from "ethers"
 import { toWei } from "web3-utils"
 
@@ -104,33 +104,33 @@ export const CreatePosition: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                return new Promise((resolve, reject) => {
-                  const errors: FormikErrors<FormProps> = {}
+              return new Promise((resolve, reject) => {
+                const errors: FormikErrors<FormProps> = {}
 
-                  const minSponsorTokens = expiringMultiParties[0].minSponsorTokens
-                  const collateralRequirement = expiringMultiParties[0].collateralRequirement
+                const minSponsorTokens = expiringMultiParties[0].minSponsorTokens
+                const collateralRequirement = expiringMultiParties[0].collateralRequirement
 
-                  if (!values.collateralAmount) {
-                    errors.collateralAmount = "Required"
-                  } else if (values.collateralAmount / values.syntheticTokens < collateralRequirement / 100) {
-                    errors.collateralAmount = `The collateral requirement is ${collateralRequirement}`
-                  } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
-                    errors.collateralAmount = `The collateral desired is bigger than the total supply`
-                  }
+                if (!values.collateralAmount) {
+                  errors.collateralAmount = "Required"
+                } else if (values.collateralAmount / values.syntheticTokens < collateralRequirement / 100) {
+                  errors.collateralAmount = `The collateral requirement is ${collateralRequirement}`
+                } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
+                  errors.collateralAmount = `The collateral desired is bigger than the total supply`
+                }
 
-                  if (!values.syntheticTokens) {
-                    errors.syntheticTokens = "Required"
-                  } else if (values.syntheticTokens < 100) {
-                    errors.syntheticTokens = "Value should be higher than 100" // TO BE CONFIGURED via call to get the value..
-                  } else if (values.syntheticTokens < minSponsorTokens) {
-                    errors.syntheticTokens = `The minimum number of synthetic tokens is ${minSponsorTokens}`
-                  } else if (values.syntheticTokens < minSponsorTokens) {
-                    errors.syntheticTokens = `The minimum number of synthetic tokens is ${minSponsorTokens}`
-                  }
+                if (!values.syntheticTokens) {
+                  errors.syntheticTokens = "Required"
+                } else if (values.syntheticTokens < 100) {
+                  errors.syntheticTokens = "Value should be higher than 100" // TO BE CONFIGURED via call to get the value..
+                } else if (values.syntheticTokens < minSponsorTokens) {
+                  errors.syntheticTokens = `The minimum number of synthetic tokens is ${minSponsorTokens}`
+                } else if (values.syntheticTokens < minSponsorTokens) {
+                  errors.syntheticTokens = `The minimum number of synthetic tokens is ${minSponsorTokens}`
+                }
 
-                  resolve(errors)
-                })
-              }
+                resolve(errors)
+              })
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -163,18 +163,12 @@ export const CreatePosition: React.FC = () => {
               show={!isCurrentStepCompleted}
             />
 
-            <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted} transition={false}>
+            <SuccessMessage show={isCurrentStepCompleted}>
               You have successfully created a position.
-            </Alert>
-
-            <Alert
-              variant="danger"
-              style={{ width: "85%", marginTop: "1em" }}
-              show={error !== undefined}
-              transition={false}
-            >
+            </SuccessMessage>
+            <ErrorMessage show={error !== undefined}>
               {error}
-            </Alert>
+            </ErrorMessage>
           </Form>
         )}
       </Formik>

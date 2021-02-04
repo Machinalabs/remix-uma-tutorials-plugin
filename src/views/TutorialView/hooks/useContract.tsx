@@ -57,11 +57,11 @@ interface IContractProvider {
 /* tslint:disable */
 // Defaults
 const ContractContext = React.createContext<IContractProvider>({
-  setContracts: (contractsMap: Map<UMAContractName, EthereumAddress>) => { },
+  setContracts: (contractsMap: Map<UMAContractName, EthereumAddress>) => {},
   getContractAddress: (contractName: UMAContractName) => {
     return ""
   },
-  addContractAddress: (contractName: UMAContractName, address: EthereumAddress) => { },
+  addContractAddress: (contractName: UMAContractName, address: EthereumAddress) => {},
   contracts: new Map<UMAContractName, EthereumAddress>(),
   priceIdentifiers: ["ETH/BTC"],
   addPriceIdentifier: (newPriceIdentifier: string) => {
@@ -75,16 +75,16 @@ const ContractContext = React.createContext<IContractProvider>({
   addSyntheticToken: (newToken: Token) => [
     { name: "SNT", symbol: "SNT", decimals: 18, totalSupply: BigNumber.from("10000000") },
   ],
-  cleanData: () => { },
+  cleanData: () => {},
   collateralBalance: "0",
   syntheticBalance: "0",
   updateBalances: (signer: any, account: string) => {
     return Promise.resolve()
   },
   expiringMultiParties: [],
-  addExpiringMultiParty: (newEMP: ExpiringMultiParty) => { },
+  addExpiringMultiParty: (newEMP: ExpiringMultiParty) => {},
   positions: [],
-  addPosition: (newPosition: Position) => { },
+  addPosition: (newPosition: Position) => {},
   updateSyntheticTotalSupply: (signer: any) => {
     return Promise.resolve()
   },
@@ -236,7 +236,7 @@ export const ContractProvider: React.FC<PropsWithChildren<{}>> = ({ children }) 
 
     const newPositionsUpdated: Position = {
       syntheticTokens: position.tokensOutstanding,
-      collateralAmount: position.rawCollateral
+      collateralAmount: position.rawCollateral,
     }
     setPositions([newPositionsUpdated])
   }

@@ -8,7 +8,7 @@ import ExpandedERC20Artifact from "@uma/core/build/contracts/ExpandedERC20.json"
 
 import { useRemix } from "../../../hooks"
 import { useContract, useStep } from "../hooks"
-import { FormItem } from "../components"
+import { ErrorMessage, FormItem, SuccessMessage } from "../components"
 import { debug } from "../../../utils"
 import { Button } from "../../../components"
 import { toWei } from "web3-utils"
@@ -98,22 +98,22 @@ export const RedeemTokens: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                return new Promise((resolve, reject) => {
-                  const errors: FormikErrors<FormProps> = {}
+              return new Promise((resolve, reject) => {
+                const errors: FormikErrors<FormProps> = {}
 
-                  debug("values.syntheticTokens > positions[0].syntheticTokens", values.syntheticTokens)
-                  debug("values.syntheticTokens > positions[0].syntheticTokens", positions[0].syntheticTokens)
-                  if (!values.syntheticTokens) {
-                    errors.syntheticTokens = "Required"
-                  } else if (
-                    parseInt(`${values.syntheticTokens}`, 10) > parseInt(`${positions[0].syntheticTokens}`, 10)
-                  ) {
-                    errors.syntheticTokens = "The number exceed the available synthetic tokens"
-                  }
+                debug("values.syntheticTokens > positions[0].syntheticTokens", values.syntheticTokens)
+                debug("values.syntheticTokens > positions[0].syntheticTokens", positions[0].syntheticTokens)
+                if (!values.syntheticTokens) {
+                  errors.syntheticTokens = "Required"
+                } else if (
+                  parseInt(`${values.syntheticTokens}`, 10) > parseInt(`${positions[0].syntheticTokens}`, 10)
+                ) {
+                  errors.syntheticTokens = "The number exceed the available synthetic tokens"
+                }
 
-                  resolve(errors)
-                })
-              }
+                resolve(errors)
+              })
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -139,18 +139,12 @@ export const RedeemTokens: React.FC = () => {
               show={!isCurrentStepCompleted}
             />
 
-            <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted} transition={false}>
+            <SuccessMessage show={isCurrentStepCompleted}>
               You have successfully redeemed tokens.
-            </Alert>
-
-            <Alert
-              variant="danger"
-              style={{ width: "85%", marginTop: "1em" }}
-              show={error !== undefined}
-              transition={false}
-            >
+            </SuccessMessage>
+            <ErrorMessage show={error !== undefined}>
               {error}
-            </Alert>
+            </ErrorMessage>
           </Form>
         )}
       </Formik>

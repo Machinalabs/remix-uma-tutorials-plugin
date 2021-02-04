@@ -7,7 +7,7 @@ import ExpiringMultiPartyArtifact from "@uma/core/build/contracts/ExpiringMultiP
 
 import { useRemix } from "../../../hooks"
 import { useContract, useStep } from "../hooks"
-import { FormItem } from "../components"
+import { ErrorMessage, FormItem, SuccessMessage } from "../components"
 import { Button } from "../../../components"
 import { debug } from "../../../utils"
 import { BigNumber, ethers } from "ethers"
@@ -85,18 +85,18 @@ export const Deposit: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                return new Promise((resolve, reject) => {
-                  const errors: FormikErrors<FormProps> = {}
+              return new Promise((resolve, reject) => {
+                const errors: FormikErrors<FormProps> = {}
 
-                  if (!values.collateralAmount) {
-                    errors.collateralAmount = "Required"
-                  } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
-                    errors.collateralAmount = `The collateral desired is bigger than the total supply`
-                  }
+                if (!values.collateralAmount) {
+                  errors.collateralAmount = "Required"
+                } else if (BigNumber.from(values.collateralAmount).gt(collateralTokens[0].totalSupply)) {
+                  errors.collateralAmount = `The collateral desired is bigger than the total supply`
+                }
 
-                  resolve(errors)
-                })
-              }
+                resolve(errors)
+              })
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -122,18 +122,12 @@ export const Deposit: React.FC = () => {
               show={!isCurrentStepCompleted}
             />
 
-            <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted} transition={false}>
+            <SuccessMessage show={isCurrentStepCompleted}>
               You have successfully deposited collateral.
-            </Alert>
-
-            <Alert
-              variant="danger"
-              style={{ width: "85%", marginTop: "1em" }}
-              show={error !== undefined}
-              transition={false}
-            >
+            </SuccessMessage>
+            <ErrorMessage show={error !== undefined}>
               {error}
-            </Alert>
+            </ErrorMessage>
           </Form>
         )}
       </Formik>

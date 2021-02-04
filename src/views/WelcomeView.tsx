@@ -15,7 +15,7 @@ import { debug } from "../utils"
 const TUTORIAL_ROUTE = "/tutorial"
 
 export const WelcomeView: React.FC = () => {
-  const { clientInstance, web3Provider } = useRemix()
+  const { clientInstance, web3Provider, themeType } = useRemix()
   const { currentStep } = useStep()
   const [isStarting, setIsStarting] = useState(false)
   const history = useHistory()
@@ -73,6 +73,13 @@ export const WelcomeView: React.FC = () => {
     setIsStarting(true)
   }
 
+  const getImage = () => {
+    if (themeType === "dark") {
+      return "https://res.cloudinary.com/key-solutions/image/upload/v1612437191/remix/uma-howto-white.png"
+    }
+    return "https://res.cloudinary.com/key-solutions/image/upload/v1612436252/remix/how-to-uma-remix.png"
+
+  }
   return (
     <Wrapper>
       <h2>{TITLE}</h2>
@@ -93,15 +100,13 @@ export const WelcomeView: React.FC = () => {
         In order to complete this tutorial you need to have docker installed and run the following command: <br />
         <code> $ docker run -it -p 8545:8545 defiacademy/uma-snapshot</code>
         <br />
-        Now, you need to setup Remix to use the Web3 provider. <br />
+        Now, you need to setup Remix to use the Web3 provider (Check the image below) <br />
         Once you have completed that, we can start !
         <br />
-        Are you ready? You can also watch{" "}
-        <a href="https://www.youtube.com/watch?v=RCVAkCrJDdw" target="_blank" rel="noreferrer">
-          this step by step guide video.
-        </a>
+        <img style={{ marginBottom: "1em", marginTop: "1em" }} width="800" height="800" src={getImage()} />
+        <br />
+        Are you ready? Let's get started !
       </p>
-
       <StyledButton onClick={handleOnClick} variant="primary" style={{ marginBottom: "2em" }}>
         {isStarting && (
           <React.Fragment>

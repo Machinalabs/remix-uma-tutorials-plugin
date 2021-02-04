@@ -15,7 +15,7 @@ import ExpandedIERC20Artifact from "@uma/core/build/contracts/ExpandedERC20.json
 import { debug } from "../../../utils"
 import { useContract, useStep } from "../hooks"
 import { Button } from "../../../components"
-import { FormItem } from "../components"
+import { ErrorMessage, FormItem, SuccessMessage } from "../components"
 import { useRemix } from "../../../hooks"
 import { InterfaceName } from "../../../extras/deployment"
 
@@ -222,39 +222,39 @@ export const CreateExpiringMultiParty: React.FC = () => {
           isCurrentStepCompleted
             ? undefined
             : (values) => {
-                const errors: FormikErrors<FormProps> = {}
-                if (!values.expirationTimestamp) {
-                  errors.expirationTimestamp = "Required"
-                }
-
-                if (!values.syntheticName) {
-                  errors.syntheticName = "Required"
-                }
-
-                if (!values.syntheticSymbol) {
-                  errors.syntheticSymbol = "Required"
-                }
-
-                if (!values.collateralRequirement) {
-                  errors.collateralRequirement = "Required"
-                } else if (parseInt(values.collateralRequirement, 10) < 100) {
-                  errors.collateralRequirement = "Value should be higher than 100"
-                }
-
-                if (!values.minSponsorTokens) {
-                  errors.minSponsorTokens = "Required"
-                }
-
-                if (!values.withdrawalLiveness) {
-                  errors.withdrawalLiveness = "Required"
-                }
-
-                if (!values.liquidationLiveness) {
-                  errors.liquidationLiveness = "Required"
-                }
-
-                return errors
+              const errors: FormikErrors<FormProps> = {}
+              if (!values.expirationTimestamp) {
+                errors.expirationTimestamp = "Required"
               }
+
+              if (!values.syntheticName) {
+                errors.syntheticName = "Required"
+              }
+
+              if (!values.syntheticSymbol) {
+                errors.syntheticSymbol = "Required"
+              }
+
+              if (!values.collateralRequirement) {
+                errors.collateralRequirement = "Required"
+              } else if (parseInt(values.collateralRequirement, 10) < 100) {
+                errors.collateralRequirement = "Value should be higher than 100"
+              }
+
+              if (!values.minSponsorTokens) {
+                errors.minSponsorTokens = "Required"
+              }
+
+              if (!values.withdrawalLiveness) {
+                errors.withdrawalLiveness = "Required"
+              }
+
+              if (!values.liquidationLiveness) {
+                errors.liquidationLiveness = "Required"
+              }
+
+              return errors
+            }
         }
         onSubmit={handleSubmit}
       >
@@ -340,18 +340,12 @@ export const CreateExpiringMultiParty: React.FC = () => {
               show={!isCurrentStepCompleted}
             />
 
-            <Alert variant="success" style={{ width: "85%" }} show={isCurrentStepCompleted} transition={false}>
+            <SuccessMessage show={isCurrentStepCompleted}>
               You have successfully deployed the expiring multiparty contract {newEMPAddress}
-            </Alert>
-
-            <Alert
-              variant="danger"
-              style={{ width: "85%", marginTop: "1em" }}
-              show={error !== undefined}
-              transition={false}
-            >
+            </SuccessMessage>
+            <ErrorMessage show={error !== undefined}>
               {error}
-            </Alert>
+            </ErrorMessage>
           </Form>
         )}
       </Formik>
